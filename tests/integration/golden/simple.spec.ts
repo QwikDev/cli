@@ -14,7 +14,10 @@ test.group("JOKE-01 -- qwik joke", () => {
     const result = runCli(["joke"]);
     assert.strictEqual(result.status, 0);
     assert.isTrue(result.stdout.length > 0, "stdout should not be empty");
-    const lines = result.stdout.trim().split("\n").filter((l) => l.length > 0);
+    const lines = result.stdout
+      .trim()
+      .split("\n")
+      .filter((l) => l.length > 0);
     assert.isTrue(lines.length >= 2, "joke should have at least two lines (setup + punchline)");
   });
 });

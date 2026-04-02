@@ -57,16 +57,10 @@ export const JOKES: Joke[] = [
   ["want about to a race conditions hear joke?", ""],
   ["What is a Package Managers favorite holiday?", "Dependency Day"],
   ["Where do we get all of these dad jokes from?", "A dad-a-base!"],
-  [
-    "What advice do you give to a JS developer who has never played baseball?",
-    "Try catch.",
-  ],
+  ["What advice do you give to a JS developer who has never played baseball?", "Try catch."],
   ["We don't have any DNS jokes, know why?", "Because it may take 24 hours to get them"],
-  [
-    "Why do Front-End Developers eat lunch alone?",
-    "Because they don't know how to join tables.",
-  ],
-  ["How do you help JS errors?", "You \`console\` them!"],
+  ["Why do Front-End Developers eat lunch alone?", "Because they don't know how to join tables."],
+  ["How do you help JS errors?", "You `console` them!"],
   ["When do front end developers go out to eat?", "On their lunch <br>."],
   ["What do you call optimistic front-end developers?", "Stack half-full developers."],
 ];

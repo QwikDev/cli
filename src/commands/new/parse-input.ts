@@ -1,9 +1,7 @@
 import { createRegExp, oneOrMore, charIn, whitespace } from "magic-regexp";
 
 const SEPARATOR = createRegExp(oneOrMore(charIn("-_").or(whitespace)));
-const SEPARATOR_GLOBAL = createRegExp(oneOrMore(charIn("-_").or(whitespace)), [
-  "g",
-]);
+const SEPARATOR_GLOBAL = createRegExp(oneOrMore(charIn("-_").or(whitespace)), ["g"]);
 
 /**
  * Parse a raw name input into slug and PascalCase name.
@@ -49,8 +47,7 @@ export function inferTypeAndName(args: string[]): {
   const nonFlags = sliced.filter((a) => !a.startsWith("--"));
   // First non-flag arg after "new" is the command, second is the input
   const commandIdx = nonFlags.indexOf("new");
-  const mainInput =
-    commandIdx >= 0 ? nonFlags[commandIdx + 1] : nonFlags[0] ?? "";
+  const mainInput = commandIdx >= 0 ? nonFlags[commandIdx + 1] : (nonFlags[0] ?? "");
 
   if (!mainInput) {
     return { typeArg: undefined, nameArg: undefined };
@@ -81,10 +78,7 @@ export function inferTypeAndName(args: string[]): {
  * If hasPositional is true and no flag, default to 'qwik'.
  * Otherwise undefined (interactive).
  */
-export function inferTemplate(
-  argv: string[],
-  hasPositional: boolean,
-): string | undefined {
+export function inferTemplate(argv: string[], hasPositional: boolean): string | undefined {
   const flagArgs = argv
     .slice(2)
     .filter((a) => a.startsWith("--"))

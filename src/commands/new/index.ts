@@ -1,11 +1,7 @@
 import { mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { Program } from "../../core.js";
-import {
-  inferTemplate,
-  inferTypeAndName,
-  parseInputName,
-} from "./parse-input.js";
+import { inferTemplate, inferTypeAndName, parseInputName } from "./parse-input.js";
 import {
   NAME_TOKEN,
   getOutDir,
@@ -31,9 +27,7 @@ export class NewProgram extends Program<NewArgs, NewInput> {
     const { typeArg, nameArg } = inferTypeAndName(process.argv);
 
     if (typeArg === undefined || nameArg === undefined) {
-      throw new Error(
-        "Type and name are required in non-interactive mode. Usage: qwik new <name>",
-      );
+      throw new Error("Type and name are required in non-interactive mode. Usage: qwik new <name>");
     }
 
     const templateId = inferTemplate(process.argv, !!nameArg) ?? "qwik";
@@ -77,17 +71,16 @@ export class NewProgram extends Program<NewArgs, NewInput> {
 
     if (templateId === undefined) {
       const templates = loadTemplates();
-      const matching = templates.filter(
-        (t) => t[typeArg as TemplateType] !== undefined,
-      );
+      const matching = templates.filter((t) => t[typeArg as TemplateType] !== undefined);
 
       if (matching.length === 1) {
         // NEW-06: auto-select when exactly 1 template exists for chosen type
         templateId = matching[0]!.id;
       } else if (matching.length > 1) {
-        templateId = await this.scanChoice<string>("Choose template:", [
-          ...matching.map((t) => ({ value: t.id, label: t.id })),
-        ]);
+        templateId = await this.scanChoice<string>(
+          "Choose template:",
+          matching.map((t) => ({ value: t.id, label: t.id })),
+        );
       } else {
         templateId = "qwik";
       }
@@ -126,12 +119,7 @@ export class NewProgram extends Program<NewArgs, NewInput> {
       if (input.typeArg === "markdown" || input.typeArg === "mdx") {
         const ext = input.typeArg === "markdown" ? ".md" : ".mdx";
         // nameArg is already stripped of extension (e.g., "/blog/post")
-        const dir = join(
-          input.rootDir,
-          "src",
-          "routes",
-          dirname(input.nameArg),
-        );
+        const dir = join(input.rootDir, "src", "routes", dirname(input.nameArg));
         const filename = basename(input.nameArg) + ext;
         mkdirSync(dir, { recursive: true });
         const fileOutput = join(dir, filename);

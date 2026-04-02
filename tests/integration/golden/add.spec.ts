@@ -26,7 +26,10 @@ test.group("ADD-01 -- qwik add with --skipConfirmation", (group) => {
     // Assert integration-related file was written to tmpDir.
     // Will FAIL until Phase 5 implements add command (stub does not write adapter files).
     const adapterFile = join(tmpDir, "adapters", "cloudflare-pages", "vite.config.ts");
-    assert.isTrue(existsSync(adapterFile), `Expected adapter file at ${adapterFile} to be created by add command`);
+    assert.isTrue(
+      existsSync(adapterFile),
+      `Expected adapter file at ${adapterFile} to be created by add command`,
+    );
   });
 });
 
@@ -54,7 +57,10 @@ test.group("ADD-02 -- qwik add with --projectDir", (group) => {
     // Positive assertion: adapter file must be written to the sub/ subdirectory.
     // Will FAIL against stub — stub does not write any files.
     const adapterFile = join(tmpDir, "sub", "adapters", "cloudflare-pages", "vite.config.ts");
-    assert.isTrue(existsSync(adapterFile), `Expected adapter file at ${adapterFile} to be created under --projectDir`);
+    assert.isTrue(
+      existsSync(adapterFile),
+      `Expected adapter file at ${adapterFile} to be created under --projectDir`,
+    );
   });
 });
 

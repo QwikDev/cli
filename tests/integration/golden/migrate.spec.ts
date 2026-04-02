@@ -45,21 +45,37 @@ test.group("MIG-01 -- full migration golden path", (group) => {
 
     const appTsx = readFileSync(join(tmpDir, "src", "app.tsx"), "utf-8");
     // Negative assertions: old import names must be gone
-    assert.isFalse(appTsx.includes("@builder.io/qwik"), "src/app.tsx must not contain @builder.io/qwik after migration");
+    assert.isFalse(
+      appTsx.includes("@builder.io/qwik"),
+      "src/app.tsx must not contain @builder.io/qwik after migration",
+    );
 
     const indexTsx = readFileSync(join(tmpDir, "src", "routes", "index.tsx"), "utf-8");
-    assert.isFalse(indexTsx.includes("@builder.io/qwik-city"), "src/routes/index.tsx must not contain @builder.io/qwik-city after migration");
+    assert.isFalse(
+      indexTsx.includes("@builder.io/qwik-city"),
+      "src/routes/index.tsx must not contain @builder.io/qwik-city after migration",
+    );
 
-    const pkg = JSON.parse(readFileSync(join(tmpDir, "package.json"), "utf-8")) as Record<string, unknown>;
+    const pkg = JSON.parse(readFileSync(join(tmpDir, "package.json"), "utf-8")) as Record<
+      string,
+      unknown
+    >;
     const deps = (pkg.dependencies ?? {}) as Record<string, string>;
     const devDeps = (pkg.devDependencies ?? {}) as Record<string, string>;
     assert.notProperty(deps, "ts-morph", "dependencies must not contain ts-morph after migration");
-    assert.notProperty(devDeps, "ts-morph", "devDependencies must not contain ts-morph after migration");
+    assert.notProperty(
+      devDeps,
+      "ts-morph",
+      "devDependencies must not contain ts-morph after migration",
+    );
 
     // POSITIVE assertion — ensures red against stub.
     // Stub does not rewrite files, so src/app.tsx still contains @builder.io/qwik, not @qwik.dev/core.
     // This assertion WILL FAIL against the stub and WILL PASS in Phase 5 when migration is real.
-    assert.isTrue(appTsx.includes("@qwik.dev/core"), "src/app.tsx MUST contain @qwik.dev/core after migration (positive assertion, fails against stub)");
+    assert.isTrue(
+      appTsx.includes("@qwik.dev/core"),
+      "src/app.tsx MUST contain @qwik.dev/core after migration (positive assertion, fails against stub)",
+    );
   });
 });
 
@@ -85,7 +101,10 @@ test.group("MIG-02 -- user cancels migration", (group) => {
 
     const appTsx = readFileSync(join(tmpDir, "src", "app.tsx"), "utf-8");
     // Files must be unchanged when user cancels
-    assert.isTrue(appTsx.includes("@builder.io/qwik"), "src/app.tsx must still contain @builder.io/qwik after cancel (no files modified)");
+    assert.isTrue(
+      appTsx.includes("@builder.io/qwik"),
+      "src/app.tsx must still contain @builder.io/qwik after cancel (no files modified)",
+    );
   });
 });
 
@@ -106,9 +125,16 @@ test.group("MIG-03 -- ts-morph idempotency guard", (group) => {
     const result = runCli(["migrate-v2"], tmpDir, { input: "y\n" });
     assert.strictEqual(result.status, 0);
 
-    const pkg = JSON.parse(readFileSync(join(tmpDir, "package.json"), "utf-8")) as Record<string, unknown>;
+    const pkg = JSON.parse(readFileSync(join(tmpDir, "package.json"), "utf-8")) as Record<
+      string,
+      unknown
+    >;
     const devDeps = (pkg.devDependencies ?? {}) as Record<string, string>;
-    assert.property(devDeps, "ts-morph", "devDependencies must still contain ts-morph when project already uses it (idempotency guard)");
+    assert.property(
+      devDeps,
+      "ts-morph",
+      "devDependencies must still contain ts-morph when project already uses it (idempotency guard)",
+    );
   });
 });
 
@@ -135,14 +161,20 @@ test.group("MIG-04 -- substring ordering constraint", (group) => {
     const srcFiles = collectFiles(join(tmpDir, "src"));
     for (const filePath of srcFiles) {
       const content = readFileSync(filePath, "utf-8");
-      assert.isFalse(content.includes("@qwik.dev/core-city"), `${filePath} must not contain @qwik.dev/core-city (substring ordering bug)`);
+      assert.isFalse(
+        content.includes("@qwik.dev/core-city"),
+        `${filePath} must not contain @qwik.dev/core-city (substring ordering bug)`,
+      );
     }
 
     // POSITIVE assertion — ensures red against stub.
     // Stub does not rewrite files, so src/routes/index.tsx still has @builder.io/qwik-city, not @qwik.dev/router.
     // This assertion WILL FAIL against the stub and WILL PASS in Phase 5 when migration is real.
     const indexTsx = readFileSync(join(tmpDir, "src", "routes", "index.tsx"), "utf-8");
-    assert.isTrue(indexTsx.includes("@qwik.dev/router"), "src/routes/index.tsx MUST contain @qwik.dev/router after migration (positive assertion, fails against stub)");
+    assert.isTrue(
+      indexTsx.includes("@qwik.dev/router"),
+      "src/routes/index.tsx MUST contain @qwik.dev/router after migration (positive assertion, fails against stub)",
+    );
   });
 });
 
@@ -156,7 +188,10 @@ test.group("MIG-05 -- gitignore-respected traversal", (group) => {
     // Create dist/bundle.js containing @builder.io/qwik text.
     // dist/ is in fx-02's .gitignore; migration must NOT rewrite this file.
     mkdirSync(join(tmpDir, "dist"), { recursive: true });
-    writeFileSync(join(tmpDir, "dist", "bundle.js"), "// dist bundle\nimport { component$ } from '@builder.io/qwik';\n");
+    writeFileSync(
+      join(tmpDir, "dist", "bundle.js"),
+      "// dist bundle\nimport { component$ } from '@builder.io/qwik';\n",
+    );
   });
 
   group.each.teardown(() => {
@@ -168,6 +203,9 @@ test.group("MIG-05 -- gitignore-respected traversal", (group) => {
     assert.strictEqual(result.status, 0);
 
     const bundle = readFileSync(join(tmpDir, "dist", "bundle.js"), "utf-8");
-    assert.isTrue(bundle.includes("@builder.io/qwik"), "dist/bundle.js must still contain @builder.io/qwik (gitignore-excluded file must not be rewritten)");
+    assert.isTrue(
+      bundle.includes("@builder.io/qwik"),
+      "dist/bundle.js must still contain @builder.io/qwik (gitignore-excluded file must not be rewritten)",
+    );
   });
 });

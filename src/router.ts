@@ -3,10 +3,7 @@ import { printHeader } from "./console.js";
 import type { Program } from "./core.js";
 
 // COMMANDS map with dynamic imports for fast startup (ARCH-02)
-const COMMANDS: Record<
-  string,
-  () => Promise<{ default: new () => Program<unknown, unknown> }>
-> = {
+const COMMANDS: Record<string, () => Promise<{ default: new () => Program<unknown, unknown> }>> = {
   add: () => import("./commands/add/index.js"),
   build: () => import("./commands/build/index.js"),
   new: () => import("./commands/new/index.js"),

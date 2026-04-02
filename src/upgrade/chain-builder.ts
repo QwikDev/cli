@@ -54,8 +54,6 @@ export function buildMigrationChain(
 
   // Return only steps strictly greater than from version AND at or below toVersion
   return registry.filter(
-    (step) =>
-      semver.gt(step.version, coerced.version) &&
-      semver.lte(step.version, effectiveTarget),
+    (step) => semver.gt(step.version, coerced.version) && semver.lte(step.version, effectiveTarget),
   );
 }

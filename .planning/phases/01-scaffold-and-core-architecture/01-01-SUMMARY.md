@@ -105,7 +105,7 @@ Each task was committed atomically:
 1. **Task 1: Create package.json, tsconfig, tsdown, and biome** - `0d356b0` (chore)
 2. **Task 2: Add types, stubs, and Japa test harness** - `3867bab` (feat)
 
-**Plan metadata:** (pending — added after STATE.md update)
+**Plan metadata:** `e1e3a65` (docs: complete scaffold plan)
 
 ## Files Created/Modified
 

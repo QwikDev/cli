@@ -2,13 +2,8 @@ import semver from "semver";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { runV2Migration } from "../../migrations/v2/index.js";
-import {
-  updateDependencies,
-} from "../../migrations/v2/update-dependencies.js";
-import {
-  getLatestV2Version,
-  resolveV2Versions,
-} from "../../migrations/v2/versions.js";
+import { updateDependencies } from "../../migrations/v2/update-dependencies.js";
+import { getLatestV2Version, resolveV2Versions } from "../../migrations/v2/versions.js";
 import { buildMigrationChain, type MigrationStep } from "./chain-builder.js";
 import { detectInstalledVersion } from "./detect-version.js";
 
@@ -37,10 +32,7 @@ async function getLatestQwikVersion(): Promise<string | null> {
  * @param latestVersion - The latest semver version string from the registry
  * @returns true if the installed version satisfies latestVersion
  */
-function depsAreCurrentVersion(
-  rootDir: string,
-  latestVersion: string,
-): boolean {
+function depsAreCurrentVersion(rootDir: string, latestVersion: string): boolean {
   try {
     const pkgPath = join(rootDir, "package.json");
     const raw = readFileSync(pkgPath, "utf-8");
@@ -89,11 +81,7 @@ export async function runUpgrade(rootDir: string): Promise<void> {
   const targetVersion = latestVersion ?? "2.0.0";
 
   // Step 3: Build migration chain
-  const chain = buildMigrationChain(
-    installedRaw,
-    targetVersion,
-    MIGRATION_REGISTRY,
-  );
+  const chain = buildMigrationChain(installedRaw, targetVersion, MIGRATION_REGISTRY);
 
   // Step 4: Run each migration step sequentially
   for (const step of chain) {
@@ -103,8 +91,7 @@ export async function runUpgrade(rootDir: string): Promise<void> {
 
   // Step 5: Unconditionally update deps when they are behind latest
   // (independent of whether migrations ran — patch-level updates still need this)
-  const depsAreCurrent =
-    latestVersion !== null && depsAreCurrentVersion(rootDir, latestVersion);
+  const depsAreCurrent = latestVersion !== null && depsAreCurrentVersion(rootDir, latestVersion);
 
   if (!depsAreCurrent) {
     await updateDependencies(rootDir, resolveV2Versions());

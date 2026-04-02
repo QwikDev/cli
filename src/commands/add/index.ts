@@ -82,16 +82,11 @@ export class AddProgram extends Program<AddArgs, AddInput> {
     }
 
     // Determine rootDir
-    const rootDir = input.projectDir
-      ? join(process.cwd(), input.projectDir)
-      : process.cwd();
+    const rootDir = input.projectDir ? join(process.cwd(), input.projectDir) : process.cwd();
 
     // ADD-05: Consent gate
     if (!input.skipConfirmation) {
-      const proceed = await this.scanBoolean(
-        `Ready to apply ${integration.id}?`,
-        true,
-      );
+      const proceed = await this.scanBoolean(`Ready to apply ${integration.id}?`, true);
       if (!proceed) {
         bye();
       }
@@ -106,9 +101,7 @@ export class AddProgram extends Program<AddArgs, AddInput> {
     }
 
     // ADD-07: Run postInstall if defined
-    const qwikMeta = integration.pkgJson.__qwik__ as
-      | Record<string, unknown>
-      | undefined;
+    const qwikMeta = integration.pkgJson.__qwik__ as Record<string, unknown> | undefined;
     const postInstall = qwikMeta?.postInstall as string | undefined;
     if (postInstall) {
       await runPostInstall(postInstall, rootDir);

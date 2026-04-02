@@ -18,16 +18,11 @@ test.group("Scaffold", () => {
 
   test("stubs/ subdirectories exist", ({ assert }) => {
     for (const dir of ["adapters", "features", "apps", "templates"]) {
-      assert.isTrue(
-        existsSync(join(ROOT, "stubs", dir)),
-        `stubs/${dir} should exist`,
-      );
+      assert.isTrue(existsSync(join(ROOT, "stubs", dir)), `stubs/${dir} should exist`);
     }
   });
 
-  test("package.json exports field has import and require conditions", ({
-    assert,
-  }) => {
+  test("package.json exports field has import and require conditions", ({ assert }) => {
     const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf-8"));
     assert.property(pkg.exports["."], "import");
     assert.property(pkg.exports["."], "require");

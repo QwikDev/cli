@@ -27,10 +27,7 @@ function runSequential(scriptValue: string, cwd: string): void {
   }
 }
 
-function runParallel(
-  scripts: string[],
-  cwd: string,
-): Promise<void[]> {
+function runParallel(scripts: string[], cwd: string): Promise<void[]> {
   const promises = scripts.map((scriptValue) => {
     return new Promise<void>((resolve) => {
       const child = crossSpawn(scriptValue, [], {
@@ -110,9 +107,7 @@ export class BuildProgram extends Program<BuildArgs, BuildInput> {
     const cwd = process.cwd();
 
     // 1. Prebuild scripts (sequential)
-    const prebuildKeys = Object.keys(scripts).filter((k) =>
-      k.startsWith("prebuild."),
-    );
+    const prebuildKeys = Object.keys(scripts).filter((k) => k.startsWith("prebuild."));
     for (const key of prebuildKeys) {
       const scriptVal = scripts[key];
       if (scriptVal) runSequential(scriptVal, cwd);
@@ -163,9 +158,7 @@ export class BuildProgram extends Program<BuildArgs, BuildInput> {
     }
 
     // 5. Postbuild scripts (sequential)
-    const postbuildKeys = Object.keys(scripts).filter((k) =>
-      k.startsWith("postbuild."),
-    );
+    const postbuildKeys = Object.keys(scripts).filter((k) => k.startsWith("postbuild."));
     for (const key of postbuildKeys) {
       const scriptVal = scripts[key];
       if (scriptVal) runSequential(scriptVal, cwd);

@@ -123,6 +123,16 @@ None - no external service configuration required.
 - Phase 5 will make MIG tests meaningful when migrate-v2 is implemented
 - Phase 6 will make CRE tests pass when create-qwik scaffolding is implemented
 
+## Self-Check: PASSED
+
+- FOUND: tests/integration/golden/add.spec.ts
+- FOUND: tests/integration/golden/migrate.spec.ts
+- FOUND: tests/integration/golden/create-qwik.spec.ts
+- FOUND: .planning/phases/02-test-harness/02-03-SUMMARY.md
+- FOUND: commit ce098f6 (Task 1: add.spec.ts + create-qwik.spec.ts)
+- FOUND: commit fa27f92 (Task 2: migrate.spec.ts + cli.ts fix)
+- FOUND: commit e01ac18 (docs: SUMMARY + STATE + ROADMAP)
+
 ---
 *Phase: 02-test-harness*
 *Completed: 2026-04-01*

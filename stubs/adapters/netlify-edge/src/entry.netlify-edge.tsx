@@ -7,10 +7,7 @@
  * - https://qwik.dev/docs/deployments/netlify-edge/
  *
  */
-import {
-  createQwikRouter,
-  type PlatformNetlify,
-} from "@qwik.dev/router/middleware/netlify-edge";
+import { createQwikRouter, type PlatformNetlify } from "@qwik.dev/router/middleware/netlify-edge";
 import render from "./entry.ssr";
 
 declare global {

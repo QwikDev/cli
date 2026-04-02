@@ -21,9 +21,7 @@ class TestProgram extends Program<{ name?: string }, { name: string }> {
     return { name: definition.name ?? "world" };
   }
 
-  protected async interact(definition: {
-    name?: string;
-  }): Promise<{ name: string }> {
+  protected async interact(definition: { name?: string }): Promise<{ name: string }> {
     this.callOrder.push("interact");
     // Directly return result without calling validate() to keep call order clean
     return { name: definition.name ?? "world" };
@@ -41,19 +39,12 @@ class TestProgram extends Program<{ name?: string }, { name: string }> {
 }
 
 test.group("Program - lifecycle ordering (non-interactive)", () => {
-  test("run() calls configure -> parse -> validate -> execute in order", async ({
-    assert,
-  }) => {
+  test("run() calls configure -> parse -> validate -> execute in order", async ({ assert }) => {
     const program = new TestProgram();
     program.setInteractive(false);
     const code = await program.run(["node", "qwik", "test"]);
     assert.strictEqual(code, 0);
-    assert.deepEqual(program.callOrder, [
-      "configure",
-      "parse",
-      "validate",
-      `execute:world`,
-    ]);
+    assert.deepEqual(program.callOrder, ["configure", "parse", "validate", `execute:world`]);
   });
 
   test("run() calls configure -> parse -> interact -> execute when interactive", async ({
@@ -63,12 +54,7 @@ test.group("Program - lifecycle ordering (non-interactive)", () => {
     program.setInteractive(true);
     const code = await program.run(["node", "qwik", "test"]);
     assert.strictEqual(code, 0);
-    assert.deepEqual(program.callOrder, [
-      "configure",
-      "parse",
-      "interact",
-      `execute:world`,
-    ]);
+    assert.deepEqual(program.callOrder, ["configure", "parse", "interact", `execute:world`]);
   });
 });
 

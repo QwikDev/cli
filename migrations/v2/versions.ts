@@ -5,22 +5,13 @@ import { execSync } from "node:child_process";
  * The @qwik.dev/* packages whose versions get updated to the latest v2 dist-tag
  * during migration.
  */
-export const PACKAGE_NAMES: string[] = [
-  "@qwik.dev/core",
-  "@qwik.dev/router",
-  "@qwik.dev/react",
-];
+export const PACKAGE_NAMES: string[] = ["@qwik.dev/core", "@qwik.dev/router", "@qwik.dev/react"];
 
 /**
  * Priority order for selecting which dist-tag version to use.
  * Tags with lower index have higher priority.
  */
-export const VERSION_TAG_PRIORITY: string[] = [
-  "latest",
-  "next",
-  "beta",
-  "alpha",
-];
+export const VERSION_TAG_PRIORITY: string[] = ["latest", "next", "beta", "alpha"];
 
 /**
  * Query npm dist-tags for the given package and return the highest-priority

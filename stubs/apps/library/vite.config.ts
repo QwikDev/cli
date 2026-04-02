@@ -17,8 +17,7 @@ export default defineConfig(() => {
         entry: "./src/index",
         formats: ["es", "cjs"] as const,
         // This adds .qwik so all files are processed by the optimizer
-        fileName: (format, entryName) =>
-          `${entryName}.qwik.${format === "es" ? "mjs" : "cjs"}`,
+        fileName: (format, entryName) => `${entryName}.qwik.${format === "es" ? "mjs" : "cjs"}`,
       },
       rollupOptions: {
         output: {
@@ -26,11 +25,7 @@ export default defineConfig(() => {
           preserveModulesRoot: "src",
         },
         // externalize deps that shouldn't be bundled into the library
-        external: [
-          /^node:.*/,
-          ...excludeAll(dependencies),
-          ...excludeAll(peerDependencies),
-        ],
+        external: [/^node:.*/, ...excludeAll(dependencies), ...excludeAll(peerDependencies)],
       },
     },
     plugins: [qwikVite(), qwikRouter(), tsconfigPaths({ root: "." })],

@@ -22,16 +22,12 @@ export interface RunCliOptions {
 }
 
 export function runCli(args: string[], cwd?: string, options?: RunCliOptions): CliResult {
-  const result = spawnSync(
-    "node",
-    ["--import", TSX_ESM, BIN, ...args],
-    {
-      encoding: "utf-8",
-      cwd: cwd ?? ROOT,
-      env: { ...process.env, FORCE_COLOR: "0", NO_COLOR: "1" },
-      ...(options?.input !== undefined ? { input: options.input } : {}),
-    },
-  );
+  const result = spawnSync("node", ["--import", TSX_ESM, BIN, ...args], {
+    encoding: "utf-8",
+    cwd: cwd ?? ROOT,
+    env: { ...process.env, FORCE_COLOR: "0", NO_COLOR: "1" },
+    ...(options?.input !== undefined ? { input: options.input } : {}),
+  });
   return {
     status: result.status ?? -1,
     stdout: result.stdout ?? "",
@@ -40,15 +36,11 @@ export function runCli(args: string[], cwd?: string, options?: RunCliOptions): C
 }
 
 export function runCreateQwik(args: string[], cwd?: string): CliResult {
-  const result = spawnSync(
-    "node",
-    ["--import", TSX_ESM, CREATE_QWIK_BIN, ...args],
-    {
-      encoding: "utf-8",
-      cwd: cwd ?? ROOT,
-      env: { ...process.env, FORCE_COLOR: "0", NO_COLOR: "1" },
-    },
-  );
+  const result = spawnSync("node", ["--import", TSX_ESM, CREATE_QWIK_BIN, ...args], {
+    encoding: "utf-8",
+    cwd: cwd ?? ROOT,
+    env: { ...process.env, FORCE_COLOR: "0", NO_COLOR: "1" },
+  });
   return {
     status: result.status ?? -1,
     stdout: result.stdout ?? "",

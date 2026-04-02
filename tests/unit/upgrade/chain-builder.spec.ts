@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  buildMigrationChain,
-  type MigrationStep,
-} from "../../../src/upgrade/chain-builder.js";
+import { buildMigrationChain, type MigrationStep } from "../../../src/upgrade/chain-builder.js";
 
 const mockRegistry: MigrationStep[] = [
   { version: "2.0.0", label: "v2", run: async () => {} },

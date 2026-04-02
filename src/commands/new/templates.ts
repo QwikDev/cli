@@ -1,10 +1,4 @@
-import {
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRegExp, exactly } from "magic-regexp";
@@ -34,14 +28,7 @@ export interface Template {
  */
 export function loadTemplates(): Template[] {
   const __filename = fileURLToPath(import.meta.url);
-  const templatesDir = join(
-    dirname(__filename),
-    "..",
-    "..",
-    "..",
-    "stubs",
-    "templates",
-  );
+  const templatesDir = join(dirname(__filename), "..", "..", "..", "stubs", "templates");
 
   if (!existsSync(templatesDir)) {
     return [];
@@ -101,9 +88,7 @@ export function writeTemplateFile(
   mkdirSync(outDir, { recursive: true });
 
   // Compute output filename: replace [slug] with slug, strip .template extension
-  const outFilename = templateFile.filename
-    .replace(SLUG_TOKEN, slug)
-    .replace(TEMPLATE_EXT, "");
+  const outFilename = templateFile.filename.replace(SLUG_TOKEN, slug).replace(TEMPLATE_EXT, "");
 
   const fileOutput = join(outDir, outFilename);
 
@@ -113,9 +98,7 @@ export function writeTemplateFile(
   }
 
   // Replace [slug] and [name] tokens in content
-  const content = templateFile.content
-    .replace(SLUG_TOKEN, slug)
-    .replace(NAME_TOKEN, name);
+  const content = templateFile.content.replace(SLUG_TOKEN, slug).replace(NAME_TOKEN, name);
 
   writeFileSync(fileOutput, content, "utf-8");
 }
@@ -125,11 +108,7 @@ export function writeTemplateFile(
  * - component: flat path (src/components), no nameArg subdirectory
  * - route/markdown/mdx: src/routes/<nameArg>
  */
-export function getOutDir(
-  rootDir: string,
-  typeArg: TemplateType,
-  nameArg: string,
-): string {
+export function getOutDir(rootDir: string, typeArg: TemplateType, nameArg: string): string {
   if (typeArg === "component") {
     // NEW-02: flat, no subdirectory
     return join(rootDir, "src", "components");

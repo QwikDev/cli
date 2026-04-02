@@ -1,10 +1,5 @@
 import { type DocumentHead, useLocation } from "@qwik.dev/router";
-import {
-  component$,
-  useStore,
-  useStylesScoped$,
-  useVisibleTask$,
-} from "@qwik.dev/core";
+import { component$, useStore, useStylesScoped$, useVisibleTask$ } from "@qwik.dev/core";
 import styles from "./flower.css?inline";
 
 export default component$(() => {

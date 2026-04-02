@@ -7,10 +7,7 @@
  * - https://qwik.dev/docs/deployments/node/
  *
  */
-import {
-  createQwikRouter,
-  type PlatformNode,
-} from "@qwik.dev/router/middleware/node";
+import { createQwikRouter, type PlatformNode } from "@qwik.dev/router/middleware/node";
 import "dotenv/config";
 import express from "express";
 import { join } from "node:path";
@@ -52,10 +49,7 @@ const app = express();
 // Static asset handlers
 // https://expressjs.com/en/starter/static-files.html
 app.use(`/build`, express.static(buildDir, { immutable: true, maxAge: "1y" }));
-app.use(
-  `/assets`,
-  express.static(assetsDir, { immutable: true, maxAge: "1y" }),
-);
+app.use(`/assets`, express.static(assetsDir, { immutable: true, maxAge: "1y" }));
 app.use(express.static(distDir, { redirect: false }));
 
 // Use Qwik Router's page and endpoint request handler

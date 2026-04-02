@@ -1,11 +1,4 @@
-import {
-  type DocumentHead,
-  Form,
-  routeAction$,
-  routeLoader$,
-  z,
-  zod$,
-} from "@qwik.dev/router";
+import { type DocumentHead, Form, routeAction$, routeLoader$, z, zod$ } from "@qwik.dev/router";
 import { component$ } from "@qwik.dev/core";
 import styles from "./todolist.module.css";
 
@@ -65,9 +58,7 @@ export default component$(() => {
           </button>
         </Form>
 
-        <p class={styles.hint}>
-          PS: This little app works even when JavaScript is disabled.
-        </p>
+        <p class={styles.hint}>PS: This little app works even when JavaScript is disabled.</p>
       </div>
     </>
   );

@@ -7,10 +7,7 @@
  * - https://qwik.dev/docs/deployments/gcp-cloud-run/
  *
  */
-import {
-  createQwikRouter,
-  type PlatformNode,
-} from "@qwik.dev/router/middleware/node";
+import { createQwikRouter, type PlatformNode } from "@qwik.dev/router/middleware/node";
 import { createServer } from "node:http";
 import render from "./entry.ssr";
 

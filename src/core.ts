@@ -64,10 +64,7 @@ export abstract class Program<T, U> {
     let instance = yargs(hideBin(argv));
 
     if (this.#commandName) {
-      instance = instance.command(
-        this.#commandName,
-        this.#commandDescription,
-      ) as typeof instance;
+      instance = instance.command(this.#commandName, this.#commandDescription) as typeof instance;
     }
 
     for (const [name, config] of Object.entries(this.#options)) {
@@ -159,10 +156,7 @@ export abstract class Program<T, U> {
     return scanString(message, placeholder);
   }
 
-  protected scanChoice<V>(
-    message: string,
-    options: ClackOption<V>[],
-  ): Promise<V> {
+  protected scanChoice<V>(message: string, options: ClackOption<V>[]): Promise<V> {
     return scanChoice(message, options);
   }
 }

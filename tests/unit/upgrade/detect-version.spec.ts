@@ -1,9 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import {
-  mkdtempSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { detectInstalledVersion } from "../../../src/upgrade/detect-version.js";
@@ -64,11 +60,7 @@ describe("detectInstalledVersion", () => {
   });
 
   it("returns null when no Qwik package found", () => {
-    writeFileSync(
-      join(tmpDir, "package.json"),
-      JSON.stringify({ dependencies: {} }),
-      "utf-8",
-    );
+    writeFileSync(join(tmpDir, "package.json"), JSON.stringify({ dependencies: {} }), "utf-8");
     expect(detectInstalledVersion(tmpDir)).toBeNull();
   });
 

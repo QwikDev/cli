@@ -1,12 +1,4 @@
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-  type MockInstance,
-} from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from "vitest";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
@@ -36,9 +28,7 @@ vi.mock("../../../migrations/v2/versions.js", () => ({
 import { runUpgrade } from "../../../src/upgrade/orchestrator.js";
 import { detectInstalledVersion } from "../../../src/upgrade/detect-version.js";
 import { runV2Migration } from "../../../migrations/v2/index.js";
-import {
-  updateDependencies,
-} from "../../../migrations/v2/update-dependencies.js";
+import { updateDependencies } from "../../../migrations/v2/update-dependencies.js";
 import { getLatestV2Version } from "../../../migrations/v2/versions.js";
 
 describe("runUpgrade", () => {
@@ -135,6 +125,7 @@ describe("runUpgrade", () => {
     const v2Run = vi.fn().mockImplementation(async () => {
       callOrder.push("v2");
     });
+    // eslint-disable-next-line no-unused-vars
     const v3Run = vi.fn().mockImplementation(async () => {
       callOrder.push("v3");
     });
@@ -165,8 +156,7 @@ describe("runUpgrade", () => {
     const calls = consoleSpy.mock.calls.flat();
     const hasWarning = calls.some(
       (msg) =>
-        typeof msg === "string" &&
-        msg.includes("could not resolve latest version from registry"),
+        typeof msg === "string" && msg.includes("could not resolve latest version from registry"),
     );
     expect(hasWarning).toBe(true);
     // Migration still runs (uses "2.0.0" fallback) — v1 project needs v2 migration

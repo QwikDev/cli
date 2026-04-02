@@ -25,10 +25,7 @@ export class MigrateProgram extends Program<MigrateArgs, MigrateInput> {
     // Always ask for confirmation — @clack/prompts handles both TTY and piped stdin.
     // In tests: pipe "y\n" to confirm, pipe "\x03" (Ctrl+C) to cancel.
     // On cancel, scanBoolean internally calls bye() which exits 0 (UPGR-09).
-    const confirmed = await this.scanBoolean(
-      "Do you want to proceed with the migration?",
-      true,
-    );
+    const confirmed = await this.scanBoolean("Do you want to proceed with the migration?", true);
     if (!confirmed) {
       bye(); // exits 0 — cancel is not an error (UPGR-09)
     }

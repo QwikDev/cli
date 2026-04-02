@@ -24,12 +24,22 @@ test.group("CRE-01 -- create-qwik empty", (group) => {
     // Will FAIL: bin/create-qwik.ts does not exist until Phase 6.
     // The spawnSync call returns non-zero status when module cannot be found.
     assert.strictEqual(result.status, 0);
-    assert.isTrue(existsSync(join(outDir, "package.json")), "scaffolded project must have package.json");
+    assert.isTrue(
+      existsSync(join(outDir, "package.json")),
+      "scaffolded project must have package.json",
+    );
     const pkgRaw = readFileSync(join(outDir, "package.json"), "utf-8");
     const pkg = JSON.parse(pkgRaw) as Record<string, unknown>;
     const deps = (pkg.dependencies ?? {}) as Record<string, string>;
-    assert.property(deps, "@qwik.dev/core", "package.json dependencies must include @qwik.dev/core");
-    assert.isTrue(existsSync(join(outDir, "src", "routes")), "scaffolded project must have src/routes directory");
+    assert.property(
+      deps,
+      "@qwik.dev/core",
+      "package.json dependencies must include @qwik.dev/core",
+    );
+    assert.isTrue(
+      existsSync(join(outDir, "src", "routes")),
+      "scaffolded project must have src/routes directory",
+    );
   });
 });
 
@@ -50,12 +60,19 @@ test.group("CRE-02 -- create-qwik library", (group) => {
     const result = runCreateQwik(["library", outDir]);
     // Will FAIL: bin/create-qwik.ts does not exist until Phase 6.
     assert.strictEqual(result.status, 0);
-    assert.isTrue(existsSync(join(outDir, "package.json")), "scaffolded library must have package.json");
+    assert.isTrue(
+      existsSync(join(outDir, "package.json")),
+      "scaffolded library must have package.json",
+    );
     const pkgRaw = readFileSync(join(outDir, "package.json"), "utf-8");
     // Assert package.json is valid JSON (no merge artifacts)
     const pkg = JSON.parse(pkgRaw) as Record<string, unknown>;
     // Assert no base layer merge artifact key 'starterApp' (would indicate template merge bug)
-    assert.notProperty(pkg, "starterApp", "package.json must not contain merge artifact key 'starterApp'");
+    assert.notProperty(
+      pkg,
+      "starterApp",
+      "package.json must not contain merge artifact key 'starterApp'",
+    );
   });
 });
 
@@ -77,7 +94,10 @@ test.group("CRE-03 -- create-qwik playground", (group) => {
     // Will FAIL: bin/create-qwik.ts does not exist until Phase 6.
     // The spawnSync call returns non-zero status when module cannot be found.
     assert.strictEqual(result.status, 0);
-    assert.isTrue(existsSync(join(outDir, "package.json")), "scaffolded playground must have package.json");
+    assert.isTrue(
+      existsSync(join(outDir, "package.json")),
+      "scaffolded playground must have package.json",
+    );
     // Per PARITY-TEST-PLAN.md CRE-03: Counter component at src/components/starter/counter/counter.tsx
     assert.isTrue(
       existsSync(join(outDir, "src", "components", "starter", "counter", "counter.tsx")),

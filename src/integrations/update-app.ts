@@ -29,12 +29,8 @@ export async function commitIntegration(
  * Check if integration has any dependencies or devDependencies.
  */
 export function integrationHasDeps(integration: IntegrationData): boolean {
-  const deps = integration.pkgJson.dependencies as
-    | Record<string, unknown>
-    | undefined;
-  const devDeps = integration.pkgJson.devDependencies as
-    | Record<string, unknown>
-    | undefined;
+  const deps = integration.pkgJson.dependencies as Record<string, unknown> | undefined;
+  const devDeps = integration.pkgJson.devDependencies as Record<string, unknown> | undefined;
 
   const hasDeps = deps !== undefined && Object.keys(deps).length > 0;
   const hasDevDeps = devDeps !== undefined && Object.keys(devDeps).length > 0;
@@ -53,10 +49,7 @@ export async function installDeps(cwd: string): Promise<void> {
  * Run a postInstall command in the given working directory.
  * Uses npx for npm, or the package manager name directly for pnpm/yarn/bun.
  */
-export async function runPostInstall(
-  postInstallCmd: string,
-  cwd: string,
-): Promise<void> {
+export async function runPostInstall(postInstallCmd: string, cwd: string): Promise<void> {
   const parts = postInstallCmd.split(" ");
   const [command, ...args] = parts;
   if (!command) return;

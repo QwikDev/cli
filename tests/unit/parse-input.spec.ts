@@ -1,8 +1,5 @@
 import { test } from "@japa/runner";
-import {
-  inferTypeAndName,
-  parseInputName,
-} from "../../src/commands/new/parse-input.js";
+import { inferTypeAndName, parseInputName } from "../../src/commands/new/parse-input.js";
 
 test.group("parseInputName", () => {
   test("splits on hyphen", ({ assert }) => {
@@ -73,13 +70,7 @@ test.group("inferTypeAndName", () => {
   });
 
   test("flags are filtered out", ({ assert }) => {
-    const result = inferTypeAndName([
-      "node",
-      "qwik",
-      "new",
-      "--qwik",
-      "/dashboard",
-    ]);
+    const result = inferTypeAndName(["node", "qwik", "new", "--qwik", "/dashboard"]);
     assert.deepEqual(result, {
       typeArg: "route",
       nameArg: "/dashboard",

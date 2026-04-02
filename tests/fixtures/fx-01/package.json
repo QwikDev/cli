@@ -1,15 +1,15 @@
 {
   "name": "fx-01-minimal-qwik-v2-app",
   "version": "0.0.1",
-  "dependencies": {
-    "@qwik.dev/core": "^2.0.0",
-    "@qwik.dev/router": "^2.0.0"
-  },
   "scripts": {
     "build.client": "echo build-client-ok",
     "build.server": "echo build-server-ok",
     "build.preview": "echo build-preview-ok",
     "build.types": "echo build-types-ok",
     "lint": "echo lint-ok"
+  },
+  "dependencies": {
+    "@qwik.dev/core": "^2.0.0",
+    "@qwik.dev/router": "^2.0.0"
   }
 }

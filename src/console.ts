@@ -58,10 +58,7 @@ export function printHeader(): void {
  */
 
 /** Wraps @clack/prompts confirm. Calls bye() if user cancels. */
-export async function scanBoolean(
-  message: string,
-  initial?: boolean,
-): Promise<boolean> {
+export async function scanBoolean(message: string, initial?: boolean): Promise<boolean> {
   const result = await confirm({
     message,
     ...(initial !== undefined && { initialValue: initial }),
@@ -73,10 +70,7 @@ export async function scanBoolean(
 }
 
 /** Wraps @clack/prompts text. Calls bye() if user cancels. */
-export async function scanString(
-  message: string,
-  placeholder?: string,
-): Promise<string> {
+export async function scanString(message: string, placeholder?: string): Promise<string> {
   const result = await text({
     message,
     ...(placeholder !== undefined && { placeholder }),
@@ -88,10 +82,7 @@ export async function scanString(
 }
 
 /** Wraps @clack/prompts select. Calls bye() if user cancels. */
-export async function scanChoice<T>(
-  message: string,
-  options: Option<T>[],
-): Promise<T> {
+export async function scanChoice<T>(message: string, options: Option<T>[]): Promise<T> {
   const result = await select({ message, options });
   if (isCancel(result)) {
     bye();

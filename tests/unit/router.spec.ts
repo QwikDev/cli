@@ -24,39 +24,29 @@ test.group("Router - COMMAND_NAMES", () => {
 });
 
 test.group("Router - COMMANDS dynamic imports", () => {
-  test("add command resolves to a module with a default constructor", async ({
-    assert,
-  }) => {
+  test("add command resolves to a module with a default constructor", async ({ assert }) => {
     const mod = await import("../../src/commands/add/index.js");
     assert.isFunction(mod.default);
     const instance = new mod.default();
     assert.isFunction(instance.run);
   });
 
-  test("build command resolves to a module with a default constructor", async ({
-    assert,
-  }) => {
+  test("build command resolves to a module with a default constructor", async ({ assert }) => {
     const mod = await import("../../src/commands/build/index.js");
     assert.isFunction(mod.default);
   });
 
-  test("new command resolves to a module with a default constructor", async ({
-    assert,
-  }) => {
+  test("new command resolves to a module with a default constructor", async ({ assert }) => {
     const mod = await import("../../src/commands/new/index.js");
     assert.isFunction(mod.default);
   });
 
-  test("joke command resolves to a module with a default constructor", async ({
-    assert,
-  }) => {
+  test("joke command resolves to a module with a default constructor", async ({ assert }) => {
     const mod = await import("../../src/commands/joke/index.js");
     assert.isFunction(mod.default);
   });
 
-  test("migrate-v2 command resolves to a module with a default constructor", async ({
-    assert,
-  }) => {
+  test("migrate-v2 command resolves to a module with a default constructor", async ({ assert }) => {
     const mod = await import("../../src/commands/migrate/index.js");
     assert.isFunction(mod.default);
   });
@@ -68,16 +58,12 @@ test.group("Router - COMMANDS dynamic imports", () => {
     assert.isFunction(mod.default);
   });
 
-  test("help command resolves to a module with a default constructor", async ({
-    assert,
-  }) => {
+  test("help command resolves to a module with a default constructor", async ({ assert }) => {
     const mod = await import("../../src/commands/help/index.js");
     assert.isFunction(mod.default);
   });
 
-  test("version command resolves to a module with a default constructor", async ({
-    assert,
-  }) => {
+  test("version command resolves to a module with a default constructor", async ({ assert }) => {
     const mod = await import("../../src/commands/version/index.js");
     assert.isFunction(mod.default);
   });
@@ -85,9 +71,7 @@ test.group("Router - COMMANDS dynamic imports", () => {
 
 test.group("Router - command stubs return 0", () => {
   test("help command stub executes and returns 0", async ({ assert }) => {
-    const { default: HelpProgram } = await import(
-      "../../src/commands/help/index.js"
-    );
+    const { default: HelpProgram } = await import("../../src/commands/help/index.js");
     const program = new HelpProgram();
     program.setInteractive(false);
     const code = await program.run(["node", "qwik", "help"]);
@@ -95,9 +79,7 @@ test.group("Router - command stubs return 0", () => {
   });
 
   test("add command stub executes and returns 0", async ({ assert }) => {
-    const { default: AddProgram } = await import(
-      "../../src/commands/add/index.js"
-    );
+    const { default: AddProgram } = await import("../../src/commands/add/index.js");
     const program = new AddProgram();
     program.setInteractive(false);
     const code = await program.run([
