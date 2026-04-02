@@ -81,7 +81,12 @@ Plans:
   4. `qwik new /dashboard/[id]` creates `src/routes/dashboard/[id]/index.tsx` with `[slug]` and `[name]` tokens substituted; `qwik new header` creates `src/components/Header/Header.tsx`
   5. Attempting to create a file that already exists throws the exact duplicate guard error string documented in NEW-04
   6. Parity tests BUILD-01/02/03/04 and NEW-01/02/03/04/05 pass
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Build command: sequential+parallel script orchestration with lifecycle hooks
+- [ ] 04-02-PLAN.md — Template files, parseInputName helpers, and template loading system
+- [ ] 04-03-PLAN.md — New command: inference, template selection, and file generation
 
 ### Phase 5: Add and Upgrade Commands
 **Goal**: `qwik add` installs integrations through the full consent-and-install pipeline; `qwik upgrade` performs the 5-step migration in exact order with oxc-parser AST codemods and the substring-safe replacement sequence
@@ -119,6 +124,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Scaffold and Core Architecture | 3/3 | Complete   | 2026-04-02 |
 | 2. Test Harness | 4/4 | Complete   | 2026-04-02 |
 | 3. Shared Foundations and Simple Commands | 2/2 | Complete   | 2026-04-02 |
-| 4. Build and New Commands | 0/TBD | Not started | - |
+| 4. Build and New Commands | 0/3 | Not started | - |
 | 5. Add and Upgrade Commands | 0/TBD | Not started | - |
 | 6. Create-Qwik, Check-Client, and Packaging | 0/TBD | Not started | - |

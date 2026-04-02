@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-04-02T05:49:02.415Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-04-02T06:10:17.914Z"
 last_activity: "2026-04-01 — Phase 2 complete: 25 golden-path integration tests + 39 unit tests in genuine red state"
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 12
+  completed_plans: 10
   percent: 33
 ---
 
@@ -59,6 +59,7 @@ Progress: [████████░░] 33% (Phases 1-2 of 6 complete)
 | Phase 02-test-harness P04 | 8 | 1 task | 2 files |
 | Phase 03-shared-foundations-and-simple-commands P01 | 2 | 2 tasks | 3 files |
 | Phase 03-shared-foundations-and-simple-commands P02 | 10 | 2 tasks | 3 files |
+| Phase 04-build-and-new-commands P01 | 12 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,8 @@ Recent decisions affecting current work:
 - [Phase 03-shared-foundations-and-simple-commands]: QWIK_VERSION ambient declaration must be in a separate globals.d.ts — types.ts has exports making it a module, so declare const there was module-scoped not globally visible
 - [Phase 03-shared-foundations-and-simple-commands]: Joke data lives in src/commands/joke/jokes.ts as static array — no cross-package import satisfies SIMP-04
 - [Phase 03-shared-foundations-and-simple-commands]: Plain console.log for joke setup and punchline — avoids clack box-drawing characters under NO_COLOR
+- [Phase 04-build-and-new-commands]: process.exitCode=1 used in parallel phase so sibling scripts are not aborted — process.exit(1) would kill siblings
+- [Phase 04-build-and-new-commands]: execute() returns typeof exitCode === number ? exitCode : 0 — router calls process.exit(code), so we must propagate exitCode via return value
 
 ### Pending Todos
 
@@ -102,6 +105,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T05:46:06.060Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-04-02T06:10:17.913Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None

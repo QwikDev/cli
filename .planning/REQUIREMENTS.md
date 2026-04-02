@@ -36,13 +36,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Build Command
 
-- [ ] **BUILD-01**: `qwik build` runs `build.client` sequentially first, then `build.server`/`build.types`/`lint` in parallel
-- [ ] **BUILD-02**: `qwik build preview` triggers `build.preview` instead of `build.server`
-- [ ] **BUILD-03**: `--mode <value>` forwarded to `build.client`, `build.lib`, `build.preview`, `build.server`
-- [ ] **BUILD-04**: `prebuild.*` scripts discovered and run sequentially BEFORE parallel build
-- [ ] **BUILD-05**: `postbuild.*` scripts discovered and run sequentially AFTER parallel build
-- [ ] **BUILD-06**: `process.exitCode = 1` on any script failure (non-throw, allows parallel steps to finish)
-- [ ] **BUILD-07**: `ssg` script runs after `build.static` in preview mode when both present
+- [x] **BUILD-01**: `qwik build` runs `build.client` sequentially first, then `build.server`/`build.types`/`lint` in parallel
+- [x] **BUILD-02**: `qwik build preview` triggers `build.preview` instead of `build.server`
+- [x] **BUILD-03**: `--mode <value>` forwarded to `build.client`, `build.lib`, `build.preview`, `build.server`
+- [x] **BUILD-04**: `prebuild.*` scripts discovered and run sequentially BEFORE parallel build
+- [x] **BUILD-05**: `postbuild.*` scripts discovered and run sequentially AFTER parallel build
+- [x] **BUILD-06**: `process.exitCode = 1` on any script failure (non-throw, allows parallel steps to finish)
+- [x] **BUILD-07**: `ssg` script runs after `build.static` in preview mode when both present
 
 ### New Command
 
@@ -165,13 +165,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TEST-02 | Phase 2 | Complete |
 | TEST-03 | Phase 2 | Complete |
 | TEST-04 | Phase 2 | Complete |
-| BUILD-01 | Phase 4 | Pending |
-| BUILD-02 | Phase 4 | Pending |
-| BUILD-03 | Phase 4 | Pending |
-| BUILD-04 | Phase 4 | Pending |
-| BUILD-05 | Phase 4 | Pending |
-| BUILD-06 | Phase 4 | Pending |
-| BUILD-07 | Phase 4 | Pending |
+| BUILD-01 | Phase 4 | Complete |
+| BUILD-02 | Phase 4 | Complete |
+| BUILD-03 | Phase 4 | Complete |
+| BUILD-04 | Phase 4 | Complete |
+| BUILD-05 | Phase 4 | Complete |
+| BUILD-06 | Phase 4 | Complete |
+| BUILD-07 | Phase 4 | Complete |
 | NEW-01 | Phase 4 | Pending |
 | NEW-02 | Phase 4 | Pending |
 | NEW-03 | Phase 4 | Pending |
