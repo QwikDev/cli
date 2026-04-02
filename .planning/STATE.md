@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Phases
 status: planning
-stopped_at: Completed 08-content-population 08-02-PLAN.md
-last_updated: "2026-04-02T17:07:24.615Z"
+stopped_at: Completed 09-migration-architecture 09-01-PLAN.md
+last_updated: "2026-04-02T18:00:56.011Z"
 last_activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 progress:
   total_phases: 11
   completed_phases: 7
-  total_plans: 20
-  completed_plans: 20
+  total_plans: 22
+  completed_plans: 21
 ---
 
 # Project State
@@ -74,6 +74,7 @@ Last activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 | Phase 07-type-baseline-regex-cleanup P02 | 18 | 2 tasks | 7 files |
 | Phase 08-content-population P01 | 6 | 2 tasks | 268 files |
 | Phase 08-content-population P02 | 8 | 1 tasks | 1 files |
+| Phase 09-migration-architecture P01 | 25 | 2 tasks | 19 files |
 
 ## Accumulated Context
 
@@ -130,6 +131,10 @@ Recent decisions affecting current work:
 - [Phase 08-content-population]: source from build/v2 branch (not main) — csr feature exists only on build/v2
 - [Phase 08-content-population]: cloudflare-pages overwritten with upstream for consistency even though it already existed
 - [Phase 08-content-population]: jokes.json lives in packages/create-qwik/src/helpers/ on main branch — build/v2 URL returned 404; adapters/ was untracked so rm -rf sufficient without git rm
+- [Phase 09-migration-architecture]: buildMigrationChain filters by both fromVersion > step.version AND step.version <= toVersion to prevent out-of-range migration steps
+- [Phase 09-migration-architecture]: updateDependencies called unconditionally when deps are behind — not gated by migration chain execution (MIGR-02)
+- [Phase 09-migration-architecture]: migrations/ added to tsconfig.json include array — necessary for tsc to resolve types across relative import boundary
+- [Phase 09-migration-architecture]: vitest.config.ts scoped to tests/unit/upgrade/ only — avoids Japa/Vitest collision on existing spec files
 
 ### Pending Todos
 
@@ -144,6 +149,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-02T17:07:24.613Z
-Stopped at: Completed 08-content-population 08-02-PLAN.md
+Last session: 2026-04-02T18:00:56.009Z
+Stopped at: Completed 09-migration-architecture 09-01-PLAN.md
 Resume file: None

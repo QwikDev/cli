@@ -128,11 +128,11 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 
 ### Migration Architecture
 
-- [ ] **MIGR-01**: Migration code lives in `migrations/v2/` scoped folder (not flat `src/migrate/`)
-- [ ] **MIGR-02**: `upgrade` command checks and installs latest Qwik dependencies
-- [ ] **MIGR-03**: `upgrade` command detects current Qwik version from package.json and chains all necessary migrations (v1→v2→v3→vN) sequentially
-- [ ] **MIGR-04**: Each version migration is self-contained in its own `migrations/vN/` folder
-- [ ] **MIGR-05**: Running upgrade on an already-current project is a clean no-op
+- [x] **MIGR-01**: Migration code lives in `migrations/v2/` scoped folder (not flat `src/migrate/`)
+- [x] **MIGR-02**: `upgrade` command checks and installs latest Qwik dependencies
+- [x] **MIGR-03**: `upgrade` command detects current Qwik version from package.json and chains all necessary migrations (v1→v2→v3→vN) sequentially
+- [x] **MIGR-04**: Each version migration is self-contained in its own `migrations/vN/` folder
+- [x] **MIGR-05**: Running upgrade on an already-current project is a clean no-op
 
 ### create-qwik
 
@@ -272,11 +272,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRT-03 | Phase 8 | Complete |
 | STRT-04 | Phase 8 | Complete |
 | STRT-05 | Phase 8 | Complete |
-| MIGR-01 | Phase 9 | Pending |
-| MIGR-02 | Phase 9 | Pending |
-| MIGR-03 | Phase 9 | Pending |
-| MIGR-04 | Phase 9 | Pending |
-| MIGR-05 | Phase 9 | Pending |
+| MIGR-01 | Phase 9 | Complete |
+| MIGR-02 | Phase 9 | Complete |
+| MIGR-03 | Phase 9 | Complete |
+| MIGR-04 | Phase 9 | Complete |
+| MIGR-05 | Phase 9 | Complete |
 | CRQW-09 | Phase 11 | Pending |
 | CRQW-10 | Phase 11 | Pending |
 | CRQW-11 | Phase 11 | Pending |
