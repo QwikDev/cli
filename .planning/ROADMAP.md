@@ -26,7 +26,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 ### v1.1 Phases
 
 - [x] **Phase 7: Type Baseline** - Zero TypeScript type errors established before any structural change so regressions are detectable (completed 2026-04-02)
-- [ ] **Phase 8: Content Population** - All starters, adapters, features, and jokes sourced from the Qwik repo; top-level adapters/ artifact removed
+- [x] **Phase 8: Content Population** - All starters, adapters, features, and jokes sourced from the Qwik repo; top-level adapters/ artifact removed (completed 2026-04-02)
 - [ ] **Phase 9: Migration Architecture** - Migrations folder restructured to migrations/v2/ with version-chaining support and upgrade command enhancements
 - [ ] **Phase 10: Tooling Switch** - Biome replaced by oxfmt + oxlint via vite-plus; vitest configured; isolated formatting commit
 - [ ] **Phase 11: create-qwik Implementation** - Full interactive and non-interactive create-qwik binary with background install, git init, and complete test coverage
@@ -162,7 +162,7 @@ Plans:
   4. `qwik joke` outputs a joke drawn from the 30-entry pool sourced from the Qwik repo (not the original 10-entry hardcoded list)
   5. The top-level `adapters/` directory no longer exists in the repository
   6. `npm pack --dry-run` lists all starters content files in the tarball output
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 08-01-PLAN.md — Populate stubs/ with all 14 adapters, 22 features, and 4 app starters from upstream Qwik monorepo
@@ -220,7 +220,7 @@ v1.1: Phases execute in dependency order: 7 -> 8 -> 9 -> 10 -> 11 (Phase 8 and 9
 | 5. Add and Upgrade Commands | 4/4 | Complete | 2026-04-02 |
 | 6. Create-Qwik, Check-Client, and Packaging | 0/TBD | Not started | - |
 | 7. Type Baseline | 2/2 | Complete   | 2026-04-02 |
-| 8. Content Population | 1/2 | In Progress|  |
+| 8. Content Population | 2/2 | Complete   | 2026-04-02 |
 | 9. Migration Architecture | 0/TBD | Not started | - |
 | 10. Tooling Switch | 0/TBD | Not started | - |
 | 11. create-qwik Implementation | 0/TBD | Not started | - |

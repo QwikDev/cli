@@ -123,7 +123,7 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 - [x] **STRT-01**: User can run `qwik add` and see all 14 deployment adapters as options
 - [x] **STRT-02**: User can run `qwik add` and see all 22 feature integrations as options
 - [x] **STRT-03**: Stubs/apps contains all 4 app starters (base, empty, playground, library) with correct `__qwik__` metadata
-- [ ] **STRT-04**: Top-level `adapters/` directory is removed from the repository
+- [x] **STRT-04**: Top-level `adapters/` directory is removed from the repository
 - [x] **STRT-05**: `npm pack --dry-run` includes all starters content in the tarball
 
 ### Migration Architecture
@@ -148,7 +148,7 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 - [ ] **TOOL-01**: Project uses vite-plus as unified toolchain (oxfmt, oxlint, vitest, tsdown)
 - [ ] **TOOL-02**: Single `vite.config.ts` configures formatting, linting, and testing
 - [x] **TOOL-03**: `tsc --noEmit` passes with zero errors across all source files
-- [ ] **TOOL-04**: `qwik joke` draws from the real 30-joke pool from the Qwik repo
+- [x] **TOOL-04**: `qwik joke` draws from the real 30-joke pool from the Qwik repo
 - [ ] **TOOL-05**: `biome.json` is removed and no Biome dependency remains
 - [x] **TOOL-06**: All regex patterns replaced with magic-regexp for readability and type-safety
 
@@ -270,7 +270,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRT-01 | Phase 8 | Complete |
 | STRT-02 | Phase 8 | Complete |
 | STRT-03 | Phase 8 | Complete |
-| STRT-04 | Phase 8 | Pending |
+| STRT-04 | Phase 8 | Complete |
 | STRT-05 | Phase 8 | Complete |
 | MIGR-01 | Phase 9 | Pending |
 | MIGR-02 | Phase 9 | Pending |
@@ -287,7 +287,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TOOL-02 | Phase 10 | Pending |
 | TOOL-03 | Phase 7 | Complete |
 | TOOL-06 | Phase 7 | Complete |
-| TOOL-04 | Phase 8 | Pending |
+| TOOL-04 | Phase 8 | Complete |
 | TOOL-05 | Phase 10 | Pending |
 | VTST-01 | Phase 10 | Pending |
 | VTST-02 | Phase 9 | Pending |
