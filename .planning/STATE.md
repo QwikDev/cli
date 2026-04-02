@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-02)
 Phase: Phase 7 (Type Baseline) — ready to start
 Plan: —
 Status: Roadmap defined; ready for planning
-Last activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
+Last activity: 2026-04-02 - Completed quick task 2: Deep research on dependency cleanup
 
 **v1.1 Progress bar:** [----------] 0% (0/5 phases)
 
@@ -161,6 +161,12 @@ None.
 - Phase 11 (create-qwik): Runtime version injection approach for starter package.json dep versions needs a confirmed approach — two candidates documented in SUMMARY.md
 - Phase 10 (tooling): oxlint rule coverage gap vs Biome needs audit before switch — document any rules with no oxlint equivalent
 - Phase 6 (v1.0): create-qwik Runtime version injection approach for starters not confirmed in ESM context (EB-05) — needs validation during Phase 6 planning
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 2 | Deep research on dependency cleanup: magic-regexp removal, cross-spawn to native node, argument parsing consolidation | 2026-04-02 | e1c7d41 | [2-deep-research-on-dependency-cleanup-magi](./quick/2-deep-research-on-dependency-cleanup-magi/) |
 
 ## Session Continuity
 

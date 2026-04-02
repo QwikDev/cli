@@ -1,6 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import spawn from "cross-spawn";
+import { spawnSync } from "node:child_process";
 import { install } from "panam";
 import type { IntegrationData } from "../types.ts";
 import { getPackageManagerName } from "../utils/package-manager.ts";
@@ -57,5 +57,5 @@ export async function runPostInstall(postInstallCmd: string, cwd: string): Promi
   const pm = getPackageManagerName();
   const executor = pm === "npm" ? "npx" : pm;
 
-  spawn.sync(executor, [command, ...args], { cwd, stdio: "inherit" });
+  spawnSync(executor, [command, ...args], { cwd, stdio: "inherit" });
 }

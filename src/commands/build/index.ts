@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import crossSpawn from "cross-spawn";
+import { spawn, spawnSync } from "node:child_process";
 import { createRegExp, exactly, oneOrMore, char } from "magic-regexp";
 import { Program } from "../../core.ts";
 
@@ -17,7 +17,7 @@ function attachMode(script: string, mode: string | undefined): string {
 }
 
 function runSequential(scriptValue: string, cwd: string): void {
-  const result = crossSpawn.sync(scriptValue, [], {
+  const result = spawnSync(scriptValue, [], {
     cwd,
     stdio: "inherit",
     shell: true,
@@ -30,7 +30,7 @@ function runSequential(scriptValue: string, cwd: string): void {
 function runParallel(scripts: string[], cwd: string): Promise<void[]> {
   const promises = scripts.map((scriptValue) => {
     return new Promise<void>((resolve) => {
-      const child = crossSpawn(scriptValue, [], {
+      const child = spawn(scriptValue, [], {
         cwd,
         stdio: "inherit",
         shell: true,
