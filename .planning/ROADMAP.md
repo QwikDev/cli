@@ -178,7 +178,11 @@ Plans:
   3. `qwik upgrade` detects the current Qwik version from the project's package.json and runs only the migrations needed to reach the current release (v1 project chains through v2; an already-v2 project skips the v2 migration)
   4. Running `qwik upgrade` on a project already at the latest version produces no file changes and exits 0 with an "already up to date" message
   5. Vitest unit tests cover version detection, migration chain building, and sequential execution of the chaining orchestrator; all tests pass
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — Move migration code to migrations/v2/, create upgrade orchestration layer (detect-version, chain-builder, orchestrator), install Vitest
+- [ ] 09-02-PLAN.md — Wire MigrateProgram to new orchestrator, verify full test suite (Vitest + Japa)
 
 ### Phase 10: Tooling Switch
 **Goal**: Biome is fully replaced by oxfmt + oxlint via vite-plus; a single `vite.config.ts` drives formatting, linting, and testing; the switch lands as an isolated commit with no logic changes mixed in; vitest is available for unit tests
@@ -221,6 +225,6 @@ v1.1: Phases execute in dependency order: 7 -> 8 -> 9 -> 10 -> 11 (Phase 8 and 9
 | 6. Create-Qwik, Check-Client, and Packaging | 0/TBD | Not started | - |
 | 7. Type Baseline | 2/2 | Complete   | 2026-04-02 |
 | 8. Content Population | 2/2 | Complete   | 2026-04-02 |
-| 9. Migration Architecture | 0/TBD | Not started | - |
+| 9. Migration Architecture | 0/2 | Not started | - |
 | 10. Tooling Switch | 0/TBD | Not started | - |
 | 11. create-qwik Implementation | 0/TBD | Not started | - |
