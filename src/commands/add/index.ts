@@ -35,7 +35,11 @@ export class AddProgram extends Program<AddArgs, AddInput> {
     const id = definition._[1] as string | undefined;
     const skipConfirmation = definition.skipConfirmation === "true";
     const projectDir = definition.projectDir;
-    return { id, skipConfirmation, projectDir };
+    return {
+      ...(id !== undefined && { id }),
+      skipConfirmation,
+      ...(projectDir !== undefined && { projectDir }),
+    };
   }
 
   protected async interact(definition: AddArgs): Promise<AddInput> {

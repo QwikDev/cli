@@ -7,6 +7,7 @@ import {
   select,
   spinner,
   text,
+  type Option,
 } from "@clack/prompts";
 import kleur from "kleur";
 
@@ -61,7 +62,10 @@ export async function scanBoolean(
   message: string,
   initial?: boolean,
 ): Promise<boolean> {
-  const result = await confirm({ message, initialValue: initial });
+  const result = await confirm({
+    message,
+    ...(initial !== undefined && { initialValue: initial }),
+  });
   if (isCancel(result)) {
     bye();
   }
@@ -73,7 +77,10 @@ export async function scanString(
   message: string,
   placeholder?: string,
 ): Promise<string> {
-  const result = await text({ message, placeholder });
+  const result = await text({
+    message,
+    ...(placeholder !== undefined && { placeholder }),
+  });
   if (isCancel(result)) {
     bye();
   }
@@ -83,7 +90,7 @@ export async function scanString(
 /** Wraps @clack/prompts select. Calls bye() if user cancels. */
 export async function scanChoice<T>(
   message: string,
-  options: { value: T; label: string; hint?: string }[],
+  options: Option<T>[],
 ): Promise<T> {
   const result = await select({ message, options });
   if (isCancel(result)) {

@@ -1,3 +1,4 @@
+import type { Option as ClackOption } from "@clack/prompts";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { scanBoolean, scanChoice, scanString } from "./console.js";
@@ -160,7 +161,7 @@ export abstract class Program<T, U> {
 
   protected scanChoice<V>(
     message: string,
-    options: { value: V; label: string; hint?: string }[],
+    options: ClackOption<V>[],
   ): Promise<V> {
     return scanChoice(message, options);
   }
