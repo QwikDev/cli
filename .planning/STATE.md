@@ -174,9 +174,10 @@ None.
 |---|-------------|------|--------|-----------|
 | 2 | Deep research on dependency cleanup: magic-regexp removal, cross-spawn to native node, argument parsing consolidation | 2026-04-02 | e1c7d41 | [2-deep-research-on-dependency-cleanup-magi](./quick/2-deep-research-on-dependency-cleanup-magi/) |
 | 3 | Remove cross-spawn, replace with native node:child_process | 2026-04-02 | e537aea | [3-remove-cross-spawn-replace-with-native-n](./quick/3-remove-cross-spawn-replace-with-native-n/) |
+| 5 | Upgrade TypeScript to v6, fix tsconfig for TS6 breaking changes | 2026-04-02 | 71f5541 | [5-upgrade-typescript-to-v6-and-fix-tsconfi](./quick/5-upgrade-typescript-to-v6-and-fix-tsconfi/) |
 
 ## Session Continuity
 
-Last session: 2026-04-02T22:34:18.429Z
-Stopped at: Completed 12-ci-setup-01-PLAN.md
+Last session: 2026-04-02T22:36:32.000Z
+Stopped at: Completed quick-5-01-PLAN.md
 Resume file: None
