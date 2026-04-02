@@ -1,6 +1,6 @@
 import { bye } from "../../console.js";
 import { Program } from "../../core.js";
-import { runV2Migration } from "../../../migrations/v2/run-migration.js";
+import { runUpgrade } from "../../upgrade/orchestrator.js";
 
 type MigrateArgs = { _: string[] };
 type MigrateInput = { confirmed: boolean };
@@ -33,7 +33,7 @@ export class MigrateProgram extends Program<MigrateArgs, MigrateInput> {
       bye(); // exits 0 — cancel is not an error (UPGR-09)
     }
     const rootDir = process.cwd();
-    await runV2Migration(rootDir);
+    await runUpgrade(rootDir);
     return 0;
   }
 }
