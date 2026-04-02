@@ -7,16 +7,16 @@
     "node": ">=20.19.0"
   },
   "bin": {
-    "qwik": "./dist/esm/bin/qwik.mjs"
+    "qwik": "./dist/bin/qwik.mjs"
   },
   "exports": {
     ".": {
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "import": "./dist/src/index.mjs",
+      "require": "./dist/src/index.cjs"
     }
   },
-  "main": "./dist/cjs/index.cjs",
-  "module": "./dist/esm/index.mjs",
+  "main": "./dist/src/index.cjs",
+  "module": "./dist/src/index.mjs",
   "files": [
     "dist",
     "stubs"
