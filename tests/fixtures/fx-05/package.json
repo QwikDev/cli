@@ -1,0 +1,7 @@
+{
+  "name": "fx-05-existing-files",
+  "version": "0.0.1",
+  "dependencies": {
+    "@qwik.dev/core": "^2.0.0"
+  }
+}
