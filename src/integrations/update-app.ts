@@ -1,8 +1,4 @@
-import {
-  mkdirSync,
-  readFileSync,
-  writeFileSync,
-} from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import spawn from "cross-spawn";
 import { install } from "panam";
