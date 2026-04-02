@@ -7,14 +7,15 @@ const EXPECTED_COMMANDS = [
   "new",
   "joke",
   "migrate-v2",
+  "upgrade",
   "check-client",
   "help",
   "version",
 ];
 
 test.group("Router - COMMAND_NAMES", () => {
-  test("COMMAND_NAMES contains exactly 8 commands", ({ assert }) => {
-    assert.lengthOf(COMMAND_NAMES, 8);
+  test("COMMAND_NAMES contains exactly 9 commands", ({ assert }) => {
+    assert.lengthOf(COMMAND_NAMES, 9);
   });
 
   test("COMMAND_NAMES matches CLI command surface exactly", ({ assert }) => {

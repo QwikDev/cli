@@ -40,7 +40,7 @@ test.group("MIG-01 -- full migration golden path", (group) => {
   });
 
   test("migrates @builder.io imports to @qwik.dev and removes ts-morph", ({ assert }) => {
-    const result = runCli(["migrate-v2"], tmpDir);
+    const result = runCli(["migrate-v2"], tmpDir, { input: "y\n" });
     assert.strictEqual(result.status, 0);
 
     const appTsx = readFileSync(join(tmpDir, "src", "app.tsx"), "utf-8");
@@ -77,9 +77,9 @@ test.group("MIG-02 -- user cancels migration", (group) => {
   });
 
   test("exits 0 on user cancel without modifying files", ({ assert }) => {
-    // NOTE: passes vacuously against stub — stub does not modify files.
-    // TODO Phase 5: pipe "n\n" to stdin to test real cancel path.
-    const result = runCli(["migrate-v2"], tmpDir);
+    // Pipe Ctrl+C (\x03) to stdin — @clack/prompts treats this as a cancel signal,
+    // triggering isCancel() → true → bye() → exit 0 without modifying files.
+    const result = runCli(["migrate-v2"], tmpDir, { input: "\x03" });
     // Cancellation is NOT an error — exit 0 is MUST PRESERVE per COMPATIBILITY-CONTRACT.
     assert.strictEqual(result.status, 0);
 
@@ -103,9 +103,7 @@ test.group("MIG-03 -- ts-morph idempotency guard", (group) => {
   });
 
   test("preserves ts-morph in devDependencies when project already uses it", ({ assert }) => {
-    // NOTE: passes vacuously against stub — stub does not remove ts-morph.
-    // Becomes meaningful in Phase 5 when migration actually runs.
-    const result = runCli(["migrate-v2"], tmpDir);
+    const result = runCli(["migrate-v2"], tmpDir, { input: "y\n" });
     assert.strictEqual(result.status, 0);
 
     const pkg = JSON.parse(readFileSync(join(tmpDir, "package.json"), "utf-8")) as Record<string, unknown>;
@@ -128,7 +126,7 @@ test.group("MIG-04 -- substring ordering constraint", (group) => {
   });
 
   test("does not produce @qwik.dev/core-city from wrong replacement order", ({ assert }) => {
-    const result = runCli(["migrate-v2"], tmpDir);
+    const result = runCli(["migrate-v2"], tmpDir, { input: "y\n" });
     assert.strictEqual(result.status, 0);
 
     // Assert NO file under src/ contains @qwik.dev/core-city.
@@ -166,9 +164,7 @@ test.group("MIG-05 -- gitignore-respected traversal", (group) => {
   });
 
   test("does not rewrite files under dist/ (.gitignore respected)", ({ assert }) => {
-    // NOTE: passes vacuously against stub — stub does not modify any files.
-    // Becomes meaningful in Phase 5 when migration rewrites src/ files but respects .gitignore for dist/.
-    const result = runCli(["migrate-v2"], tmpDir);
+    const result = runCli(["migrate-v2"], tmpDir, { input: "y\n" });
     assert.strictEqual(result.status, 0);
 
     const bundle = readFileSync(join(tmpDir, "dist", "bundle.js"), "utf-8");

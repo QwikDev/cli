@@ -1,11 +1,11 @@
 import { join } from "node:path";
+import { IMPORT_RENAME_ROUNDS, replaceImportInFiles } from "./rename-import.js";
+import { runAllPackageReplacements } from "./replace-package.js";
 import {
   checkTsMorphPreExisting,
   removeTsMorphFromPackageJson,
   updateDependencies,
 } from "./update-dependencies.js";
-import { IMPORT_RENAME_ROUNDS, replaceImportInFiles } from "./rename-import.js";
-import { runAllPackageReplacements } from "./replace-package.js";
 import { resolveV2Versions } from "./versions.js";
 import { visitNotIgnoredFiles } from "./visit-not-ignored.js";
 

@@ -16,7 +16,12 @@ export interface CliResult {
   stderr: string;
 }
 
-export function runCli(args: string[], cwd?: string): CliResult {
+export interface RunCliOptions {
+  /** Optional stdin data to pipe to the child process (e.g. "y\n" to confirm, "\x03" to cancel) */
+  input?: string;
+}
+
+export function runCli(args: string[], cwd?: string, options?: RunCliOptions): CliResult {
   const result = spawnSync(
     "node",
     ["--import", TSX_ESM, BIN, ...args],
@@ -24,6 +29,7 @@ export function runCli(args: string[], cwd?: string): CliResult {
       encoding: "utf-8",
       cwd: cwd ?? ROOT,
       env: { ...process.env, FORCE_COLOR: "0", NO_COLOR: "1" },
+      ...(options?.input !== undefined ? { input: options.input } : {}),
     },
   );
   return {

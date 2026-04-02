@@ -12,6 +12,7 @@ const COMMANDS: Record<
   new: () => import("./commands/new/index.js"),
   joke: () => import("./commands/joke/index.js"),
   "migrate-v2": () => import("./commands/migrate/index.js"),
+  upgrade: () => import("./commands/migrate/index.js"),
   "check-client": () => import("./commands/check-client/index.js"),
   help: () => import("./commands/help/index.js"),
   version: () => import("./commands/version/index.js"),
