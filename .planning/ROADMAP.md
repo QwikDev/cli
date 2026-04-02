@@ -64,7 +64,11 @@ Plans:
   3. `qwik help` displays all 9 command names with descriptions and exits 0
   4. Running `qwik` inside a pnpm project detects pnpm; running without any `npm_config_user_agent` falls back to pnpm
   5. Parity tests VER-01 and JOKE-01 pass
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Package manager detection utility, version command with dual-path resolution
+- [ ] 03-02-PLAN.md — Joke command with static jokes array, help command with 9 entries and PM-aware usage
 
 ### Phase 4: Build and New Commands
 **Goal**: `qwik build` orchestrates project scripts with the correct sequential-then-parallel ordering and lifecycle hooks; `qwik new` generates route and component files with correct token substitution
@@ -114,7 +118,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Scaffold and Core Architecture | 3/3 | Complete   | 2026-04-02 |
 | 2. Test Harness | 4/4 | Complete   | 2026-04-02 |
-| 3. Shared Foundations and Simple Commands | 0/TBD | Not started | - |
+| 3. Shared Foundations and Simple Commands | 0/2 | Not started | - |
 | 4. Build and New Commands | 0/TBD | Not started | - |
 | 5. Add and Upgrade Commands | 0/TBD | Not started | - |
 | 6. Create-Qwik, Check-Client, and Packaging | 0/TBD | Not started | - |
