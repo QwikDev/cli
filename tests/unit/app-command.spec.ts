@@ -2,7 +2,7 @@ import { test } from "@japa/runner";
 import { AppCommand } from "../../src/app-command.js";
 
 test.group("AppCommand - getArg", () => {
-  test('getArg supports --flag=value form', ({ assert }) => {
+  test("getArg supports --flag=value form", ({ assert }) => {
     const cmd = new AppCommand({
       rootDir: "/",
       cwd: "/project",
@@ -11,7 +11,7 @@ test.group("AppCommand - getArg", () => {
     assert.strictEqual(cmd.getArg("mode"), "staging");
   });
 
-  test('getArg supports --flag value form', ({ assert }) => {
+  test("getArg supports --flag value form", ({ assert }) => {
     const cmd = new AppCommand({
       rootDir: "/",
       cwd: "/project",
@@ -20,7 +20,7 @@ test.group("AppCommand - getArg", () => {
     assert.strictEqual(cmd.getArg("mode"), "staging");
   });
 
-  test('getArg returns undefined for unknown flags', ({ assert }) => {
+  test("getArg returns undefined for unknown flags", ({ assert }) => {
     const cmd = new AppCommand({
       rootDir: "/",
       cwd: "/project",
@@ -31,7 +31,7 @@ test.group("AppCommand - getArg", () => {
 });
 
 test.group("AppCommand - task", () => {
-  test('task returns first arg (subcommand name)', ({ assert }) => {
+  test("task returns first arg (subcommand name)", ({ assert }) => {
     const cmd = new AppCommand({
       rootDir: "/",
       cwd: "/project",
@@ -40,7 +40,7 @@ test.group("AppCommand - task", () => {
     assert.strictEqual(cmd.task, "build");
   });
 
-  test('task is undefined when args is empty', ({ assert }) => {
+  test("task is undefined when args is empty", ({ assert }) => {
     const cmd = new AppCommand({
       rootDir: "/",
       cwd: "/project",
@@ -51,7 +51,7 @@ test.group("AppCommand - task", () => {
 });
 
 test.group("AppCommand - args", () => {
-  test('args is a copy of provided args', ({ assert }) => {
+  test("args is a copy of provided args", ({ assert }) => {
     const original = ["build", "--mode=staging"];
     const cmd = new AppCommand({
       rootDir: "/",

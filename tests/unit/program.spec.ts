@@ -25,12 +25,18 @@ class TestProgram extends Program<{ name?: string }, { name: string }> {
     name?: string;
   }): Promise<{ name: string }> {
     this.callOrder.push("interact");
-    return this.validate(definition);
+    // Directly return result without calling validate() to keep call order clean
+    return { name: definition.name ?? "world" };
   }
 
   protected async execute(input: { name: string }): Promise<number> {
     this.callOrder.push(`execute:${input.name}`);
     return 0;
+  }
+
+  // Expose protected isIt() for testing
+  isItPublic(): boolean {
+    return this.isIt();
   }
 }
 
