@@ -29,7 +29,3 @@ export interface CreateAppResult {
   outDir: string;
   appId: string;
 }
-
-// QWIK_VERSION is injected at build time via tsdown define (EB-05)
-// eslint-disable-next-line no-unused-vars
-declare const QWIK_VERSION: string;
