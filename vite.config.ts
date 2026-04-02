@@ -17,6 +17,6 @@ export default defineConfig({
     trailingComma: "all",
   },
   test: {
-    include: ["tests/unit/upgrade/**/*.spec.ts"],
+    include: ["tests/unit/upgrade/**/*.spec.ts", "tests/unit/create-qwik/**/*.spec.ts"],
   },
 });
