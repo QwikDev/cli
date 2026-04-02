@@ -25,7 +25,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 ### v1.1 Phases
 
-- [ ] **Phase 7: Type Baseline** - Zero TypeScript type errors established before any structural change so regressions are detectable
+- [x] **Phase 7: Type Baseline** - Zero TypeScript type errors established before any structural change so regressions are detectable (completed 2026-04-02)
 - [ ] **Phase 8: Content Population** - All starters, adapters, features, and jokes sourced from the Qwik repo; top-level adapters/ artifact removed
 - [ ] **Phase 9: Migration Architecture** - Migrations folder restructured to migrations/v2/ with version-chaining support and upgrade command enhancements
 - [ ] **Phase 10: Tooling Switch** - Biome replaced by oxfmt + oxlint via vite-plus; vitest configured; isolated formatting commit
@@ -145,7 +145,7 @@ Plans:
   2. All four confirmed error categories are resolved: `ModuleExportName` union in rename-import.ts, `exactOptionalPropertyTypes` in add/index.ts and console.ts, `cross-spawn` overload in update-app.ts, `noUncheckedIndexedAccess` in app-command.ts and router.ts
   3. All regex literals and `new RegExp()` calls are replaced with magic-regexp equivalents
   4. No runtime behavior changes — every existing Japa golden-path test that was passing before Phase 7 still passes after
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 07-01-PLAN.md — Fix all 9 TypeScript compiler errors across 6 files (tsc --noEmit zero errors)
@@ -215,7 +215,7 @@ v1.1: Phases execute in dependency order: 7 -> 8 -> 9 -> 10 -> 11 (Phase 8 and 9
 | 4. Build and New Commands | 2/3 | In Progress | - |
 | 5. Add and Upgrade Commands | 4/4 | Complete | 2026-04-02 |
 | 6. Create-Qwik, Check-Client, and Packaging | 0/TBD | Not started | - |
-| 7. Type Baseline | 1/2 | In Progress|  |
+| 7. Type Baseline | 2/2 | Complete   | 2026-04-02 |
 | 8. Content Population | 0/TBD | Not started | - |
 | 9. Migration Architecture | 0/TBD | Not started | - |
 | 10. Tooling Switch | 0/TBD | Not started | - |

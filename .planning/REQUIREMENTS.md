@@ -150,7 +150,7 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 - [x] **TOOL-03**: `tsc --noEmit` passes with zero errors across all source files
 - [ ] **TOOL-04**: `qwik joke` draws from the real 30-joke pool from the Qwik repo
 - [ ] **TOOL-05**: `biome.json` is removed and no Biome dependency remains
-- [ ] **TOOL-06**: All regex patterns replaced with magic-regexp for readability and type-safety
+- [x] **TOOL-06**: All regex patterns replaced with magic-regexp for readability and type-safety
 
 ### Testing
 
@@ -286,7 +286,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TOOL-01 | Phase 10 | Pending |
 | TOOL-02 | Phase 10 | Pending |
 | TOOL-03 | Phase 7 | Complete |
-| TOOL-06 | Phase 7 | Pending |
+| TOOL-06 | Phase 7 | Complete |
 | TOOL-04 | Phase 8 | Pending |
 | TOOL-05 | Phase 10 | Pending |
 | VTST-01 | Phase 10 | Pending |

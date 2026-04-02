@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Phases
 status: planning
-stopped_at: Completed 07-type-baseline-regex-cleanup 07-01-PLAN.md
-last_updated: "2026-04-02T16:24:34.470Z"
+stopped_at: Completed 07-type-baseline-regex-cleanup 07-02-PLAN.md
+last_updated: "2026-04-02T16:32:26.351Z"
 last_activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 progress:
   total_phases: 11
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 18
-  completed_plans: 17
+  completed_plans: 18
 ---
 
 # Project State
@@ -71,6 +71,7 @@ Last activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 | Phase 05-add-and-upgrade-commands P03 | 15 | 2 tasks | 4 files |
 | Phase 05-add-and-upgrade-commands P02 | 15 | 2 tasks | 3 files |
 | Phase 07-type-baseline-regex-cleanup P01 | 4 | 2 tasks | 7 files |
+| Phase 07-type-baseline-regex-cleanup P02 | 18 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -121,6 +122,9 @@ Recent decisions affecting current work:
 - [Phase 07-type-baseline-regex-cleanup]: Non-null assertion used for COMMANDS.help! and COMMANDS[task]! — keys are statically defined in Record literal
 - [Phase 07-type-baseline-regex-cleanup]: getModuleExportName() discriminates on node.type === 'Literal' for oxc-parser ModuleExportName union
 - [Phase 07-type-baseline-regex-cleanup]: Option<T> from @clack/prompts imported as ClackOption in core.ts to avoid collision with local Option type for yargs config
+- [Phase 07-type-baseline-regex-cleanup]: magic-regexp: exactly('').at.lineEnd() produces bare dollar anchor; at is a method on expression objects, not a standalone import
+- [Phase 07-type-baseline-regex-cleanup]: magic-regexp 0.11.0 exports char (not anyChar) for any-character matching; charIn('-_').or(whitespace) for character class unions
+- [Phase 07-type-baseline-regex-cleanup]: Export SLUG_TOKEN and NAME_TOKEN from templates.ts; new/index.ts imports them to avoid duplication
 
 ### Pending Todos
 
@@ -135,6 +139,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-02T16:24:34.467Z
-Stopped at: Completed 07-type-baseline-regex-cleanup 07-01-PLAN.md
+Last session: 2026-04-02T16:32:26.348Z
+Stopped at: Completed 07-type-baseline-regex-cleanup 07-02-PLAN.md
 Resume file: None
