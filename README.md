@@ -1,46 +1,160 @@
-## Cloudflare Pages
+# @qwik.dev/cli
 
-Cloudflare's [wrangler](https://github.com/cloudflare/wrangler) CLI can be used to preview a production build locally. To start a local server, run:
+The official CLI for Qwik projects. Provides `qwik` and `create-qwik` commands.
+
+```bash
+# Create a new project
+pnpm create qwik
+
+# Add an integration to an existing project
+pnpm qwik add tailwind
+
+# Create a new component/route
+pnpm qwik new component my-button
+```
+
+## Requirements
+
+- Node.js >= 24.0.0
+
+## Development
+
+```bash
+pnpm install
+pnpm build        # Build CLI
+pnpm test         # Run all tests
+pnpm test:unit    # Run unit tests only
+pnpm lint         # Lint
+pnpm format       # Format
+```
+
+## Project Structure
 
 ```
-npm run serve
+src/
+  commands/       # CLI command implementations (add, new, build, migrate, etc.)
+  integrations/   # Loading and applying stubs to user projects
+  create-qwik/    # create-qwik scaffolding logic
+  core.ts         # Program base class (all commands extend this)
+  router.ts       # Command routing
+stubs/
+  adapters/       # Server deployment targets (cloudflare-pages, vercel-edge, etc.)
+  features/       # Optional integrations (tailwind, vitest, drizzle, etc.)
+  apps/           # Starter templates for create-qwik (base, empty, library, playground)
+  templates/      # File generators for `qwik new` (component, route, markdown, mdx)
+migrations/
+  v2/             # v1 to v2 migration pipeline
 ```
 
-Then visit [http://localhost:8787/](http://localhost:8787/)
+## Contributing Stubs
 
-### Deployments
+Stubs are the most common contribution. They live in `stubs/adapters/` and `stubs/features/` and are **auto-discovered** — no registration needed. Drop a folder with a `package.json` and it shows up in `qwik add`.
 
-[Cloudflare Pages](https://pages.cloudflare.com/) are deployable through their [Git provider integrations](https://developers.cloudflare.com/pages/platform/git-integration/).
+### Adapter vs Feature
 
-If you don't already have an account, then [create a Cloudflare account here](https://dash.cloudflare.com/sign-up/pages). Next go to your dashboard and follow the [Cloudflare Pages deployment guide](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/).
+- **Adapter** (`stubs/adapters/`): A deployment target. Provides a server entry point and build config. Examples: cloudflare-pages, vercel-edge, node-server.
+- **Feature** (`stubs/features/`): An optional integration. Adds tooling, styling, testing, etc. Examples: tailwind, vitest, drizzle.
 
-Within the projects "Settings" for "Build and deployments", the "Build command" should be `npm run build`, and the "Build output directory" should be set to `dist`.
+### Stub Structure
 
-### Function Invocation Routes
-
-Cloudflare Page's [function-invocation-routes config](https://developers.cloudflare.com/pages/platform/functions/routing/#functions-invocation-routes) can be used to include, or exclude, certain paths to be used by the worker functions. Having a `_routes.json` file gives developers more granular control over when your Function is invoked.
-This is useful to determine if a page response should be Server-Side Rendered (SSR) or if the response should use a static-site generated (SSG) `index.html` file.
-
-By default, the Cloudflare pages adaptor _does not_ include a `public/_routes.json` config, but rather it is auto-generated from the build by the Cloudflare adaptor. An example of an auto-generate `dist/_routes.json` would be:
+Every stub is a directory with a `package.json` containing a `__qwik__` key. All other files get copied into the user's project when they run `qwik add <id>`.
 
 ```
+stubs/features/my-feature/
+  package.json          # Required: metadata + dependencies
+  src/global.css        # Optional: files copied to user's project
+  prettier.config.js    # Optional: any config files
+```
+
+The directory name becomes the stub ID (what users type in `qwik add <id>`).
+
+### package.json format
+
+```jsonc
 {
-  "include": [
-    "/*"
-  ],
-  "exclude": [
-    "/_headers",
-    "/_redirects",
-    "/build/*",
-    "/favicon.ico",
-    "/manifest.json",
-    "/service-worker.js",
-    "/about"
-  ],
-  "version": 1
+  "description": "Human-readable description",
+  "type": "module",
+  // Dependencies merged into user's package.json
+  "devDependencies": {
+    "tailwindcss": "^4.1.4"
+  },
+  "__qwik__": {
+    "displayName": "Integration: Tailwind v4 (styling)",
+    "priority": -10,
+    // Optional: auto-modify user's vite.config.ts
+    "viteConfig": {
+      "imports": [
+        {
+          "defaultImport": "tailwindcss",
+          "importPath": "@tailwindcss/vite"
+        }
+      ],
+      "vitePlugins": ["tailwindcss()"]
+    },
+    // Optional: doc links shown after install
+    "docs": [
+      "https://tailwindcss.com/docs"
+    ],
+    // Optional: next steps shown after install
+    "nextSteps": {
+      "title": "Next Steps",
+      "lines": [
+        "Add Tailwind directives to your global.css"
+      ]
+    }
+  }
 }
 ```
 
-In the above example, it's saying _all_ pages should be SSR'd. However, the root static files such as `/favicon.ico` and any static assets in `/build/*` should be excluded from the Functions, and instead treated as a static file.
+### `__qwik__` fields
 
-In most cases the generated `dist/_routes.json` file is ideal. However, if you need more granular control over each path, you can instead provide you're own `public/_routes.json` file. When the project provides its own `public/_routes.json` file, then the Cloudflare adaptor will not auto-generate the routes config and instead use the committed one within the `public` directory.
+| Field | Required | Description |
+|-------|----------|-------------|
+| `displayName` | Yes | Shown in the `qwik add` selection menu |
+| `priority` | Yes | Sort order. Adapters use 1-40, features use -10 |
+| `viteConfig` | No | Auto-adds imports and plugins to `vite.config.ts` |
+| `docs` | No | Documentation URLs shown after install |
+| `nextSteps` | No | Instructions shown after install |
+
+### Adapter-specific files
+
+Adapters typically include:
+
+```
+stubs/adapters/my-adapter/
+  package.json
+  adapters/my-adapter/vite.config.ts    # Build config
+  src/entry.my-adapter.tsx              # Server entry point
+  gitignore                             # Merged into .gitignore (no dot prefix)
+```
+
+The `scripts` in an adapter's `package.json` get merged into the user's `package.json`:
+
+```json
+{
+  "scripts": {
+    "build.server": "vite build -c adapters/my-adapter/vite.config.ts",
+    "deploy": "my-platform deploy ./dist",
+    "serve": "my-platform dev ./dist"
+  }
+}
+```
+
+### Testing your stub
+
+Build the CLI and test against a real project:
+
+```bash
+pnpm build
+node ./dist/bin/qwik.mjs add my-feature
+```
+
+Or run the existing integration tests:
+
+```bash
+pnpm test
+```
+
+## License
+
+MIT
