@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-04-02T06:45:46.964Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-04-02T06:51:46.909Z"
 last_activity: "2026-04-01 — Phase 2 complete: 25 golden-path integration tests + 39 unit tests in genuine red state"
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 16
-  completed_plans: 13
+  completed_plans: 15
   percent: 33
 ---
 
@@ -63,6 +63,8 @@ Progress: [████████░░] 33% (Phases 1-2 of 6 complete)
 | Phase 04-build-and-new-commands P02 | 12 | 2 tasks | 7 files |
 | Phase 04-build-and-new-commands P03 | 12 | 1 tasks | 1 files |
 | Phase 05-add-and-upgrade-commands P01 | 8 | 2 tasks | 6 files |
+| Phase 05-add-and-upgrade-commands P03 | 15 | 2 tasks | 4 files |
+| Phase 05-add-and-upgrade-commands P02 | 15 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -102,6 +104,10 @@ Recent decisions affecting current work:
 - [Phase 05-add-and-upgrade-commands]: visitNotIgnoredFiles always adds .git to ignore rules even without .gitignore (safety, per UPGR-06 research pitfall 5)
 - [Phase 05-add-and-upgrade-commands]: .ts removed from BINARY_EXTENSIONS — conflated TypeScript source with MPEG-TS video container format
 - [Phase 05-add-and-upgrade-commands]: Symlinks intentionally not followed in visitNotIgnoredFiles (OQ-07 deferred decision: skip is safer default)
+- [Phase 05-add-and-upgrade-commands]: replaceImportInFiles: overwrites imported identifier always; overwrites local binding only when unaliased (local.name === importedName) — prevents breaking aliased imports
+- [Phase 05-add-and-upgrade-commands]: exact parameter in replacePackage is documentation marker only — both paths produce identical regex; retained to signal intent for @qwik-city-plan replacement
+- [Phase 05-add-and-upgrade-commands]: Adaptive STUBS_DIR resolution (2-level for src/, 3-level for dist/) — tsx runs source files so import.meta.url resolves to src/integrations/ not dist/src/integrations/
+- [Phase 05-add-and-upgrade-commands]: skipConfirmation registered as type 'string' and compared against exact 'true' — yargs parses --flag=true as string when option type is string
 
 ### Pending Todos
 
@@ -115,6 +121,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T06:45:46.962Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-04-02T06:51:46.907Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None

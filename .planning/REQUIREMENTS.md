@@ -58,26 +58,26 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Add Command
 
-- [ ] **ADD-01**: `qwik add [integration-id]` positional argument selects integration
-- [ ] **ADD-02**: `--skipConfirmation=true` flag bypasses user consent gate
-- [ ] **ADD-03**: `--projectDir=<path>` flag writes files into specified subdirectory
-- [ ] **ADD-04**: Interactive integration selection via @clack/prompts select when no positional
-- [ ] **ADD-05**: Integration file writes committed only after user confirmation (or --skipConfirmation)
-- [ ] **ADD-06**: `installDeps()` runs when integration adds dependencies
-- [ ] **ADD-07**: `postInstall` script execution when `integration.pkgJson.__qwik__.postInstall` exists
+- [x] **ADD-01**: `qwik add [integration-id]` positional argument selects integration
+- [x] **ADD-02**: `--skipConfirmation=true` flag bypasses user consent gate
+- [x] **ADD-03**: `--projectDir=<path>` flag writes files into specified subdirectory
+- [x] **ADD-04**: Interactive integration selection via @clack/prompts select when no positional
+- [x] **ADD-05**: Integration file writes committed only after user confirmation (or --skipConfirmation)
+- [x] **ADD-06**: `installDeps()` runs when integration adds dependencies
+- [x] **ADD-07**: `postInstall` script execution when `integration.pkgJson.__qwik__.postInstall` exists
 - [x] **ADD-08**: `loadIntegrations()` discovers integrations from `stubs/` directory
-- [ ] **ADD-09**: Exit 0 on success, exit 1 on file-write or install failure
+- [x] **ADD-09**: Exit 0 on success, exit 1 on file-write or install failure
 
 ### Upgrade Command
 
 - [ ] **UPGR-01**: `qwik migrate-v2` alias routes to upgrade command (ALIAS REQUIRED)
 - [ ] **UPGR-02**: 5-step migration sequence executes in exact documented order
-- [ ] **UPGR-03**: AST import renaming: 3 rounds, 8 mappings via oxc-parser + magic-string
-- [ ] **UPGR-04**: Text-replacement `replacePackage()` × 5 calls — `@builder.io/qwik` MUST run last (substring constraint)
-- [ ] **UPGR-05**: npm dist-tag version resolution for `@qwik.dev/*` packages
+- [x] **UPGR-03**: AST import renaming: 3 rounds, 8 mappings via oxc-parser + magic-string
+- [x] **UPGR-04**: Text-replacement `replacePackage()` × 5 calls — `@builder.io/qwik` MUST run last (substring constraint)
+- [x] **UPGR-05**: npm dist-tag version resolution for `@qwik.dev/*` packages
 - [x] **UPGR-06**: Gitignore-respected file traversal via `visitNotIgnoredFiles`
 - [x] **UPGR-07**: Binary file detection skip during text replacement
-- [ ] **UPGR-08**: ts-morph NOT in final package.json after migration (idempotency: preserve if pre-existing)
+- [x] **UPGR-08**: ts-morph NOT in final package.json after migration (idempotency: preserve if pre-existing)
 - [ ] **UPGR-09**: Exit 0 on user cancel (cancellation is not an error)
 - [ ] **UPGR-10**: User confirmation prompt before destructive migration begins
 
@@ -181,23 +181,23 @@ Which phases cover which requirements. Updated during roadmap creation.
 | NEW-07 | Phase 4 | Complete |
 | NEW-08 | Phase 4 | Complete |
 | NEW-09 | Phase 4 | Complete |
-| ADD-01 | Phase 5 | Pending |
-| ADD-02 | Phase 5 | Pending |
-| ADD-03 | Phase 5 | Pending |
-| ADD-04 | Phase 5 | Pending |
-| ADD-05 | Phase 5 | Pending |
-| ADD-06 | Phase 5 | Pending |
-| ADD-07 | Phase 5 | Pending |
+| ADD-01 | Phase 5 | Complete |
+| ADD-02 | Phase 5 | Complete |
+| ADD-03 | Phase 5 | Complete |
+| ADD-04 | Phase 5 | Complete |
+| ADD-05 | Phase 5 | Complete |
+| ADD-06 | Phase 5 | Complete |
+| ADD-07 | Phase 5 | Complete |
 | ADD-08 | Phase 5 | Complete |
-| ADD-09 | Phase 5 | Pending |
+| ADD-09 | Phase 5 | Complete |
 | UPGR-01 | Phase 5 | Pending |
 | UPGR-02 | Phase 5 | Pending |
-| UPGR-03 | Phase 5 | Pending |
-| UPGR-04 | Phase 5 | Pending |
-| UPGR-05 | Phase 5 | Pending |
+| UPGR-03 | Phase 5 | Complete |
+| UPGR-04 | Phase 5 | Complete |
+| UPGR-05 | Phase 5 | Complete |
 | UPGR-06 | Phase 5 | Complete |
 | UPGR-07 | Phase 5 | Complete |
-| UPGR-08 | Phase 5 | Pending |
+| UPGR-08 | Phase 5 | Complete |
 | UPGR-09 | Phase 5 | Pending |
 | UPGR-10 | Phase 5 | Pending |
 | CHKC-01 | Phase 6 | Pending |

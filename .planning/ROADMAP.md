@@ -99,7 +99,7 @@ Plans:
   4. Binary files are skipped during text replacement; `.git/` and `node_modules/` are excluded from file traversal even when no `.gitignore` is present
   5. Cancelling the upgrade confirmation prompt exits 0 (not 1)
   6. Parity tests ADD-01/02/03 and MIG-01/02/03/04/05 pass
-**Plans:** 4 plans
+**Plans:** 3/4 plans executed
 
 Plans:
 - [ ] 05-01-PLAN.md — Dependencies, cloudflare-pages stub, visitNotIgnoredFiles and isBinaryPath utilities
@@ -131,5 +131,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Test Harness | 4/4 | Complete   | 2026-04-02 |
 | 3. Shared Foundations and Simple Commands | 2/2 | Complete   | 2026-04-02 |
 | 4. Build and New Commands | 2/3 | In Progress|  |
-| 5. Add and Upgrade Commands | 0/4 | Not started | - |
+| 5. Add and Upgrade Commands | 3/4 | In Progress|  |
 | 6. Create-Qwik, Check-Client, and Packaging | 0/TBD | Not started | - |
