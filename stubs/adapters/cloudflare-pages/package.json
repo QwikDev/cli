@@ -1,0 +1,18 @@
+{
+  "name": "@qwik.dev/integration-cloudflare-pages",
+  "version": "0.0.1",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "scripts": {
+    "deploy": "wrangler pages deploy ./dist",
+    "serve": "wrangler pages dev ./dist"
+  },
+  "__qwik__": {
+    "displayName": "Adapter: Cloudflare Pages",
+    "priority": 40,
+    "nextSteps": {
+      "lines": ["Run: pnpm deploy to deploy to Cloudflare Pages"]
+    }
+  }
+}

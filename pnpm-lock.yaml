@@ -17,6 +17,9 @@ importers:
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.4
+      ignore:
+        specifier: ^7.0.5
+        version: 7.0.5
       kleur:
         specifier: ^4.1.5
         version: 4.1.5
@@ -29,6 +32,9 @@ importers:
       panam:
         specifier: ^0.3.0
         version: 0.3.0
+      semver:
+        specifier: ^7.7.4
+        version: 7.7.4
       which:
         specifier: ^5.0.0
         version: 5.0.0
@@ -57,6 +63,9 @@ importers:
       '@types/node':
         specifier: ^24.0.0
         version: 24.12.0
+      '@types/semver':
+        specifier: ^7.7.1
+        version: 7.7.1
       '@types/which':
         specifier: '*'
         version: 3.0.4
@@ -755,6 +764,9 @@ packages:
   '@types/pluralize@0.0.33':
     resolution: {integrity: sha512-JOqsl+ZoCpP4e8TDke9W79FDcSgPAR0l6pixx2JHkhnRjvShyYiAYw2LVsnA7K08Y6DeOnaU6ujmENO4os/cYg==}
 
+  '@types/semver@7.7.1':
+    resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
+
   '@types/which-pm-runs@1.0.2':
     resolution: {integrity: sha512-M0ZefeDApctHbjqtATOiixiwafG7pXD3exxnjku4XmX9+2DmONGghv5Z8Pnm0lNLBZKvDQyuG+4pLkH2UkP5gg==}
 
@@ -948,6 +960,10 @@ packages:
 
   hookable@6.1.0:
     resolution: {integrity: sha512-ZoKZSJgu8voGK2geJS+6YtYjvIzu9AOM/KZXsBxr83uhLL++e9pEv/dlgwgy3dvHg06kTz6JOh1hk3C8Ceiymw==}
+
+  ignore@7.0.5:
+    resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
+    engines: {node: '>= 4'}
 
   import-without-cache@0.2.5:
     resolution: {integrity: sha512-B6Lc2s6yApwnD2/pMzFh/d5AVjdsDXjgkeJ766FmFuJELIGHNycKRj+l3A39yZPM4CchqNCB4RITEAYB1KUM6A==}
@@ -1751,6 +1767,8 @@ snapshots:
 
   '@types/pluralize@0.0.33': {}
 
+  '@types/semver@7.7.1': {}
+
   '@types/which-pm-runs@1.0.2': {}
 
   '@types/which@3.0.4': {}
@@ -1928,6 +1946,8 @@ snapshots:
   has-flag@4.0.0: {}
 
   hookable@6.1.0: {}
+
+  ignore@7.0.5: {}
 
   import-without-cache@0.2.5: {}
 
