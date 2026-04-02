@@ -13,7 +13,7 @@ A spec-driven reimplementation of the Qwik CLI as a standalone `@qwik.dev/cli` p
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Scaffold and Core Architecture** - Repo skeleton with all extraction blockers resolved; Program base class, command router, and console utilities wired (completed 2026-04-02)
-- [ ] **Phase 2: Test Harness** - 8 fixture projects and 25 golden-path Japa tests written spec-first, before any command implementation
+- [ ] **Phase 2: Test Harness** - 6 static fixture projects, 25 golden-path Japa tests written spec-first, before any command implementation
 - [ ] **Phase 3: Shared Foundations and Simple Commands** - Package manager detection, asset resolution services; version, joke, and help commands working end-to-end
 - [ ] **Phase 4: Build and New Commands** - Parallel build orchestration with lifecycle hooks; route and component file generation with token substitution
 - [ ] **Phase 5: Add and Upgrade Commands** - Integration installation with consent gate; AST-based migration with exact 5-step ordering and oxc-parser codemods
@@ -44,9 +44,9 @@ Plans:
 **Requirements**: TEST-01, TEST-02, TEST-03, TEST-04
 **Success Criteria** (what must be TRUE):
   1. `node bin/test.ts` runs to completion without crashing the test runner itself (tests may fail, but the harness executes)
-  2. All 8 fixture projects (FX-01 through FX-08) exist on disk per PARITY-TEST-PLAN.md specifications
+  2. All 6 static fixture projects (FX-01 through FX-06) exist on disk per PARITY-TEST-PLAN.md specifications; FX-07 and FX-08 are runtime outputs of CRE-01/CRE-02 tests and will be produced in Phase 6 when `bin/create-qwik.ts` exists
   3. Every test asserts an exit code (0 or 1); no test omits exit code assertion
-  4. FX-07 and FX-08 fixture helpers can manipulate mtime on src files to simulate stale and up-to-date states for check-client scenarios
+  4. Mtime manipulation helpers (setMtimePast, setMtimeFuture) can alter file timestamps on FX-06 dist/q-manifest.json to simulate stale and up-to-date states for check-client scenarios
 **Plans:** 3 plans
 
 Plans:

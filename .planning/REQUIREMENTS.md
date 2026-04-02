@@ -29,7 +29,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Test Harness
 
-- [ ] **TEST-01**: 8 fixture projects (FX-01 through FX-08) created per PARITY-TEST-PLAN.md
+- [ ] **TEST-01**: 6 static fixture projects (FX-01 through FX-06) created per PARITY-TEST-PLAN.md; FX-07 and FX-08 are runtime outputs of create-qwik tests (CRE-01, CRE-02) produced in Phase 6
 - [ ] **TEST-02**: 25 golden-path test scenarios encoded as Japa tests (spec-first, before implementation)
 - [ ] **TEST-03**: Exit code assertions on every command test (0 for success/cancel, 1 for error)
 - [ ] **TEST-04**: Fixture mutation helpers for mtime manipulation (check-client scenarios)
@@ -225,8 +225,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 **Coverage:**
 - v1 requirements: 74 total
 - Mapped to phases: 74
-- Unmapped: 0 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-01*
-*Last updated: 2026-04-01 — traceability mapped during roadmap creation*
+*Last updated: 2026-04-01 — TEST-01 clarified: 6 static fixtures (Phase 2) + 2 runtime outputs (Phase 6)*
