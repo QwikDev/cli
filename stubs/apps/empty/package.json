@@ -2,6 +2,10 @@
   "name": "qwik-empty-starter",
   "description": "Blank project with routing included",
   "type": "module",
+  "dependencies": {
+    "@qwik.dev/core": "latest",
+    "@qwik.dev/router": "latest"
+  },
   "__qwik__": {
     "priority": 1,
     "displayName": "Empty App (Qwik + Qwik Router)",

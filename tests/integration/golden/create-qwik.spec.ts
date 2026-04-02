@@ -31,9 +31,11 @@ test.group("CRE-01 -- create-qwik empty", (group) => {
     const pkgRaw = readFileSync(join(outDir, "package.json"), "utf-8");
     const pkg = JSON.parse(pkgRaw) as Record<string, unknown>;
     const deps = (pkg.dependencies ?? {}) as Record<string, string>;
-    assert.property(
-      deps,
-      "@qwik.dev/core",
+    // Note: assert.property() uses chai deep-path notation (dot = nested key separator),
+    // so "@qwik.dev/core" would be misinterpreted as { '@qwik': { 'dev/core': ... } }.
+    // Use isDefined on the bracket-accessed key instead.
+    assert.isDefined(
+      deps["@qwik.dev/core"],
       "package.json dependencies must include @qwik.dev/core",
     );
     assert.isTrue(
