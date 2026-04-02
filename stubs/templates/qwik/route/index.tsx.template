@@ -1,0 +1,10 @@
+import { component$ } from "@qwik.dev/core";
+import type { DocumentHead } from "@qwik.dev/router";
+
+export default component$(() => {
+  return <>[name]</>;
+});
+
+export const head: DocumentHead = {
+  title: "[name]",
+};
