@@ -178,9 +178,10 @@ None.
 | 6 | Rewrite README with practical contributor guide for stubs | 2026-04-02 | f55d0fc | [6-rewrite-readme-with-practical-contributo](./quick/6-rewrite-readme-with-practical-contributo/) |
 | 7 | Derive stub priority from directory, make optional | 2026-04-02 | 1c5fe93 | [7-derive-stub-priority-from-directory-inst](./quick/7-derive-stub-priority-from-directory-inst/) |
 | 8 | Add cross-platform CI matrix with OS, runtime, and package manager dimensions | 2026-04-02 | 7580d26 | [8-add-cross-platform-ci-matrix-with-os-and](./quick/8-add-cross-platform-ci-matrix-with-os-and/) |
+| 9 | Fix critical bugs and security issues: command injection, path traversal, pkg.json merge, Windows paths | 2026-04-02 | 7d76e9e | [9-fix-critical-bugs-and-security-issues-fo](./quick/9-fix-critical-bugs-and-security-issues-fo/) |
 
 ## Session Continuity
 
 Last session: 2026-04-02T22:36:32.000Z
-Stopped at: Completed quick-5-01-PLAN.md
+Stopped at: Completed quick-9-01-PLAN.md
 Resume file: None
