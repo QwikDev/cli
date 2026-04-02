@@ -1,7 +1,7 @@
 export type {
+  CreateAppResult,
+  FileUpdate,
   IntegrationData,
   UpdateAppOptions,
   UpdateAppResult,
-  FileUpdate,
-  CreateAppResult,
-} from './types.js'
+} from "./types.js";

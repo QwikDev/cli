@@ -18,13 +18,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Core Architecture
 
-- [ ] **ARCH-01**: `Program<T,U>` abstract base class with parse → validate → interact → execute lifecycle
+- [x] **ARCH-01**: `Program<T,U>` abstract base class with parse → validate → interact → execute lifecycle
 - [ ] **ARCH-02**: Subcommand router dispatching argv[2] to Program subclasses via dynamic imports
-- [ ] **ARCH-03**: `console.ts` prompt/color utilities wrapping @clack/prompts and kleur
-- [ ] **ARCH-04**: `AppCommand` flag parsing with `getArg()` supporting `--flag=value` and `--flag value` forms
-- [ ] **ARCH-05**: `printHeader()` ASCII art logo displayed before every command
+- [x] **ARCH-03**: `console.ts` prompt/color utilities wrapping @clack/prompts and kleur
+- [x] **ARCH-04**: `AppCommand` flag parsing with `getArg()` supporting `--flag=value` and `--flag value` forms
+- [x] **ARCH-05**: `printHeader()` ASCII art logo displayed before every command
 - [ ] **ARCH-06**: Package manager auto-detection via which-pm-runs with pnpm fallback
-- [ ] **ARCH-07**: `bye()` (outro + exit 0) and `panic()` (error + exit 1) exit helpers
+- [x] **ARCH-07**: `bye()` (outro + exit 0) and `panic()` (error + exit 1) exit helpers
 - [ ] **ARCH-08**: Unrecognized command handling: red error message + print help + exit 1
 
 ### Test Harness
@@ -153,13 +153,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCAF-04 | Phase 1 | Complete |
 | SCAF-05 | Phase 1 | Complete |
 | SCAF-06 | Phase 1 | Complete |
-| ARCH-01 | Phase 1 | Pending |
+| ARCH-01 | Phase 1 | Complete |
 | ARCH-02 | Phase 1 | Pending |
-| ARCH-03 | Phase 1 | Pending |
-| ARCH-04 | Phase 1 | Pending |
-| ARCH-05 | Phase 1 | Pending |
+| ARCH-03 | Phase 1 | Complete |
+| ARCH-04 | Phase 1 | Complete |
+| ARCH-05 | Phase 1 | Complete |
 | ARCH-06 | Phase 3 | Pending |
-| ARCH-07 | Phase 1 | Pending |
+| ARCH-07 | Phase 1 | Complete |
 | ARCH-08 | Phase 1 | Pending |
 | TEST-01 | Phase 2 | Pending |
 | TEST-02 | Phase 2 | Pending |

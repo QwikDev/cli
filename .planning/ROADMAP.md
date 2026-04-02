@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Tsdown builds dual ESM + CJS output and the `exports` field in package.json resolves both conditions correctly
   4. Biome runs clean with zero lint errors on the scaffolded source
   5. The `Program<T,U>` abstract base class enforces the parse → validate → interact → execute lifecycle and subclasses cannot skip a stage
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] 01-01-PLAN.md — Repository scaffold: package.json, tsconfig, tsdown, biome, japa harness, types, stubs/ directory
@@ -107,7 +107,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffold and Core Architecture | 1/3 | In Progress|  |
+| 1. Scaffold and Core Architecture | 2/3 | In Progress|  |
 | 2. Test Harness | 0/TBD | Not started | - |
 | 3. Shared Foundations and Simple Commands | 0/TBD | Not started | - |
 | 4. Build and New Commands | 0/TBD | Not started | - |
