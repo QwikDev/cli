@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs'
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'))
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/router.ts', 'bin/qwik.ts'],
   format: ['esm', 'cjs'],
   target: 'node20',
   clean: true,
