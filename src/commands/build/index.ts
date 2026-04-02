@@ -16,7 +16,7 @@ function attachMode(script: string, mode: string | undefined): string {
   return `${script} --mode ${mode}`;
 }
 
-function runSequential(scriptValue: string, cwd: string): void {
+function runSequential(scriptValue: string, cwd: string): boolean {
   const result = spawnSync(scriptValue, [], {
     cwd,
     stdio: "inherit",
@@ -24,7 +24,9 @@ function runSequential(scriptValue: string, cwd: string): void {
   });
   if (result.status !== 0) {
     process.exitCode = 1;
+    return false;
   }
+  return true;
 }
 
 function runParallel(scripts: string[], cwd: string): Promise<void[]> {
@@ -99,6 +101,15 @@ export class BuildProgram extends Program<BuildArgs, BuildInput> {
       process.exitCode = 1;
     }
 
+    // Validate mode against safe pattern to prevent command injection
+    if (mode !== undefined && !/^[a-zA-Z0-9._-]+$/.test(mode)) {
+      console.error(
+        `Error: --mode value "${mode}" contains invalid characters. Only letters, digits, dots, underscores, and hyphens are allowed.`,
+      );
+      process.exitCode = 1;
+      return { isPreview, mode: undefined, scripts };
+    }
+
     return { isPreview, mode, scripts };
   }
 
@@ -110,12 +121,16 @@ export class BuildProgram extends Program<BuildArgs, BuildInput> {
     const prebuildKeys = Object.keys(scripts).filter((k) => k.startsWith("prebuild."));
     for (const key of prebuildKeys) {
       const scriptVal = scripts[key];
-      if (scriptVal) runSequential(scriptVal, cwd);
+      if (scriptVal && !runSequential(scriptVal, cwd)) {
+        return 1;
+      }
     }
 
     // 2. build.client (sequential)
     if (scripts["build.client"]) {
-      runSequential(attachMode(scripts["build.client"], mode), cwd);
+      if (!runSequential(attachMode(scripts["build.client"], mode), cwd)) {
+        return 1;
+      }
     }
 
     // 3. Parallel phase
@@ -154,14 +169,18 @@ export class BuildProgram extends Program<BuildArgs, BuildInput> {
 
     // 4. SSG: only if preview AND both build.static and ssg exist
     if (isPreview && scripts["build.static"] && scripts["ssg"]) {
-      runSequential(scripts["ssg"], cwd);
+      if (!runSequential(scripts["ssg"], cwd)) {
+        return 1;
+      }
     }
 
     // 5. Postbuild scripts (sequential)
     const postbuildKeys = Object.keys(scripts).filter((k) => k.startsWith("postbuild."));
     for (const key of postbuildKeys) {
       const scriptVal = scripts[key];
-      if (scriptVal) runSequential(scriptVal, cwd);
+      if (scriptVal && !runSequential(scriptVal, cwd)) {
+        return 1;
+      }
     }
 
     // CRITICAL: return process.exitCode so router's process.exit() propagates failure
