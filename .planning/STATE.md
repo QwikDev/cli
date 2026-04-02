@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-02)
 Phase: Phase 7 (Type Baseline) — ready to start
 Plan: —
 Status: Roadmap defined; ready for planning
-Last activity: 2026-04-02 - Completed quick task 5: Upgrade TypeScript to v6 and fix tsconfig
+Last activity: 2026-04-02 - Completed quick task 6: Rewrite README with practical contributor guide for stubs
 
 **v1.1 Progress bar:** [----------] 0% (0/5 phases)
 
@@ -175,6 +175,7 @@ None.
 | 2 | Deep research on dependency cleanup: magic-regexp removal, cross-spawn to native node, argument parsing consolidation | 2026-04-02 | e1c7d41 | [2-deep-research-on-dependency-cleanup-magi](./quick/2-deep-research-on-dependency-cleanup-magi/) |
 | 3 | Remove cross-spawn, replace with native node:child_process | 2026-04-02 | e537aea | [3-remove-cross-spawn-replace-with-native-n](./quick/3-remove-cross-spawn-replace-with-native-n/) |
 | 5 | Upgrade TypeScript to v6, fix tsconfig for TS6 breaking changes | 2026-04-02 | 71f5541 | [5-upgrade-typescript-to-v6-and-fix-tsconfi](./quick/5-upgrade-typescript-to-v6-and-fix-tsconfi/) |
+| 6 | Rewrite README with practical contributor guide for stubs | 2026-04-02 | f55d0fc | [6-rewrite-readme-with-practical-contributo](./quick/6-rewrite-readme-with-practical-contributo/) |
 
 ## Session Continuity
 
