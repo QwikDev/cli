@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-04-02T04:54:36.837Z"
+stopped_at: Completed 02-04-PLAN.md
+last_updated: "2026-04-01T00:08:00.000Z"
 last_activity: "2026-04-02 — Phase 1 complete: scaffold, core modules, router + 8 command stubs"
 progress:
   total_phases: 6
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 
 ## Current Position
 
-Phase: 1 of 6 (Scaffold and Core Architecture) — COMPLETE
-Plan: 3 of 3 in Phase 1
-Status: Phase 1 complete, ready for Phase 2
-Last activity: 2026-04-02 — Phase 1 complete: scaffold, core modules, router + 8 command stubs
+Phase: 2 of 6 (Test Harness) — COMPLETE
+Plan: 4 of 4 in Phase 2
+Status: Phase 2 complete, ready for Phase 3
+Last activity: 2026-04-01 — Phase 2 complete: 25 golden-path integration tests + 39 unit tests in genuine red state
 
-Progress: [██████████] 100% (Phase 1 complete)
+Progress: [████████░░] 33% (Phases 1-2 of 6 complete)
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [██████████] 100% (Phase 1 complete)
 | Phase 02-test-harness P01 | 2 | 2 tasks | 21 files |
 | Phase 02-test-harness P02 | 5 | 2 tasks | 4 files |
 | Phase 02-test-harness P03 | 15 | 2 tasks | 4 files |
+| Phase 02-test-harness P04 | 8 | 1 task | 2 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,7 @@ Recent decisions affecting current work:
 - [Phase 02-test-harness]: NEW-04 asserts stdout+stderr concatenated for 'already exists' — implementation may write to either stream
 - [Phase 02-test-harness]: runCli/runCreateQwik use absolute TSX_ESM path — Node.js ESM --import loader resolution not affected by NODE_PATH; absolute path required when cwd is outside project root
 - [Phase 02-test-harness]: MIG-01/MIG-04 have positive assertions (files MUST contain new imports) to guarantee genuine red state against stubs; MIG-02/03/05 are vacuous passes with documented TODO Phase 5 comments
+- [Phase 02-test-harness]: ADD-02 positive assertion targets sub/adapters/cloudflare-pages/vite.config.ts — matches --projectDir=./sub invocation pattern established in setup
 
 ### Pending Todos
 
@@ -95,6 +97,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T04:54:36.835Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-04-01T00:08:00.000Z
+Stopped at: Completed 02-04-PLAN.md
 Resume file: None
