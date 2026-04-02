@@ -1,6 +1,6 @@
 import { bye } from "../../console.js";
 import { Program } from "../../core.js";
-import { runV2Migration } from "../../migrate/run-migration.js";
+import { runV2Migration } from "../../../migrations/v2/run-migration.js";
 
 type MigrateArgs = { _: string[] };
 type MigrateInput = { confirmed: boolean };
