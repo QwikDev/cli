@@ -1,4 +1,4 @@
-import { cloudflarePagesAdapter } from "@qwik.dev/router/adapters/cloudflare-pages/vite";
+import { nodeServerAdapter } from "@qwik.dev/router/adapters/node-server/vite";
 import { extendConfig } from "@qwik.dev/router/vite";
 import baseConfig from "../../vite.config.ts";
 
@@ -7,9 +7,9 @@ export default extendConfig(baseConfig, () => {
     build: {
       ssr: true,
       rollupOptions: {
-        input: ["src/entry.cloudflare-pages.tsx"],
+        input: ["src/entry.node-server.tsx"],
       },
     },
-    plugins: [cloudflarePagesAdapter()],
+    plugins: [nodeServerAdapter({ name: "node-server" })],
   };
 });
