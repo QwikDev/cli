@@ -55,6 +55,7 @@
     "@types/yargs": "*",
     "tsdown": "^0.20.1",
     "tsx": "*",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.2"
   }
 }
