@@ -5,7 +5,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Partytown (3rd-party scripts)",
-    "priority": -10,
     "viteConfig": {
       "imports": [
         {

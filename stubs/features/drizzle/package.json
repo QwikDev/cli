@@ -18,7 +18,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Drizzle (Database ORM)",
-    "priority": -10,
     "viteConfig": {},
     "docs": [
       "https://qwik.dev/integrations/drizzle/",

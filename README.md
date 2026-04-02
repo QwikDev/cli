@@ -84,13 +84,12 @@ A stub's `package.json` has two jobs:
     "drizzle-orm": "^0.30.0"
   },
   "__qwik__": {
-    "displayName": "Integration: Drizzle ORM",
-    "priority": -10
+    "displayName": "Integration: Drizzle ORM"
   }
 }
 ```
 
-That's all you need. `displayName` is what appears in the `qwik add` menu, `priority` controls sort order (adapters use 1-40, features use -10).
+That's all you need. `displayName` is what appears in the `qwik add` menu. Priority is derived automatically from the directory — adapters sort above features. You only need to set `priority` if you want to control ordering within the group.
 
 **With Vite plugin injection** (the CLI auto-modifies the user's `vite.config.ts`):
 
@@ -98,7 +97,6 @@ That's all you need. `displayName` is what appears in the `qwik add` menu, `prio
 {
   "__qwik__": {
     "displayName": "Integration: Tailwind v4 (styling)",
-    "priority": -10,
     "viteConfig": {
       "imports": [{ "defaultImport": "tailwindcss", "importPath": "@tailwindcss/vite" }],
       "vitePlugins": ["tailwindcss()"]
@@ -128,7 +126,7 @@ That's all you need. `displayName` is what appears in the `qwik add` menu, `prio
 | Field | Required | Description |
 |-------|----------|-------------|
 | `displayName` | Yes | Label in the `qwik add` selection menu |
-| `priority` | Yes | Sort order. Adapters: 1-40 (shown first), features: -10 |
+| `priority` | No | Override sort order within group. Default: 20 (adapters), -10 (features) |
 | `viteConfig` | No | Auto-adds imports and plugins to `vite.config.ts` |
 | `docs` | No | Documentation URLs shown after install |
 | `nextSteps` | No | Instructions shown after install |

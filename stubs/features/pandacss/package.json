@@ -9,7 +9,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: PandaCSS (styling)",
-    "priority": -10,
     "postInstall": "panda codegen --silent",
     "docs": [
       "https://panda-css.com/docs/getting-started/qwik"

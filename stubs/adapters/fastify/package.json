@@ -15,7 +15,6 @@
     "dotenv": "^16.3.2"
   },
   "__qwik__": {
-    "priority": 20,
     "displayName": "Adapter: Node.js Fastify Server",
     "docs": [
       "https://qwik.dev/integrations/deployments/node/",

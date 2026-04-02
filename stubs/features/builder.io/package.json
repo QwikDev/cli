@@ -6,7 +6,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Builder.io",
-    "priority": -10,
     "viteConfig": {
       "imports": [
         {

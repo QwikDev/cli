@@ -5,7 +5,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Auth.js (authentication)",
-    "priority": -10,
     "docs": [
       "https://qwik.dev/docs/integrations/authjs/",
       "https://authjs.dev/"

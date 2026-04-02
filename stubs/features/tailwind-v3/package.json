@@ -8,7 +8,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Tailwind v3 (styling)",
-    "priority": -10,
     "viteConfig": {},
     "docs": [
       "https://qwik.dev/integrations/integration/tailwind/",

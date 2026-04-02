@@ -8,7 +8,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Boostrap",
-    "priority": -10,
     "viteConfig": {},
     "docs": [
       "https://getbootstrap.com/docs/5.0/getting-started/introduction/"

@@ -60,6 +60,8 @@ export async function loadIntegrations(): Promise<IntegrationData[]> {
 
   const integrations: IntegrationData[] = [];
 
+  const DEFAULT_PRIORITY = { adapters: 20, features: -10 } as const;
+
   for (const subdir of ["adapters", "features"] as const) {
     const subdirPath = join(STUBS_DIR, subdir);
     if (!existsSync(subdirPath)) {
@@ -93,6 +95,11 @@ export async function loadIntegrations(): Promise<IntegrationData[]> {
 
       const qwikMeta = pkgJson.__qwik__ as Record<string, unknown>;
       const filePaths = collectFilePaths(itemDir, itemDir);
+
+      // Derive priority from directory; __qwik__.priority overrides if set
+      if (qwikMeta.priority === undefined) {
+        qwikMeta.priority = DEFAULT_PRIORITY[subdir];
+      }
 
       integrations.push({
         id: entry.name,

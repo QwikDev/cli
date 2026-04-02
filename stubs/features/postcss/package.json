@@ -7,7 +7,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: PostCSS (styling)",
-    "priority": -10,
     "viteConfig": {},
     "docs": [
       "https://qwik.dev/integrations/postcss/",

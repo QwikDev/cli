@@ -8,7 +8,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Styled-Vanilla-Extract (styling)",
-    "priority": -10,
     "viteConfig": {
       "imports": [
         {

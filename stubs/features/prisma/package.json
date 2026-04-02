@@ -12,7 +12,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Prisma (Database ORM)",
-    "priority": -10,
     "viteConfig": {},
     "docs": [
       "https://qwik.dev/integrations/prisma/",

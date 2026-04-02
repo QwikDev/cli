@@ -8,7 +8,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Leaflet Maps",
-    "priority": -10,
     "viteConfig": {},
     "docs": [
       "https://leafletjs.com/reference.html",

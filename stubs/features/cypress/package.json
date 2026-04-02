@@ -10,7 +10,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Cypress",
-    "priority": -10,
     "docs": [
       "https://qwik.dev/integrations/cypress/",
       "https://docs.cypress.io/guides/getting-started/installing-cypress",

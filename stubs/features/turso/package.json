@@ -8,7 +8,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Turso (database)",
-    "priority": -10,
     "viteConfig": {},
     "docs": [
       "https://qwik.dev/integrations/turso/",

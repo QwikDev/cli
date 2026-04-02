@@ -5,7 +5,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: compiled-i18n (compile time translations)",
-    "priority": -10,
     "viteConfig": {
       "imports": [
         {

@@ -9,7 +9,6 @@
     "@types/bun": "*"
   },
   "__qwik__": {
-    "priority": 20,
     "displayName": "Adapter: Bun Server",
     "docs": [
       "https://qwik.dev/deployments/bun/",

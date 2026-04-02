@@ -8,7 +8,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Tailwind v4 (styling)",
-    "priority": -10,
     "viteConfig": {
       "imports": [
         {

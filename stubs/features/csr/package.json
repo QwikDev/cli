@@ -12,7 +12,6 @@
   },
   "__qwik__": {
     "displayName": "Integration: Qwik in browser-only mode",
-    "priority": -10,
     "viteConfig": {},
     "docs": [
       "https://qwik.dev/docs/integrations/client-only/"

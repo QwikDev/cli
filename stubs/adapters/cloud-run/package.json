@@ -6,7 +6,6 @@
     "deploy": "gcloud run deploy my-cloud-run-app --source ."
   },
   "__qwik__": {
-    "priority": 20,
     "displayName": "Adapter: Google Cloud Run server",
     "docs": [
       "https://qwik.dev/deployments/gcp-cloud-run/",
