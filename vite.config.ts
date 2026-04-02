@@ -1,6 +1,19 @@
 import { defineConfig } from "vite-plus";
+import { readFileSync } from "node:fs";
+
+const pkg = JSON.parse(readFileSync("./package.json", "utf-8"));
 
 export default defineConfig({
+  pack: {
+    entry: ["src/index.ts", "src/router.ts", "bin/qwik.ts", "bin/create-qwik.ts"],
+    format: ["esm", "cjs"],
+    target: "node20",
+    clean: true,
+    dts: false,
+    define: {
+      QWIK_VERSION: JSON.stringify(pkg.version),
+    },
+  },
   lint: {
     ignorePatterns: ["dist/**", "node_modules/**", "stubs/**", "specs/**"],
     rules: {
@@ -17,6 +30,9 @@ export default defineConfig({
     trailingComma: "all",
   },
   test: {
-    include: ["tests/unit/upgrade/**/*.spec.ts", "tests/unit/create-qwik/**/*.spec.ts"],
+    include: [
+      "tests/unit/upgrade/**/*.spec.ts",
+      "tests/unit/create-qwik/**/*.spec.ts",
+    ],
   },
 });

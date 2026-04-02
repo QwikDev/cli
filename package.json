@@ -20,7 +20,7 @@
     }
   },
   "scripts": {
-    "build": "tsdown",
+    "build": "vp pack",
     "test": "node --import tsx/esm bin/test.ts",
     "test:unit": "vp test",
     "lint": "vp lint",
@@ -53,7 +53,6 @@
     "@types/which": "*",
     "@types/which-pm-runs": "*",
     "@types/yargs": "*",
-    "tsdown": "^0.20.1",
     "tsx": "*",
     "typescript": "^5.8.3",
     "vite-plus": "^0.1.15",
