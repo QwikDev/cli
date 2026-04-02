@@ -9,6 +9,7 @@ import {
   commitIntegration,
   installDeps,
   integrationHasDeps,
+  mergeIntegrationPackageJson,
   runPostInstall,
 } from "../../integrations/update-app.ts";
 
@@ -94,6 +95,9 @@ export class AddProgram extends Program<AddArgs, AddInput> {
 
     // Commit files to disk
     await commitIntegration(integration, rootDir);
+
+    // Merge integration package.json (scripts, dependencies, devDependencies) into project
+    mergeIntegrationPackageJson(integration, rootDir);
 
     // ADD-06: Install deps if needed
     if (integrationHasDeps(integration)) {

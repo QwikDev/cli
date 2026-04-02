@@ -6,6 +6,55 @@ import type { IntegrationData } from "../types.ts";
 import { getPackageManagerName } from "../utils/package-manager.ts";
 
 /**
+ * Merge scripts, dependencies, and devDependencies from an integration's
+ * package.json into the target project's package.json.
+ * Integration values overwrite target values on conflict.
+ */
+export function mergeIntegrationPackageJson(
+  integration: IntegrationData,
+  rootDir: string,
+): void {
+  const targetPath = join(rootDir, "package.json");
+  const target = JSON.parse(readFileSync(targetPath, "utf-8")) as Record<string, unknown>;
+  const source = integration.pkgJson;
+
+  // Merge scripts
+  if (source.scripts && typeof source.scripts === "object") {
+    target.scripts = Object.assign(
+      {},
+      target.scripts as Record<string, unknown>,
+      source.scripts as Record<string, unknown>,
+    );
+  }
+
+  // Merge dependencies (sorted)
+  if (source.dependencies && typeof source.dependencies === "object") {
+    const merged = Object.assign(
+      {},
+      target.dependencies as Record<string, unknown>,
+      source.dependencies as Record<string, unknown>,
+    );
+    target.dependencies = Object.fromEntries(
+      Object.entries(merged).sort(([a], [b]) => a.localeCompare(b)),
+    );
+  }
+
+  // Merge devDependencies (sorted)
+  if (source.devDependencies && typeof source.devDependencies === "object") {
+    const merged = Object.assign(
+      {},
+      target.devDependencies as Record<string, unknown>,
+      source.devDependencies as Record<string, unknown>,
+    );
+    target.devDependencies = Object.fromEntries(
+      Object.entries(merged).sort(([a], [b]) => a.localeCompare(b)),
+    );
+  }
+
+  writeFileSync(targetPath, JSON.stringify(target, null, 2) + "\n");
+}
+
+/**
  * Copy all integration files into the project rootDir.
  * Creates parent directories as needed.
  */

@@ -1,5 +1,5 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, isAbsolute, join } from "node:path";
 import type { CreateAppResult, IntegrationData } from "../types.ts";
 import { loadAppStarters } from "../integrations/load-app-starters.ts";
 
@@ -197,7 +197,7 @@ export async function createApp(opts: {
   if (!outDir) {
     throw new Error("outDir is required");
   }
-  if (!outDir.startsWith("/")) {
+  if (!isAbsolute(outDir)) {
     throw new Error(`outDir must be an absolute path, got: ${outDir}`);
   }
 
@@ -209,8 +209,7 @@ export async function createApp(opts: {
     throw new Error("base starter not found in stubs/apps/");
   }
 
-  const decodedOutDir = decodeURIComponent(outDir);
-  mkdirSync(decodedOutDir, { recursive: true });
+  mkdirSync(outDir, { recursive: true });
 
   let baseApp: IntegrationData;
   let starterApp: IntegrationData | undefined;
@@ -243,14 +242,14 @@ export async function createApp(opts: {
     dependencies: undefined,
     devDependencies: undefined,
   });
-  writePkgJson(decodedOutDir, initialPkg);
+  writePkgJson(outDir, initialPkg);
 
   // Apply file layers
   createFromStarter({
     baseApp,
     ...(starterApp !== undefined && { starterApp }),
-    outDir: decodedOutDir,
+    outDir: outDir,
   });
 
-  return { outDir: decodedOutDir, appId };
+  return { outDir: outDir, appId };
 }
