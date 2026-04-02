@@ -162,7 +162,7 @@ Plans:
   4. `qwik joke` outputs a joke drawn from the 30-entry pool sourced from the Qwik repo (not the original 10-entry hardcoded list)
   5. The top-level `adapters/` directory no longer exists in the repository
   6. `npm pack --dry-run` lists all starters content files in the tarball output
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 08-01-PLAN.md — Populate stubs/ with all 14 adapters, 22 features, and 4 app starters from upstream Qwik monorepo
@@ -220,7 +220,7 @@ v1.1: Phases execute in dependency order: 7 -> 8 -> 9 -> 10 -> 11 (Phase 8 and 9
 | 5. Add and Upgrade Commands | 4/4 | Complete | 2026-04-02 |
 | 6. Create-Qwik, Check-Client, and Packaging | 0/TBD | Not started | - |
 | 7. Type Baseline | 2/2 | Complete   | 2026-04-02 |
-| 8. Content Population | 0/2 | Not started | - |
+| 8. Content Population | 1/2 | In Progress|  |
 | 9. Migration Architecture | 0/TBD | Not started | - |
 | 10. Tooling Switch | 0/TBD | Not started | - |
 | 11. create-qwik Implementation | 0/TBD | Not started | - |

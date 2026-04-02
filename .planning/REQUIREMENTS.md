@@ -120,11 +120,11 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 
 ### Starters & Content
 
-- [ ] **STRT-01**: User can run `qwik add` and see all 14 deployment adapters as options
-- [ ] **STRT-02**: User can run `qwik add` and see all 22 feature integrations as options
-- [ ] **STRT-03**: Stubs/apps contains all 4 app starters (base, empty, playground, library) with correct `__qwik__` metadata
+- [x] **STRT-01**: User can run `qwik add` and see all 14 deployment adapters as options
+- [x] **STRT-02**: User can run `qwik add` and see all 22 feature integrations as options
+- [x] **STRT-03**: Stubs/apps contains all 4 app starters (base, empty, playground, library) with correct `__qwik__` metadata
 - [ ] **STRT-04**: Top-level `adapters/` directory is removed from the repository
-- [ ] **STRT-05**: `npm pack --dry-run` includes all starters content in the tarball
+- [x] **STRT-05**: `npm pack --dry-run` includes all starters content in the tarball
 
 ### Migration Architecture
 
@@ -267,11 +267,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PKG-02 | Phase 6 | Pending |
 | PKG-03 | Phase 6 | Pending |
 | PKG-04 | Phase 6 | Pending |
-| STRT-01 | Phase 8 | Pending |
-| STRT-02 | Phase 8 | Pending |
-| STRT-03 | Phase 8 | Pending |
+| STRT-01 | Phase 8 | Complete |
+| STRT-02 | Phase 8 | Complete |
+| STRT-03 | Phase 8 | Complete |
 | STRT-04 | Phase 8 | Pending |
-| STRT-05 | Phase 8 | Pending |
+| STRT-05 | Phase 8 | Complete |
 | MIGR-01 | Phase 9 | Pending |
 | MIGR-02 | Phase 9 | Pending |
 | MIGR-03 | Phase 9 | Pending |
