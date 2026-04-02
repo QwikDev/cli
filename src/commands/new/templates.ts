@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRegExp, exactly } from "magic-regexp";
 
@@ -23,12 +23,28 @@ export interface Template {
 }
 
 /**
+ * Resolve the stubs/ directory relative to this file.
+ * Source: src/commands/new/ -> 3 levels up to project root
+ * Compiled: dist/src/commands/new/ -> 4 levels up to project root
+ *
+ * We detect the context by checking if the 3-level path contains stubs/.
+ */
+function resolveStubsDir(): string {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const threeUp = join(__dirname, "..", "..", "..", "stubs");
+  if (existsSync(threeUp)) {
+    return threeUp;
+  }
+  return join(__dirname, "..", "..", "..", "..", "stubs");
+}
+
+/**
  * Discover and load all templates from stubs/templates/.
  * Resolves the directory using import.meta.url for ESM compatibility.
  */
 export function loadTemplates(): Template[] {
-  const __filename = fileURLToPath(import.meta.url);
-  const templatesDir = join(dirname(__filename), "..", "..", "..", "stubs", "templates");
+  const templatesDir = join(resolveStubsDir(), "templates");
 
   if (!existsSync(templatesDir)) {
     return [];
@@ -107,6 +123,8 @@ export function writeTemplateFile(
  * Get the output directory for a given type and nameArg.
  * - component: flat path (src/components), no nameArg subdirectory
  * - route/markdown/mdx: src/routes/<nameArg>
+ *
+ * Throws if the resolved path escapes the expected base directory (path traversal guard).
  */
 export function getOutDir(rootDir: string, typeArg: TemplateType, nameArg: string): string {
   if (typeArg === "component") {
@@ -115,5 +133,16 @@ export function getOutDir(rootDir: string, typeArg: TemplateType, nameArg: strin
   }
 
   // route, markdown, mdx: nameArg includes leading "/" which path.join normalizes
-  return join(rootDir, "src", "routes", nameArg);
+  const outDir = join(rootDir, "src", "routes", nameArg);
+
+  // Path traversal guard: resolved path must remain under src/routes/
+  const expectedBase = resolve(rootDir, "src", "routes");
+  const resolvedOut = resolve(outDir);
+  if (!resolvedOut.startsWith(expectedBase + "/") && resolvedOut !== expectedBase) {
+    throw new Error(
+      `Invalid name: "${nameArg}" would escape the routes directory. Path traversal is not allowed.`,
+    );
+  }
+
+  return outDir;
 }
