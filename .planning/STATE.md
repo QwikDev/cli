@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-04-02T06:51:46.909Z"
-last_activity: "2026-04-01 — Phase 2 complete: 25 golden-path integration tests + 39 unit tests in genuine red state"
+stopped_at: Completed 05-04-PLAN.md
+last_updated: "2026-04-02T07:08:47.241Z"
+last_activity: "2026-04-02 — Phase 5 complete: migrate-v2 and upgrade commands fully implemented with 5-step v1→v2 migration"
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 16
-  completed_plans: 15
-  percent: 33
+  completed_plans: 16
+  percent: 93
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Every command in the existing Qwik CLI must work identically in the new package — 67 MUST PRESERVE behaviors cannot regress.
-**Current focus:** Phase 1 — Scaffold and Core Architecture
+**Current focus:** Phase 5 — Add and Upgrade Commands (COMPLETE)
 
 ## Current Position
 
-Phase: 2 of 6 (Test Harness) — COMPLETE
-Plan: 4 of 4 in Phase 2
-Status: Phase 2 complete, ready for Phase 3
-Last activity: 2026-04-01 — Phase 2 complete: 25 golden-path integration tests + 39 unit tests in genuine red state
+Phase: 5 of 6 (Add and Upgrade Commands) — COMPLETE
+Plan: 4 of 4 in Phase 5
+Status: Phase 5 complete, ready for Phase 6 (create-qwik)
+Last activity: 2026-04-02 — Phase 5 complete: migrate-v2 and upgrade commands fully implemented with 5-step v1→v2 migration
 
-Progress: [████████░░] 33% (Phases 1-2 of 6 complete)
+Progress: [█████████░] 93% (Phases 1-5 of 6 complete)
 
 ## Performance Metrics
 
@@ -108,6 +108,10 @@ Recent decisions affecting current work:
 - [Phase 05-add-and-upgrade-commands]: exact parameter in replacePackage is documentation marker only — both paths produce identical regex; retained to signal intent for @qwik-city-plan replacement
 - [Phase 05-add-and-upgrade-commands]: Adaptive STUBS_DIR resolution (2-level for src/, 3-level for dist/) — tsx runs source files so import.meta.url resolves to src/integrations/ not dist/src/integrations/
 - [Phase 05-add-and-upgrade-commands]: skipConfirmation registered as type 'string' and compared against exact 'true' — yargs parses --flag=true as string when option type is string
+- [Phase 05-add-and-upgrade-commands]: scanBoolean called in execute() not gated by isIt() — enables stdin-piping for test-driven confirm/cancel in non-TTY environments
+- [Phase 05-add-and-upgrade-commands]: Cancel path uses Ctrl+C (\x03) piped to stdin — @clack/prompts isCancel() returns true for SIGINT; EOF does NOT trigger cancel (hangs with exit 13)
+- [Phase 05-add-and-upgrade-commands]: process.chdir/restore wraps visitNotIgnoredFiles and runAllPackageReplacements — both use process.cwd() internally for path resolution and gitignore loading
+- [Phase 05-add-and-upgrade-commands]: upgrade alias in router.ts points to same import as migrate-v2 — single source of truth, both commands always in sync
 
 ### Pending Todos
 
@@ -121,6 +125,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T06:51:46.907Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-04-02T07:08:47.238Z
+Stopped at: Completed 05-04-PLAN.md
 Resume file: None

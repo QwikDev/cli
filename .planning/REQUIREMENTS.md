@@ -70,16 +70,16 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Upgrade Command
 
-- [ ] **UPGR-01**: `qwik migrate-v2` alias routes to upgrade command (ALIAS REQUIRED)
-- [ ] **UPGR-02**: 5-step migration sequence executes in exact documented order
+- [x] **UPGR-01**: `qwik migrate-v2` alias routes to upgrade command (ALIAS REQUIRED)
+- [x] **UPGR-02**: 5-step migration sequence executes in exact documented order
 - [x] **UPGR-03**: AST import renaming: 3 rounds, 8 mappings via oxc-parser + magic-string
 - [x] **UPGR-04**: Text-replacement `replacePackage()` × 5 calls — `@builder.io/qwik` MUST run last (substring constraint)
 - [x] **UPGR-05**: npm dist-tag version resolution for `@qwik.dev/*` packages
 - [x] **UPGR-06**: Gitignore-respected file traversal via `visitNotIgnoredFiles`
 - [x] **UPGR-07**: Binary file detection skip during text replacement
 - [x] **UPGR-08**: ts-morph NOT in final package.json after migration (idempotency: preserve if pre-existing)
-- [ ] **UPGR-09**: Exit 0 on user cancel (cancellation is not an error)
-- [ ] **UPGR-10**: User confirmation prompt before destructive migration begins
+- [x] **UPGR-09**: Exit 0 on user cancel (cancellation is not an error)
+- [x] **UPGR-10**: User confirmation prompt before destructive migration begins
 
 ### Check-Client Command
 
@@ -190,16 +190,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ADD-07 | Phase 5 | Complete |
 | ADD-08 | Phase 5 | Complete |
 | ADD-09 | Phase 5 | Complete |
-| UPGR-01 | Phase 5 | Pending |
-| UPGR-02 | Phase 5 | Pending |
+| UPGR-01 | Phase 5 | Complete |
+| UPGR-02 | Phase 5 | Complete |
 | UPGR-03 | Phase 5 | Complete |
 | UPGR-04 | Phase 5 | Complete |
 | UPGR-05 | Phase 5 | Complete |
 | UPGR-06 | Phase 5 | Complete |
 | UPGR-07 | Phase 5 | Complete |
 | UPGR-08 | Phase 5 | Complete |
-| UPGR-09 | Phase 5 | Pending |
-| UPGR-10 | Phase 5 | Pending |
+| UPGR-09 | Phase 5 | Complete |
+| UPGR-10 | Phase 5 | Complete |
 | CHKC-01 | Phase 6 | Pending |
 | CHKC-02 | Phase 6 | Pending |
 | CHKC-03 | Phase 6 | Pending |
