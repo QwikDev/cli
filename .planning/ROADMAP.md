@@ -13,7 +13,7 @@ A spec-driven reimplementation of the Qwik CLI as a standalone `@qwik.dev/cli` p
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Scaffold and Core Architecture** - Repo skeleton with all extraction blockers resolved; Program base class, command router, and console utilities wired (completed 2026-04-02)
-- [ ] **Phase 2: Test Harness** - 6 static fixture projects, 25 golden-path Japa tests written spec-first, before any command implementation
+- [x] **Phase 2: Test Harness** - 6 static fixture projects, 25 golden-path Japa tests written spec-first, before any command implementation (completed 2026-04-02)
 - [ ] **Phase 3: Shared Foundations and Simple Commands** - Package manager detection, asset resolution services; version, joke, and help commands working end-to-end
 - [ ] **Phase 4: Build and New Commands** - Parallel build orchestration with lifecycle hooks; route and component file generation with token substitution
 - [ ] **Phase 5: Add and Upgrade Commands** - Integration installation with consent gate; AST-based migration with exact 5-step ordering and oxc-parser codemods
@@ -47,7 +47,7 @@ Plans:
   2. All 6 static fixture projects (FX-01 through FX-06) exist on disk per PARITY-TEST-PLAN.md specifications; FX-07 and FX-08 are runtime outputs of CRE-01/CRE-02 tests and will be produced in Phase 6 when `bin/create-qwik.ts` exists
   3. Every test asserts an exit code (0 or 1); no test omits exit code assertion
   4. Mtime manipulation helpers (setMtimePast, setMtimeFuture) can alter file timestamps on FX-06 dist/q-manifest.json to simulate stale and up-to-date states for check-client scenarios
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 02-01-PLAN.md — Test infrastructure: CLI subprocess helper, mtime helpers, 6 static fixture directories (FX-01 through FX-06)
@@ -113,7 +113,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Scaffold and Core Architecture | 3/3 | Complete   | 2026-04-02 |
-| 2. Test Harness | 2/3 | In Progress|  |
+| 2. Test Harness | 3/3 | Complete   | 2026-04-02 |
 | 3. Shared Foundations and Simple Commands | 0/TBD | Not started | - |
 | 4. Build and New Commands | 0/TBD | Not started | - |
 | 5. Add and Upgrade Commands | 0/TBD | Not started | - |

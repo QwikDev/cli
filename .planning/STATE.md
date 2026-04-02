@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-04-02T04:51:06.380Z"
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-04-02T04:54:36.837Z"
 last_activity: "2026-04-02 — Phase 1 complete: scaffold, core modules, router + 8 command stubs"
 progress:
   total_phases: 6
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
   percent: 100
 ---
 
@@ -55,6 +55,7 @@ Progress: [██████████] 100% (Phase 1 complete)
 | Phase 01-scaffold-and-core-architecture P03 | 8 | 2 tasks | 13 files |
 | Phase 02-test-harness P01 | 2 | 2 tasks | 21 files |
 | Phase 02-test-harness P02 | 5 | 2 tasks | 4 files |
+| Phase 02-test-harness P03 | 15 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,8 @@ Recent decisions affecting current work:
 - [Phase 02-test-harness]: Root .gitignore negation added for tests/fixtures/fx-06/dist/ — q-manifest.json must be tracked for mtime tests (CHK-02/CHK-03)
 - [Phase 02-test-harness]: BUILD-04 injects failing build.server via writeFileSync in setup — avoids dedicated failing fixture, keeps setup self-contained
 - [Phase 02-test-harness]: NEW-04 asserts stdout+stderr concatenated for 'already exists' — implementation may write to either stream
+- [Phase 02-test-harness]: runCli/runCreateQwik use absolute TSX_ESM path — Node.js ESM --import loader resolution not affected by NODE_PATH; absolute path required when cwd is outside project root
+- [Phase 02-test-harness]: MIG-01/MIG-04 have positive assertions (files MUST contain new imports) to guarantee genuine red state against stubs; MIG-02/03/05 are vacuous passes with documented TODO Phase 5 comments
 
 ### Pending Todos
 
@@ -92,6 +95,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T04:51:06.378Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-04-02T04:54:36.835Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None
