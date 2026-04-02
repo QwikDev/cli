@@ -50,7 +50,11 @@ test.group("ADD-02 -- qwik add with --projectDir", (group) => {
   test("adds integration to --projectDir subdirectory", ({ assert }) => {
     const result = runCli(["add", "--projectDir=./sub", "--skipConfirmation=true"], tmpDir);
     assert.strictEqual(result.status, 0);
-    // Will FAIL until Phase 5 implements add command (stub does not write adapter files).
+    // Will FAIL until Phase 5 implements add command with --projectDir support (stub does not write adapter files).
+    // Positive assertion: adapter file must be written to the sub/ subdirectory.
+    // Will FAIL against stub — stub does not write any files.
+    const adapterFile = join(tmpDir, "sub", "adapters", "cloudflare-pages", "vite.config.ts");
+    assert.isTrue(existsSync(adapterFile), `Expected adapter file at ${adapterFile} to be created under --projectDir`);
   });
 });
 

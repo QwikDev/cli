@@ -58,3 +58,30 @@ test.group("CRE-02 -- create-qwik library", (group) => {
     assert.notProperty(pkg, "starterApp", "package.json must not contain merge artifact key 'starterApp'");
   });
 });
+
+test.group("CRE-03 -- create-qwik playground", (group) => {
+  let tmpDir: string;
+
+  group.each.setup(() => {
+    tmpDir = join(os.tmpdir(), `qwik-cre-03-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    mkdirSync(tmpDir, { recursive: true });
+  });
+
+  group.each.teardown(() => {
+    rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  test("scaffolds playground starter with counter component", ({ assert }) => {
+    const outDir = join(tmpDir, "my-playground");
+    const result = runCreateQwik(["playground", outDir]);
+    // Will FAIL: bin/create-qwik.ts does not exist until Phase 6.
+    // The spawnSync call returns non-zero status when module cannot be found.
+    assert.strictEqual(result.status, 0);
+    assert.isTrue(existsSync(join(outDir, "package.json")), "scaffolded playground must have package.json");
+    // Per PARITY-TEST-PLAN.md CRE-03: Counter component at src/components/starter/counter/counter.tsx
+    assert.isTrue(
+      existsSync(join(outDir, "src", "components", "starter", "counter", "counter.tsx")),
+      "scaffolded playground must have counter component at src/components/starter/counter/counter.tsx",
+    );
+  });
+});
