@@ -45,10 +45,17 @@ export function buildMigrationChain(
     return [...registry];
   }
 
+  // Coerce the target version too — this handles pre-release strings like "2.0.0-beta.30"
+  // so that a registry step at "2.0.0" is included when targeting "2.0.0-beta.30".
+  // Without coercion: semver.lte("2.0.0", "2.0.0-beta.30") === false (stable > pre-release).
+  // With coercion: semver.lte("2.0.0", "2.0.0") === true (correct behaviour).
+  const coercedTarget = semver.coerce(toVersion);
+  const effectiveTarget = coercedTarget?.version ?? toVersion;
+
   // Return only steps strictly greater than from version AND at or below toVersion
   return registry.filter(
     (step) =>
       semver.gt(step.version, coerced.version) &&
-      semver.lte(step.version, toVersion),
+      semver.lte(step.version, effectiveTarget),
   );
 }

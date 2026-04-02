@@ -5,7 +5,9 @@ processCLIArgs(process.argv.splice(2));
 
 configure({
   plugins: [assert()],
-  files: ["tests/**/*.spec.ts"],
+  // Exclude tests/unit/upgrade/ — those use Vitest API (describe/expect), not Japa.
+  // Run them separately with: pnpm vitest run tests/unit/upgrade/
+  files: ["tests/**/*.spec.ts", "!tests/unit/upgrade/**"],
 });
 
 run();
