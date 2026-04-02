@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Scaffold and Core Architecture** - Repo skeleton with all extraction blockers resolved; Program base class, command router, and console utilities wired (completed 2026-04-02)
 - [x] **Phase 2: Test Harness** - 6 static fixture projects, 25 golden-path Japa tests written spec-first, before any command implementation (completed 2026-04-02)
-- [ ] **Phase 3: Shared Foundations and Simple Commands** - Package manager detection, asset resolution services; version, joke, and help commands working end-to-end
+- [x] **Phase 3: Shared Foundations and Simple Commands** - Package manager detection, asset resolution services; version, joke, and help commands working end-to-end (completed 2026-04-02)
 - [ ] **Phase 4: Build and New Commands** - Parallel build orchestration with lifecycle hooks; route and component file generation with token substitution
 - [ ] **Phase 5: Add and Upgrade Commands** - Integration installation with consent gate; AST-based migration with exact 5-step ordering and oxc-parser codemods
 - [ ] **Phase 6: Create-Qwik, Check-Client, and Packaging** - Standalone scaffolding binary; manifest-based staleness detection; dual ESM+CJS package published as @qwik.dev/cli
@@ -64,7 +64,7 @@ Plans:
   3. `qwik help` displays all 9 command names with descriptions and exits 0
   4. Running `qwik` inside a pnpm project detects pnpm; running without any `npm_config_user_agent` falls back to pnpm
   5. Parity tests VER-01 and JOKE-01 pass
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 03-01-PLAN.md — Package manager detection utility, version command with dual-path resolution
@@ -118,7 +118,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Scaffold and Core Architecture | 3/3 | Complete   | 2026-04-02 |
 | 2. Test Harness | 4/4 | Complete   | 2026-04-02 |
-| 3. Shared Foundations and Simple Commands | 0/2 | Not started | - |
+| 3. Shared Foundations and Simple Commands | 2/2 | Complete   | 2026-04-02 |
 | 4. Build and New Commands | 0/TBD | Not started | - |
 | 5. Add and Upgrade Commands | 0/TBD | Not started | - |
 | 6. Create-Qwik, Check-Client, and Packaging | 0/TBD | Not started | - |

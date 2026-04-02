@@ -92,9 +92,9 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Simple Commands
 
 - [x] **SIMP-01**: `qwik version` outputs bare semver string (one line, no label prefix)
-- [ ] **SIMP-02**: `qwik joke` outputs setup + punchline, exit 0, no file writes or installs
-- [ ] **SIMP-03**: `qwik help` displays all commands with descriptions
-- [ ] **SIMP-04**: Jokes array is static data within CLI package (no cross-package import)
+- [x] **SIMP-02**: `qwik joke` outputs setup + punchline, exit 0, no file writes or installs
+- [x] **SIMP-03**: `qwik help` displays all commands with descriptions
+- [x] **SIMP-04**: Jokes array is static data within CLI package (no cross-package import)
 
 ### Create-Qwik
 
@@ -206,9 +206,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CHKC-04 | Phase 6 | Pending |
 | CHKC-05 | Phase 6 | Pending |
 | SIMP-01 | Phase 3 | Complete |
-| SIMP-02 | Phase 3 | Pending |
-| SIMP-03 | Phase 3 | Pending |
-| SIMP-04 | Phase 3 | Pending |
+| SIMP-02 | Phase 3 | Complete |
+| SIMP-03 | Phase 3 | Complete |
+| SIMP-04 | Phase 3 | Complete |
 | CRQW-01 | Phase 6 | Pending |
 | CRQW-02 | Phase 6 | Pending |
 | CRQW-03 | Phase 6 | Pending |
