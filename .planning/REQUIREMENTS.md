@@ -50,11 +50,11 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **NEW-02**: `qwik new name` (no leading `/`) creates component in `src/components/`
 - [ ] **NEW-03**: `qwik new /path.md` and `/path.mdx` create markdown/MDX routes
 - [ ] **NEW-04**: Duplicate file guard throws `"${filename}" already exists in "${outDir}"`
-- [ ] **NEW-05**: `--<templateId>` flag selects template; default template `qwik` when positional given
+- [x] **NEW-05**: `--<templateId>` flag selects template; default template `qwik` when positional given
 - [ ] **NEW-06**: Auto-select template when exactly 1 template found (no prompt)
 - [ ] **NEW-07**: `fs.mkdirSync(outDir, { recursive: true })` creates parent directories
 - [ ] **NEW-08**: Interactive prompt flow: select type → text name → select template (each conditional)
-- [ ] **NEW-09**: `parseInputName()` slug and PascalCase transformation; split on `[-_\s]` only
+- [x] **NEW-09**: `parseInputName()` slug and PascalCase transformation; split on `[-_\s]` only
 
 ### Add Command
 
@@ -176,11 +176,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | NEW-02 | Phase 4 | Pending |
 | NEW-03 | Phase 4 | Pending |
 | NEW-04 | Phase 4 | Pending |
-| NEW-05 | Phase 4 | Pending |
+| NEW-05 | Phase 4 | Complete |
 | NEW-06 | Phase 4 | Pending |
 | NEW-07 | Phase 4 | Pending |
 | NEW-08 | Phase 4 | Pending |
-| NEW-09 | Phase 4 | Pending |
+| NEW-09 | Phase 4 | Complete |
 | ADD-01 | Phase 5 | Pending |
 | ADD-02 | Phase 5 | Pending |
 | ADD-03 | Phase 5 | Pending |
