@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Phases
 status: planning
-stopped_at: Completed quick-2 dependency cleanup research
-last_updated: "2026-04-02T21:10:03.821Z"
-last_activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
+stopped_at: Completed 12-ci-setup-01-PLAN.md
+last_updated: "2026-04-02T22:34:18.431Z"
+last_activity: "2026-04-02 - Completed quick task 3: Remove cross-spawn, replace with native node:child_process"
 progress:
-  total_phases: 11
-  completed_phases: 10
-  total_plans: 25
-  completed_plans: 25
+  total_phases: 12
+  completed_phases: 11
+  total_plans: 26
+  completed_plans: 26
 ---
 
 # Project State
@@ -79,6 +79,7 @@ Last activity: 2026-04-02 - Completed quick task 3: Remove cross-spawn, replace 
 | Phase 10-tooling-switch P01 | 15 | 2 tasks | 126 files |
 | Phase 11-create-qwik-implementation P01 | 13 | 2 tasks | 15 files |
 | Phase 11-create-qwik-implementation P02 | 7 | 1 tasks | 2 files |
+| Phase 12-ci-setup P01 | 1 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -150,6 +151,11 @@ Recent decisions affecting current work:
 - [Phase 11-create-qwik-implementation]: panam/executor sub-path import (not panam/dist/executor.js) — exports map resolves correctly with NodeNext moduleResolution
 - [Phase 11-create-qwik-implementation]: bgInstall tracked as outer-scoped let var so try/catch error handler can abort without per-prompt references
 - [Phase 11-create-qwik-implementation]: Spinner polls bgInstall.success every 100ms during joke wait — avoids exposing proc.result to interactive layer
+- [Phase 12-ci-setup]: setup-vp@v1 single step replaces manual pnpm/action-setup + setup-node + cache; Node 24 explicit; cancel-in-progress for PRs only via event_name expression
+
+### Roadmap Evolution
+
+- Phase 12 added: CI setup
 
 ### Pending Todos
 
@@ -171,6 +177,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-02T21:58:17Z
-Stopped at: Completed quick-3 cross-spawn removal
+Last session: 2026-04-02T22:34:18.429Z
+Stopped at: Completed 12-ci-setup-01-PLAN.md
 Resume file: None
