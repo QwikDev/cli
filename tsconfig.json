@@ -9,7 +9,7 @@
     "rewriteRelativeImportExtensions": true,
     "declaration": true,
     "sourceMap": true,
-    "esModuleInterop": true,
+    "types": ["node", "yargs", "semver", "which-pm-runs"],
     "skipLibCheck": true,
     "outDir": "dist",
     "rootDir": "."
