@@ -24,8 +24,11 @@
   "scripts": {
     "build": "tsdown",
     "test": "node --import tsx/esm bin/test.ts",
-    "lint": "biome check .",
-    "format": "biome format --write ."
+    "test:unit": "vp test",
+    "lint": "vp lint",
+    "lint:fix": "vp lint --fix",
+    "format": "vp fmt",
+    "format:check": "vp check"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
@@ -43,7 +46,6 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.0.0",
     "@japa/assert": "^4.0.1",
     "@japa/runner": "^4.2.0",
     "@types/cross-spawn": "*",
@@ -56,6 +58,7 @@
     "tsdown": "^0.20.1",
     "tsx": "*",
     "typescript": "^5.8.3",
+    "vite-plus": "^0.1.15",
     "vitest": "^4.1.2"
   }
 }
