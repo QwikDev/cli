@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-04-02T06:19:50.690Z"
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-04-02T06:45:46.964Z"
 last_activity: "2026-04-01 — Phase 2 complete: 25 golden-path integration tests + 39 unit tests in genuine red state"
 progress:
   total_phases: 6
   completed_phases: 4
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 16
+  completed_plans: 13
   percent: 33
 ---
 
@@ -62,6 +62,7 @@ Progress: [████████░░] 33% (Phases 1-2 of 6 complete)
 | Phase 04-build-and-new-commands P01 | 12 | 1 tasks | 1 files |
 | Phase 04-build-and-new-commands P02 | 12 | 2 tasks | 7 files |
 | Phase 04-build-and-new-commands P03 | 12 | 1 tasks | 1 files |
+| Phase 05-add-and-upgrade-commands P01 | 8 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -98,6 +99,9 @@ Recent decisions affecting current work:
 - [Phase 04-build-and-new-commands]: getOutDir returns flat src/components for component type (no subdirectory, matches NEW-02)
 - [Phase 04-build-and-new-commands]: writeTemplateFile duplicate guard throws with exact format: outFilename already exists in outDir
 - [Phase 04-build-and-new-commands]: Markdown/mdx handled as special case in execute(): outDir = dirname, filename = basename+ext — produces flat src/routes/blog/post.md not subdirectory/index.md
+- [Phase 05-add-and-upgrade-commands]: visitNotIgnoredFiles always adds .git to ignore rules even without .gitignore (safety, per UPGR-06 research pitfall 5)
+- [Phase 05-add-and-upgrade-commands]: .ts removed from BINARY_EXTENSIONS — conflated TypeScript source with MPEG-TS video container format
+- [Phase 05-add-and-upgrade-commands]: Symlinks intentionally not followed in visitNotIgnoredFiles (OQ-07 deferred decision: skip is safer default)
 
 ### Pending Todos
 
@@ -111,6 +115,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T06:15:15.444Z
-Stopped at: Completed 04-03-PLAN.md
+Last session: 2026-04-02T06:45:46.962Z
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None

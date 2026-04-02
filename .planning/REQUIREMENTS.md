@@ -65,7 +65,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **ADD-05**: Integration file writes committed only after user confirmation (or --skipConfirmation)
 - [ ] **ADD-06**: `installDeps()` runs when integration adds dependencies
 - [ ] **ADD-07**: `postInstall` script execution when `integration.pkgJson.__qwik__.postInstall` exists
-- [ ] **ADD-08**: `loadIntegrations()` discovers integrations from `stubs/` directory
+- [x] **ADD-08**: `loadIntegrations()` discovers integrations from `stubs/` directory
 - [ ] **ADD-09**: Exit 0 on success, exit 1 on file-write or install failure
 
 ### Upgrade Command
@@ -75,8 +75,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **UPGR-03**: AST import renaming: 3 rounds, 8 mappings via oxc-parser + magic-string
 - [ ] **UPGR-04**: Text-replacement `replacePackage()` × 5 calls — `@builder.io/qwik` MUST run last (substring constraint)
 - [ ] **UPGR-05**: npm dist-tag version resolution for `@qwik.dev/*` packages
-- [ ] **UPGR-06**: Gitignore-respected file traversal via `visitNotIgnoredFiles`
-- [ ] **UPGR-07**: Binary file detection skip during text replacement
+- [x] **UPGR-06**: Gitignore-respected file traversal via `visitNotIgnoredFiles`
+- [x] **UPGR-07**: Binary file detection skip during text replacement
 - [ ] **UPGR-08**: ts-morph NOT in final package.json after migration (idempotency: preserve if pre-existing)
 - [ ] **UPGR-09**: Exit 0 on user cancel (cancellation is not an error)
 - [ ] **UPGR-10**: User confirmation prompt before destructive migration begins
@@ -188,15 +188,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ADD-05 | Phase 5 | Pending |
 | ADD-06 | Phase 5 | Pending |
 | ADD-07 | Phase 5 | Pending |
-| ADD-08 | Phase 5 | Pending |
+| ADD-08 | Phase 5 | Complete |
 | ADD-09 | Phase 5 | Pending |
 | UPGR-01 | Phase 5 | Pending |
 | UPGR-02 | Phase 5 | Pending |
 | UPGR-03 | Phase 5 | Pending |
 | UPGR-04 | Phase 5 | Pending |
 | UPGR-05 | Phase 5 | Pending |
-| UPGR-06 | Phase 5 | Pending |
-| UPGR-07 | Phase 5 | Pending |
+| UPGR-06 | Phase 5 | Complete |
+| UPGR-07 | Phase 5 | Complete |
 | UPGR-08 | Phase 5 | Pending |
 | UPGR-09 | Phase 5 | Pending |
 | UPGR-10 | Phase 5 | Pending |
