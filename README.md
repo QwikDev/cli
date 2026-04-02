@@ -70,48 +70,65 @@ The directory name becomes the stub ID (what users type in `qwik add <id>`).
 
 ### package.json format
 
-```jsonc
+A stub's `package.json` has two jobs:
+
+1. **Standard npm fields** (`dependencies`, `devDependencies`, `scripts`) — these get merged into the user's project.
+2. **`__qwik__` metadata** — tells the CLI how to present and apply the integration.
+
+**Minimal example** (a feature that just adds a dependency):
+
+```json
 {
-  "description": "Human-readable description",
-  "type": "module",
-  // Dependencies merged into user's package.json
+  "description": "Drizzle ORM",
   "devDependencies": {
-    "tailwindcss": "^4.1.4"
+    "drizzle-orm": "^0.30.0"
   },
+  "__qwik__": {
+    "displayName": "Integration: Drizzle ORM",
+    "priority": -10
+  }
+}
+```
+
+That's all you need. `displayName` is what appears in the `qwik add` menu, `priority` controls sort order (adapters use 1-40, features use -10).
+
+**With Vite plugin injection** (the CLI auto-modifies the user's `vite.config.ts`):
+
+```json
+{
   "__qwik__": {
     "displayName": "Integration: Tailwind v4 (styling)",
     "priority": -10,
-    // Optional: auto-modify user's vite.config.ts
     "viteConfig": {
-      "imports": [
-        {
-          "defaultImport": "tailwindcss",
-          "importPath": "@tailwindcss/vite"
-        }
-      ],
+      "imports": [{ "defaultImport": "tailwindcss", "importPath": "@tailwindcss/vite" }],
       "vitePlugins": ["tailwindcss()"]
-    },
-    // Optional: doc links shown after install
-    "docs": [
-      "https://tailwindcss.com/docs"
-    ],
-    // Optional: next steps shown after install
-    "nextSteps": {
-      "title": "Next Steps",
-      "lines": [
-        "Add Tailwind directives to your global.css"
-      ]
     }
   }
 }
 ```
 
-### `__qwik__` fields
+**With post-install messaging:**
+
+```json
+{
+  "__qwik__": {
+    "displayName": "Adapter: Cloudflare Pages",
+    "priority": 40,
+    "docs": ["https://qwik.dev/deployments/cloudflare-pages/"],
+    "nextSteps": {
+      "title": "Next Steps",
+      "lines": ["Run `pnpm run build` then `pnpm run deploy`"]
+    }
+  }
+}
+```
+
+### `__qwik__` field reference
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `displayName` | Yes | Shown in the `qwik add` selection menu |
-| `priority` | Yes | Sort order. Adapters use 1-40, features use -10 |
+| `displayName` | Yes | Label in the `qwik add` selection menu |
+| `priority` | Yes | Sort order. Adapters: 1-40 (shown first), features: -10 |
 | `viteConfig` | No | Auto-adds imports and plugins to `vite.config.ts` |
 | `docs` | No | Documentation URLs shown after install |
 | `nextSteps` | No | Instructions shown after install |
