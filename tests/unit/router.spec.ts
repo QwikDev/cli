@@ -100,7 +100,13 @@ test.group("Router - command stubs return 0", () => {
     );
     const program = new AddProgram();
     program.setInteractive(false);
-    const code = await program.run(["node", "qwik", "add"]);
+    const code = await program.run([
+      "node",
+      "qwik",
+      "add",
+      "cloudflare-pages",
+      "--skipConfirmation=true",
+    ]);
     assert.strictEqual(code, 0);
   });
 });
