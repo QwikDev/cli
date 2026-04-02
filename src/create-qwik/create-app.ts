@@ -101,7 +101,9 @@ function mergePackageJsons(outDir: string, source: Record<string, unknown>): voi
       target.dependencies as Record<string, unknown>,
       source.dependencies as Record<string, unknown>,
     );
-    target.dependencies = Object.fromEntries(Object.entries(merged).sort(([a], [b]) => a.localeCompare(b)));
+    target.dependencies = Object.fromEntries(
+      Object.entries(merged).sort(([a], [b]) => a.localeCompare(b)),
+    );
   }
 
   // Merge devDependencies (source overwrites target, sort keys)
@@ -111,7 +113,9 @@ function mergePackageJsons(outDir: string, source: Record<string, unknown>): voi
       target.devDependencies as Record<string, unknown>,
       source.devDependencies as Record<string, unknown>,
     );
-    target.devDependencies = Object.fromEntries(Object.entries(merged).sort(([a], [b]) => a.localeCompare(b)));
+    target.devDependencies = Object.fromEntries(
+      Object.entries(merged).sort(([a], [b]) => a.localeCompare(b)),
+    );
   }
 
   writePkgJson(outDir, target);
@@ -242,7 +246,11 @@ export async function createApp(opts: {
   writePkgJson(decodedOutDir, initialPkg);
 
   // Apply file layers
-  createFromStarter({ baseApp, ...(starterApp !== undefined && { starterApp }), outDir: decodedOutDir });
+  createFromStarter({
+    baseApp,
+    ...(starterApp !== undefined && { starterApp }),
+    outDir: decodedOutDir,
+  });
 
   return { outDir: decodedOutDir, appId };
 }

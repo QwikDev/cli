@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { clearAppStartersCache, loadAppStarters } from "../../../src/integrations/load-app-starters.ts";
+import {
+  clearAppStartersCache,
+  loadAppStarters,
+} from "../../../src/integrations/load-app-starters.ts";
 import { loadIntegrations } from "../../../src/integrations/load-integrations.ts";
 
 describe("loadAppStarters", () => {

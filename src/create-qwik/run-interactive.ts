@@ -74,9 +74,7 @@ export async function runCreateInteractiveCli(): Promise<void> {
       const entries = readdirSync(resolvedOutDir);
       if (entries.length > 0) {
         await bgInstall.abort();
-        throw new Error(
-          `Directory already exists and is not empty: ${resolvedOutDir}`,
-        );
+        throw new Error(`Directory already exists and is not empty: ${resolvedOutDir}`);
       }
     }
 

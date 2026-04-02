@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "Qwik CLI - the official CLI for Qwik projects",
   "bin": {
-    "qwik": "./dist/bin/qwik.mjs",
-    "create-qwik": "./dist/bin/create-qwik.mjs"
+    "create-qwik": "./dist/bin/create-qwik.mjs",
+    "qwik": "./dist/bin/qwik.mjs"
   },
   "files": [
     "dist",

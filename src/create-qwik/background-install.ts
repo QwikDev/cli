@@ -33,7 +33,10 @@ const LOCK_FILES = ["package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.loc
 export function backgroundInstallDeps(baseAppDir: string, outDir: string): BackgroundInstall {
   // Unique tmp dir name — sibling of outDir
   const tmpId =
-    ".create-qwik-" + Math.round(Math.random() * Number.MAX_SAFE_INTEGER).toString(36).toLowerCase();
+    ".create-qwik-" +
+    Math.round(Math.random() * Number.MAX_SAFE_INTEGER)
+      .toString(36)
+      .toLowerCase();
   const tmpInstallDir = resolve(outDir, "..", tmpId);
 
   // Create tmp dir and copy package.json into it

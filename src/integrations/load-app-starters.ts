@@ -111,8 +111,10 @@ export async function loadAppStarters(): Promise<IntegrationData[]> {
 
   // Sort by priority (descending) then id (ascending)
   starters.sort((a, b) => {
-    const aPriority = ((a.pkgJson.__qwik__ as Record<string, unknown> | undefined)?.priority as number) ?? 0;
-    const bPriority = ((b.pkgJson.__qwik__ as Record<string, unknown> | undefined)?.priority as number) ?? 0;
+    const aPriority =
+      ((a.pkgJson.__qwik__ as Record<string, unknown> | undefined)?.priority as number) ?? 0;
+    const bPriority =
+      ((b.pkgJson.__qwik__ as Record<string, unknown> | undefined)?.priority as number) ?? 0;
     if (bPriority !== aPriority) {
       return bPriority - aPriority;
     }
