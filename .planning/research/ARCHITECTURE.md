@@ -1,447 +1,489 @@
 # Architecture Research
 
 **Domain:** Multi-command CLI tool (9-command Qwik CLI + create-qwik scaffolder)
-**Researched:** 2026-04-01
-**Confidence:** HIGH — Reference implementation source verified directly from QwikDev/astro repo; all spec files read from verified commits.
+**Researched:** 2026-04-02
+**Confidence:** HIGH — All integration points verified against actual source files in /src/, /stubs/, /bin/, and /adapters/; create-qwik reference read from /packages/create-qwik/
 
-## Standard Architecture
+---
 
-### System Overview
+## Integration Analysis: New Features vs Existing Architecture
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                          Entry Layer                                  │
-│   bin/qwik.ts → router.ts (switch on argv[2])                        │
-│   bin/create-qwik.ts → CreateQwikProgram.run(argv)                   │
-└──────────────────────────────────────┬───────────────────────────────┘
-                                       │
-┌──────────────────────────────────────▼───────────────────────────────┐
-│                        Program Layer                                  │
-│  Program<T,U> (abstract, from core.ts)                               │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐  │
-│  │ AddProg  │ │BuildProg │ │ NewProg  │ │MigratePr.│ │CreateQwik│  │
-│  │ extends  │ │ extends  │ │ extends  │ │ extends  │ │ extends  │  │
-│  │ Program  │ │ Program  │ │ Program  │ │ Program  │ │ Program  │  │
-│  └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘  │
-│       │             │            │             │            │        │
-│  configure() → parse() → validate()/interact() → execute()          │
-└──────────────────────────────────────┬───────────────────────────────┘
-                                       │
-┌──────────────────────────────────────▼───────────────────────────────┐
-│                       Shared Services Layer                           │
-│  ┌────────────────┐  ┌───────────────┐  ┌──────────────────────────┐ │
-│  │ integrations   │  │  update-app   │  │     install-deps         │ │
-│  │ loadIntegrat() │  │  updateApp()  │  │  installDeps()           │ │
-│  │ (cached, async)│  │  CODE_MOD     │  │  backgroundInstallDeps() │ │
-│  └────────────────┘  └───────────────┘  └──────────────────────────┘ │
-│  ┌────────────────┐  ┌───────────────┐  ┌──────────────────────────┐ │
-│  │ console.ts     │  │  codemods     │  │   fs utilities           │ │
-│  │ clack wrappers │  │  oxc+magic-s  │  │  fs-extra, path helpers  │ │
-│  └────────────────┘  └───────────────┘  └──────────────────────────┘ │
-└──────────────────────────────────────┬───────────────────────────────┘
-                                       │
-┌──────────────────────────────────────▼───────────────────────────────┐
-│                          Asset Layer                                  │
-│  stubs/                                                               │
-│  ├── adapters/   (14 adapter directories with package.json)          │
-│  ├── features/   (22 feature directories with package.json)          │
-│  ├── apps/       (base, empty, playground, library + stubs)          │
-│  └── templates/  (qwik/ subdirs for component/route/markdown/mdx)    │
-└──────────────────────────────────────────────────────────────────────┘
-```
+This document answers four specific integration questions for the v1.1 milestone, with reference to the current codebase at each decision point.
 
-### Component Responsibilities
+---
 
-| Component | Responsibility | Notes |
-|-----------|----------------|-------|
-| `bin/qwik.ts` | Shebang entry, call router | Thin: imports router, invokes it |
-| `bin/create-qwik.ts` | Shebang entry, call CreateQwikProgram | Thin: imports app, calls `.run(process.argv)` |
-| `router.ts` | Parse `argv[2]`, dispatch to correct Program | Switch or map; not a framework |
-| `core.ts` → `Program<T,U>` | Abstract base: configure, parse, validate, interact, execute lifecycle | Copied from reference; owns yargs, isIt(), scanBoolean/String/Choice |
-| `commands/add/` | `AddProgram extends Program` — integration installation | Owns `loadIntegrations`, `updateApp`, confirmation gate |
-| `commands/build/` | `BuildProgram extends Program` — build orchestration | Owns script discovery, parallel execution ordering |
-| `commands/new/` | `NewProgram extends Program` — component/route scaffolding | Owns type/name inference, template resolution, duplicate guard |
-| `commands/migrate/` | `MigrateProgram extends Program` — v2 migration | Owns ts-morph install/remove, AST rename, text replace (replaces ts-morph with oxc+magic-string) |
-| `commands/check-client/` | `CheckClientProgram extends Program` — freshness check | Owns manifest read, mtime comparison, conditional build trigger |
-| `commands/joke/` | `JokeProgram extends Program` — dad joke | Owns jokes.json read, random selection |
-| `commands/help/` | `HelpProgram extends Program` — help display | Owns COMMANDS list rendering, re-dispatch logic |
-| `commands/version/` | `VersionProgram extends Program` — version print | Reads build-injected QWIK_VERSION constant |
-| `services/integrations.ts` | Discovery of adapters/features/apps from stubs/ | Cached per-process; path relative to `__dirname` of bundle |
-| `services/update-app.ts` | Merge integration files into project; gate CODE_MOD | `applyViteConfig` replaces build-time global |
-| `services/install-deps.ts` | foreground and background package install | Used by add, create-qwik, migrate |
-| `services/codemods.ts` | AST transforms via oxc-parser + magic-string | Replaces ts-morph; used by migrate |
-| `console.ts` | Clack wrappers, color helpers, scanBoolean/String/Choice | Shared by all Program subclasses via Program base |
-| `stubs/` | Template files for add, new, create-qwik | Resolved via `__dirname`-relative path; no runtime discovery hack |
+## Question 1: Where Does starters/ Go and How Does It Relate to stubs/?
 
-## Recommended Project Structure
+### Current Reality
+
+The existing `stubs/` directory already has the correct four-category structure the Qwik repo uses for starters:
 
 ```
-src/
-├── core.ts                  # Program<T,U> abstract base class (from reference)
-├── console.ts               # @clack/prompts + kleur wrappers
-├── router.ts                # Entry dispatch: switch on argv[2], header print
-├── commands/
-│   ├── add/
-│   │   ├── index.ts         # AddProgram extends Program
-│   │   ├── update-app.ts    # File merge + vite config logic
-│   │   └── print-help.ts    # Add-specific help renderer
-│   ├── build/
-│   │   └── index.ts         # BuildProgram extends Program
-│   ├── new/
-│   │   ├── index.ts         # NewProgram extends Program
-│   │   └── templates.ts     # Template loading for qwik new
-│   ├── migrate/
-│   │   ├── index.ts         # MigrateProgram extends Program
-│   │   ├── rename-import.ts # AST import rename (oxc+magic-string)
-│   │   └── replace-text.ts  # Regex-based text replacement
-│   ├── check-client/
-│   │   └── index.ts         # CheckClientProgram extends Program
-│   ├── joke/
-│   │   └── index.ts         # JokeProgram extends Program
-│   ├── help/
-│   │   └── index.ts         # HelpProgram extends Program
-│   └── version/
-│       └── index.ts         # VersionProgram extends Program
-├── services/
-│   ├── integrations.ts      # loadIntegrations() with stubs/ discovery
-│   ├── install-deps.ts      # installDeps + backgroundInstallDeps
-│   └── codemods.ts          # oxc-parser + magic-string transforms
-├── create-qwik/
-│   ├── index.ts             # CreateQwikProgram extends Program
-│   ├── create-app.ts        # App scaffolding (updateApp with applyViteConfig:false)
-│   └── template-manager.ts  # App starter loading, getBaseApp, filters
-├── types.ts                 # Shared: IntegrationData, CreateAppResult, etc.
-├── utils.ts                 # Misc helpers: pathExists, resolveRelativeDir, etc.
-└── index.ts                 # Public API re-export (for programmatic use)
-bin/
-├── qwik.ts                  # #!/usr/bin/env node → router
-└── create-qwik.ts           # #!/usr/bin/env node → CreateQwikProgram
 stubs/
-├── adapters/                # 14 adapter dirs (each with package.json + files)
-├── features/                # 22 feature dirs (each with package.json + files)
-├── apps/                    # base, empty, playground, library + stub files
-└── templates/               # qwik/{component,route,markdown,mdx}/ for qwik new
+├── adapters/cloudflare-pages/    ← only 1 adapter (placeholder)
+├── features/                     ← empty
+├── apps/qwik/                    ← placeholder app
+└── templates/qwik/               ← component/route/markdown/mdx (working)
 ```
 
-### Structure Rationale
+The "top-level `adapters/` folder" referenced in PROJECT.md is a separate `adapters/` directory at the repo root — this is not the same as `stubs/adapters/`. The root-level `adapters/` is the one to remove.
 
-- **`core.ts`:** Single source of truth for the Program lifecycle; copied from create-qwikdev-astro pattern. One file, no sub-folder — it's the base, not a module.
-- **`commands/`:** One directory per subcommand. Each holds its `Program` subclass and any logic private to that command. Nothing outside a command folder imports from inside it except the router.
-- **`services/`:** Code shared across multiple commands. `integrations.ts` is needed by `add`, `new`, and `create-qwik`. `install-deps.ts` is needed by `add`, `migrate`, and `create-qwik`.
-- **`create-qwik/`:** Kept separate from `commands/` because it is a distinct binary entry point, not a subcommand of `qwik`. It shares services but not the router.
-- **`stubs/`:** All template assets live here. No `__dirname` hacks — the bundle is built with stubs adjacent to the output, and `import.meta.url` resolves correctly per bundle.
-- **`types.ts`:** Eliminates the cross-package type coupling identified in COUPLING-REPORT.md. All shared types (IntegrationData, CreateAppResult, etc.) live here.
+The existing `loadIntegrations()` in `src/integrations/load-integrations.ts` already reads from `stubs/adapters/` and `stubs/features/`. The existing `loadTemplates()` in `src/commands/new/templates.ts` already reads from `stubs/templates/`.
 
-## Architectural Patterns
+**There is no `starters/` folder to add.** The Qwik repo organizes its content as `starters/` (with `apps/`, `adapters/`, `features/` inside), but this repo uses `stubs/` as the equivalent root. The v1.1 work is to populate the _existing_ `stubs/` subdirectories with real content from the Qwik repo's starters, not to introduce a new top-level folder.
 
-### Pattern 1: Program Lifecycle (parse → validate → interact → execute)
+### Integration Decision
 
-**What:** Every command is a class that extends `Program<Definition, Input>`. The base class handles yargs wiring, `--yes`/`--no` flags, CI detection, and interactive mode detection. Subclasses override exactly the methods relevant to their command.
+Populate these existing `stubs/` subdirectories with real content copied from the Qwik monorepo:
 
-**When to use:** Every command. No exceptions — even trivial commands like `joke` and `version` extend Program because it enforces a consistent structure and makes testing uniform.
+| Qwik Repo Source | This Repo Destination | Consumer |
+|------------------|-----------------------|----------|
+| `packages/qwik/dist/starters/adapters/` (14 adapters) | `stubs/adapters/` | `loadIntegrations()` → `add` command |
+| `packages/qwik/dist/starters/features/` (22+ features) | `stubs/features/` | `loadIntegrations()` → `add` command |
+| `packages/create-qwik/dist/starters/apps/` (base, empty, library, playground) | `stubs/apps/` | `create-qwik` command (new) |
 
-**Trade-offs:** More boilerplate than a flat function, but the structure pays for itself at 9 commands where "where does prompt logic live?" becomes a real question.
+The path resolution logic in `load-integrations.ts` already handles the `stubs/adapters/` and `stubs/features/` discovery. The `stubs/apps/` path will need to be added as a new consumer (see Question 3).
 
-**Example:**
+### Removal
+
+Delete `adapters/cloudflare-pages/` at the repo root. This is the incorrect top-level directory that shouldn't exist. The correct location is `stubs/adapters/cloudflare-pages/`.
+
+### Updated stubs/ Layout
+
+```
+stubs/
+├── adapters/         ← 14 real adapters from Qwik repo (cloudflare-pages, vercel-edge, netlify-edge, etc.)
+├── features/         ← 22+ real features from Qwik repo (tailwind, auth, drizzle, etc.)
+├── apps/             ← 4 starter apps from create-qwik (base, empty, library, playground)
+└── templates/        ← unchanged (component/route/markdown/mdx for qwik new)
+    └── qwik/
+```
+
+---
+
+## Question 2: How to Restructure src/migrate/ into migrations/v2/?
+
+### Current Reality
+
+The current structure is a flat `src/migrate/` directory:
+
+```
+src/migrate/
+├── binary-extensions.ts    ← static list of binary file extensions
+├── rename-import.ts        ← AST import rename via oxc-parser + magic-string
+├── replace-package.ts      ← regex-based text replacement (5 ordered calls)
+├── run-migration.ts        ← orchestrator: 5-step v1→v2 flow
+├── update-dependencies.ts  ← npm dist-tag lookup + dependency update
+├── versions.ts             ← resolveV2Versions(), PACKAGE_NAMES
+└── visit-not-ignored.ts    ← .gitignore-aware file traversal
+```
+
+The `src/commands/migrate/index.ts` imports directly from `../../migrate/run-migration.js`.
+
+### Target Structure
+
+The goal is `migrations/v2/` scoped folders (version-chained). The migration utilities are version-specific — the v2 migration utilities should live alongside the v2 migration definition, not in a generic `src/migrate/` folder.
+
+**New structure:**
+
+```
+migrations/
+└── v2/
+    ├── index.ts                  ← renamed from run-migration.ts (exports runV2Migration)
+    ├── rename-import.ts          ← moved from src/migrate/
+    ├── replace-package.ts        ← moved from src/migrate/
+    ├── update-dependencies.ts    ← moved from src/migrate/
+    ├── versions.ts               ← moved from src/migrate/
+    ├── visit-not-ignored.ts      ← moved from src/migrate/
+    └── binary-extensions.ts     ← moved from src/migrate/
+```
+
+The `src/migrate/` directory is deleted after migration.
+
+### Keeping Existing Code Working During the Move
+
+The command module (`src/commands/migrate/index.ts`) currently imports:
+
 ```typescript
-// commands/joke/index.ts
-export class JokeProgram extends Program<Definition, Input> {
-  configure(): void {
-    this.command('joke', 'Tell a random dad joke');
-  }
-  validate(definition: Definition): Input {
-    return {}; // no args
-  }
-  async execute(_input: Input): Promise<number> {
-    const joke = getRandomJoke();
-    this.note(`${joke.setup}\n${joke.punchline}`, '🙈');
-    return 0;
-  }
-}
-
-// commands/add/index.ts
-export class AddProgram extends Program<Definition, Input> {
-  configure(): void {
-    this.command('add [integration]', 'Add an integration to this app')
-      .argument('integration', { type: 'string', desc: 'Integration id' })
-      .option('skipConfirmation', { type: 'boolean', default: false })
-      .option('projectDir', { type: 'string' });
-  }
-  validate(definition: Definition): Input { /* ... */ }
-  async interact(definition: Definition): Promise<Input> { /* prompt for integration */ }
-  async execute(input: Input): Promise<number> { /* run add flow */ }
-}
+import { runV2Migration } from "../../migrate/run-migration.js";
 ```
 
-### Pattern 2: Router as Thin Dispatch (not a framework)
+After the move, this becomes:
 
-**What:** The `router.ts` module is a plain switch (or object map) keyed on `argv[2]`. It prints the header, instantiates the right Program, and calls `.run(argv)`. No framework, no plugin system — just a map from string to class.
-
-**When to use:** This is the entry point pattern. The 9-command surface is stable; a framework would add overhead with no benefit.
-
-**Trade-offs:** Adding a 10th command requires editing the router. Acceptable: command count is bounded and any new command goes through the same Program lifecycle anyway.
-
-**Example:**
 ```typescript
-// router.ts
-import { printHeader } from './console';
+import { runV2Migration } from "../../../migrations/v2/index.js";
+```
 
-const COMMANDS: Record<string, () => Promise<Program<any, any>>> = {
-  add:           () => import('./commands/add').then(m => m.addProgram()),
-  build:         () => import('./commands/build').then(m => m.buildProgram()),
-  new:           () => import('./commands/new').then(m => m.newProgram()),
-  joke:          () => import('./commands/joke').then(m => m.jokeProgram()),
-  'migrate-v2':  () => import('./commands/migrate').then(m => m.migrateProgram()),
-  'check-client':() => import('./commands/check-client').then(m => m.checkClientProgram()),
-  help:          () => import('./commands/help').then(m => m.helpProgram()),
-  version:       () => import('./commands/version').then(m => m.versionProgram()),
-};
+The function signature `runV2Migration(rootDir: string): Promise<void>` does not change. The command module's behavior is identical — only the import path changes.
 
-export async function runCli(): Promise<void> {
-  printHeader();
-  const task = process.argv[2];
-  const factory = COMMANDS[task];
-  if (!factory) {
-    console.error(red(`Unrecognized qwik command: ${task}`));
-    await COMMANDS['help']().then(p => p.run(process.argv));
-    process.exit(1);
-  }
-  const program = await factory();
-  const code = await program.run(process.argv);
-  process.exit(code);
+### Migration Chain Design
+
+The `migrations/` folder at the repo root (not inside `src/`) supports version-chaining. When a v3 migration is needed, the structure becomes:
+
+```
+migrations/
+├── v2/   ← current
+└── v3/   ← future (independent set of utilities)
+```
+
+The `upgrade --migrate` command (when built) would discover available migration folders by reading `migrations/` and chain them in version order. Each version folder exports a `run{V}Migration(rootDir)` function with the same signature.
+
+### tsdown Build Config
+
+The `migrations/` directory lives outside `src/` and outside the existing `entry` array. The tsdown config currently bundles `src/index.ts`, `src/router.ts`, and `bin/qwik.ts`. The migration modules are imported transitively through `src/commands/migrate/index.ts`, which is imported by `src/router.ts`. No explicit entry changes are needed — the migration code is bundled as part of the existing graph.
+
+### What Does Not Change
+
+- The `src/commands/migrate/index.ts` command file stays in `src/commands/migrate/` — it is the command, not the migration utilities
+- The `MigrateProgram` class, `runCli()` router entry, and all test references to `migrate-v2` remain identical
+- The `run-migration.ts` → `migrations/v2/index.ts` rename only affects the export; the function name `runV2Migration` is unchanged
+
+---
+
+## Question 3: Where Does create-qwik Entry Point Go?
+
+### Current Reality
+
+The `bin/` directory currently has:
+
+```
+bin/
+├── qwik.ts     ← entry for @qwik.dev/cli binary
+└── test.ts     ← test runner entry
+```
+
+The `package.json` only declares one binary:
+
+```json
+"bin": {
+  "qwik": "./dist/bin/qwik.mjs"
 }
 ```
 
-### Pattern 3: Explicit applyViteConfig Parameter (replaces CODE_MOD global)
+### Target Structure
 
-**What:** The `updateApp()` function accepts an explicit `applyViteConfig: boolean` parameter instead of reading the `CODE_MOD` build-time global. Callers set this based on context: `true` for `qwik add`, `false` for `create-qwik` scaffolding.
+Add `bin/create-qwik.ts` as the shebang entry for the `create-qwik` binary:
 
-**When to use:** Everywhere `updateApp` is called. This resolves COUPLING-REPORT.md blocker #3 and makes the behavior transparent.
+```
+bin/
+├── qwik.ts           ← unchanged
+├── create-qwik.ts    ← NEW: entry for create-qwik binary
+└── test.ts           ← unchanged
+```
 
-**Trade-offs:** One extra parameter per call site. Worth it: the global was a hidden build-time contract that would corrupt new projects if accidentally set wrong.
+The `bin/create-qwik.ts` file should follow the exact same pattern as `bin/qwik.ts` — thin shebang entry, one import, one call:
 
-**Example:**
 ```typescript
-// services/update-app.ts
-export async function updateApp(
-  pkgManager: string,
-  opts: UpdateAppOptions & { applyViteConfig: boolean }
-): Promise<UpdateAppResult> {
-  // ...
-  if (opts.applyViteConfig) {
-    await updateViteConfigs(fileUpdates, integration, opts.rootDir);
-  }
+#!/usr/bin/env node
+import { runCreateCli } from "../src/create-qwik/index.js";
+
+runCreateCli();
+```
+
+### package.json Changes
+
+Two additions are needed:
+
+**1. Add the second binary:**
+```json
+"bin": {
+  "qwik": "./dist/bin/qwik.mjs",
+  "create-qwik": "./dist/bin/create-qwik.mjs"
 }
-
-// commands/add/index.ts — qwik add: vite config DOES apply
-await updateApp(pkgManager, { ...opts, applyViteConfig: true });
-
-// create-qwik/create-app.ts — scaffolding: vite config does NOT apply
-await updateApp(pkgManager, { ...opts, applyViteConfig: false });
 ```
 
-### Pattern 4: stubs/ as the Single Asset Root
+**2. Add the entry to tsdown config:**
+```typescript
+entry: ['src/index.ts', 'src/router.ts', 'bin/qwik.ts', 'bin/create-qwik.ts'],
+```
 
-**What:** All template assets (adapters, features, app starters, qwik-new templates) live under `stubs/` adjacent to the package source. The build process copies the relevant subsets into the dist bundle. `loadIntegrations()` resolves starters at `join(dirname(import.meta.url), 'stubs')` — which after bundling always points to the dist-adjacent `stubs/` directory.
+### create-qwik Command Implementation
 
-**When to use:** All asset resolution. No runtime path discovery, no `__dirname` tricks, no environment variables for paths.
-
-**Trade-offs:** Requires the build to copy the correct starters subsets. The split (adapters+features for qwik CLI; apps for create-qwik) must be maintained. In the standalone package both subsets live in the same bundle's `stubs/`, eliminating the split entirely.
-
-## Data Flow
-
-### qwik add (interactive)
+The create-qwik logic lives in a new `src/create-qwik/` directory (separate from `src/commands/` because it is a distinct binary, not a subcommand):
 
 ```
-argv[2] = 'add'
-    ↓
-router.ts → AddProgram.run(argv)
-    ↓
-AddProgram.parse(argv)        → yargs parses --skipConfirmation, --projectDir, [integration]
-    ↓
-AddProgram.isIt() = true?
-  yes → AddProgram.interact()  → loadIntegrations() [cached]
-                               → select prompt if no id given
-                               → returns Input{integration, skipConfirmation, projectDir}
-  no  → AddProgram.validate()  → validates id exists, returns Input
-    ↓
-AddProgram.execute(input)
-    ↓
-updateApp(pkgManager, { ...input, applyViteConfig: true })
-    ↓  returns UpdateAppResult{commit(), integration, fileUpdates}
-logUpdateAppResult()           → show diff, confirm prompt (unless skipConfirmation)
-    ↓
-result.commit(true)            → fs writes + installDeps() [concurrent]
-    ↓
-postInstall?                   → runInPkg(pkgManager, postInstall.split(' '), rootDir)
-    ↓
-logUpdateAppCommitResult()     → outro, process.exit(0)
+src/create-qwik/
+├── index.ts              ← runCreateCli() — exported; called from bin/create-qwik.ts
+├── create-app.ts         ← createApp() — scaffolds from a starter app
+├── template-manager.ts   ← loadApps() — reads stubs/apps/ (new; parallel to loadIntegrations)
+└── helpers/
+    ├── resolve-dir.ts    ← resolveRelativeDir()
+    ├── install-deps.ts   ← installDepsCli() wrapper
+    └── log-created.ts    ← logAppCreated() output
 ```
+
+The `template-manager.ts` reads from `stubs/apps/` using the same `__dirname`-relative resolution pattern already established in `load-integrations.ts`. The apps in `stubs/apps/` follow the same `package.json + __qwik__` structure used by adapters and features.
+
+### Reference Implementation Coupling
+
+The reference `create-qwik` source (`/packages/create-qwik/src/`) imports directly from `packages/qwik/src/cli/` (the monorepo path). These cross-package imports must not be brought over — all of them map to existing code in this repo:
+
+| Reference import | Maps to in this repo |
+|------------------|----------------------|
+| `../../qwik/src/cli/utils/utils` (panic, printHeader, getPackageManager) | `src/console.ts` + `src/utils/` |
+| `../../qwik/src/cli/utils/install-deps` | New `src/create-qwik/helpers/install-deps.ts` or reuse `integrations/update-app.ts` |
+| `packages/qwik/src/cli/types` (IntegrationData, CreateAppResult) | `src/types.ts` (already has both) |
+| `../../qwik/src/cli/add/update-app` | `src/integrations/update-app.ts` |
+
+The reference's `runCreateInteractiveCli()` includes a background install optimization (start installing `base` app deps immediately while prompts are shown). This pattern is optional for v1.1 — it can be deferred until create-qwik correctness is verified.
+
+---
+
+## Question 4: How Does oxfmt/oxlint Config Replace biome.json?
+
+### Current Reality
+
+`biome.json` at the repo root:
+
+```json
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
+  "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
+  "linter": { "enabled": true, "rules": { "recommended": true } },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "files": { "includes": ["src/**/*.ts", "tests/**/*.ts", "bin/**/*.ts"] }
+}
+```
+
+Current `package.json` scripts:
+
+```json
+"lint": "biome check .",
+"format": "biome format --write ."
+```
+
+Current dev dependency: `"@biomejs/biome": "^2.0.0"`
+
+### Replacement Plan
+
+**Files to add:**
+
+`.oxlintrc.json` (oxlint configuration, ESLint v8-compatible format):
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "plugins": ["typescript"],
+  "rules": {
+    "no-unused-vars": "error",
+    "no-console": "off"
+  },
+  "ignorePatterns": ["dist/**", "node_modules/**"]
+}
+```
+
+`.oxfmtrc.json` (oxfmt formatter configuration, Prettier-compatible format):
+```json
+{
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "all"
+}
+```
+
+The current `biome.json` sets `indentWidth: 2` and `indentStyle: space` — these map directly to `tabWidth: 2` and `useTabs: false` in oxfmt. No formatting changes to existing code are expected.
+
+**package.json changes:**
+
+```json
+"scripts": {
+  "build": "tsdown",
+  "test": "node --import tsx/esm bin/test.ts",
+  "lint": "oxlint src/ tests/ bin/",
+  "format": "oxfmt src/ tests/ bin/"
+},
+"devDependencies": {
+  "oxlint": "^1.0.0",
+  "oxfmt": "latest",
+  ...
+}
+```
+
+Remove `"@biomejs/biome"` from devDependencies.
+
+**Files to remove:** `biome.json`
+
+### Scope Note on oxfmt Status
+
+oxfmt was in Alpha (December 2025) and entered Beta (February 2026). The npm package `oxfmt` exists and is installable. As of April 2026 it is pre-1.0 but actively maintained and production-usable for TypeScript projects. The configuration file is `.oxfmtrc.json` (Prettier-compatible key names). If oxfmt proves unstable during implementation, Prettier itself is a drop-in fallback since oxfmt uses Prettier's exact configuration format.
+
+---
+
+## Component Boundaries: New vs Modified
+
+| Component | Status | Change |
+|-----------|--------|--------|
+| `stubs/adapters/` | Modified | Populated with 14 real adapters from Qwik repo |
+| `stubs/features/` | Modified | Populated with 22+ real features from Qwik repo |
+| `stubs/apps/` | New content | Populated with base/empty/library/playground from create-qwik |
+| `adapters/` (root-level) | Deleted | Remove incorrect top-level directory |
+| `migrations/v2/` | New location | `src/migrate/` files moved here; function signatures unchanged |
+| `src/migrate/` | Deleted | After move to `migrations/v2/` |
+| `src/commands/migrate/index.ts` | Modified | Import path update only: `../../migrate/run-migration.js` → `../../../migrations/v2/index.js` |
+| `bin/create-qwik.ts` | New | Shebang entry for create-qwik binary |
+| `src/create-qwik/` | New | Full create-qwik Program implementation |
+| `src/commands/joke/jokes.ts` | Modified | Replace 10 hardcoded jokes with real `jokes.json` from Qwik repo (50+ jokes) |
+| `biome.json` | Deleted | Replaced by `.oxlintrc.json` and `.oxfmtrc.json` |
+| `.oxlintrc.json` | New | oxlint configuration |
+| `.oxfmtrc.json` | New | oxfmt formatter configuration |
+| `package.json` | Modified | Add `create-qwik` to `bin`, add `oxlint`/`oxfmt`, remove `@biomejs/biome`, update lint/format scripts |
+| `tsdown.config.ts` | Modified | Add `bin/create-qwik.ts` to entry array |
+
+---
+
+## Data Flow: New Components
 
 ### create-qwik (interactive)
 
 ```
-argv = []
+bin/create-qwik.ts → runCreateCli()
     ↓
-bin/create-qwik.ts → CreateQwikProgram.run(process.argv)
+src/create-qwik/index.ts: CreateQwikProgram.run(process.argv)
     ↓
-CreateQwikProgram.parse(argv)  → yargs (template positional, outDir positional, --force, --installDeps)
+parse: yargs (template positional, outDir positional, --force, --installDeps)
     ↓
-CreateQwikProgram.interact()
-    → text prompt: project directory
-    → backgroundInstallDeps(pkgManager, baseApp)  ← starts in background immediately
-    → select prompt: starter app
-    → confirm: install deps?
-    → confirm: git init?
-    → [conditional joke prompt during background install wait]
+interact():
+  → text prompt: project directory
+  → loadApps() from stubs/apps/       ← reads stubs/apps/ via template-manager.ts
+  → select prompt: starter app
+  → confirm: install deps?
+  → confirm: git init?
     ↓
-CreateQwikProgram.execute(input)
-    → createApp({ appId, outDir, pkgManager }) → updateApp(..., { applyViteConfig: false })
-    → git init sequence (if requested)
-    → installDepsCli() → backgroundInstall.complete(outDir)
-    → logAppCreated()
-    → outro
+execute(input):
+  → createApp({ appId, outDir, pkgManager })
+      → updateApp({ applyViteConfig: false })   ← reuses existing update-app
+  → git init (if requested)
+  → installDeps(pkgManager, outDir)
+  → logAppCreated()
 ```
 
-### migrate-v2 orchestration
+### migrations/v2/ (unchanged behavior, new location)
 
 ```
-argv[2] = 'migrate-v2'
+src/commands/migrate/index.ts:MigrateProgram.execute()
     ↓
-router.ts → MigrateProgram.run(argv)
+import { runV2Migration } from "../../../migrations/v2/index.js"
     ↓
-MigrateProgram.execute():
-    → intro + confirm gate
-    → Step 1: installTsMorph() [conditional, skipped if present]
-    → Step 2: dynamic import('./codemods/rename-import')
-              replaceImportInFiles() via oxc-parser+magic-string
-              [3 rounds: qwik-city, qwik-city-plan, qwik/jsx-runtime]
-    → Step 3: replaceText() — 5 calls in dependency order
-              @builder.io/qwik-city last to avoid substring collision
-    → Step 4: removeTsMorphFromPackageJson() [conditional]
-    → Step 5: updateDependencies() → npm dist-tag lookup → install
-    → log.success()
+migrations/v2/index.ts:runV2Migration(rootDir)
+    ↓ (5-step sequence unchanged)
+rename-import.ts → replace-package.ts → update-dependencies.ts
 ```
 
-### Key Data Flows
+---
 
-1. **Integration discovery:** `loadIntegrations()` reads `stubs/` once per process, caches in module-level variable. All commands that need integrations (add, create-qwik) share this cache.
-2. **Asset path:** `join(dirname(fileURLToPath(import.meta.url)), 'stubs')` — evaluated at module load in the compiled bundle, so `import.meta.url` = the bundle file, `stubs/` = adjacent directory.
-3. **Vite config mutations:** Gated by `applyViteConfig` parameter. Only flows through `qwik add`. Never flows through `create-qwik`.
-4. **Version injection:** `QWIK_VERSION` constant injected at build time via tsdown `define`. Used in `version` command and create-qwik intro banner.
+## Build Order for v1.1 Features
 
-## Build Order Implications
-
-The component dependency graph determines build order for phases:
+Dependencies between new features determine which order to implement them:
 
 ```
-Phase 1 (Foundation):
-  core.ts          ← no deps within package
-  console.ts       ← depends on @clack/prompts, kleur (external)
-  types.ts         ← no deps within package
+1. CLEANUP (no deps)
+   - Delete adapters/ (root-level)
+   - Delete src/migrate/ after completing step 3
 
-Phase 2 (Infrastructure):
-  services/integrations.ts     ← depends on types.ts + stubs/ asset layout
-  services/install-deps.ts     ← depends on console.ts, external: cross-spawn/panam
-  services/update-app.ts       ← depends on integrations.ts, types.ts
+2. CONTENT (no code changes needed)
+   - Populate stubs/adapters/ from Qwik repo
+   - Populate stubs/features/ from Qwik repo
+   - Populate stubs/apps/ from create-qwik (needed by step 4)
+   - Replace jokes.ts with real jokes.json
 
-Phase 3 (Simple Commands):
-  commands/version/            ← depends on core.ts, console.ts only
-  commands/joke/               ← depends on core.ts, console.ts only
-  commands/check-client/       ← depends on core.ts, console.ts, fs utils
+3. MIGRATION RESTRUCTURE (depends on: nothing outside migrate/)
+   - Create migrations/v2/
+   - Move src/migrate/* to migrations/v2/
+   - Rename run-migration.ts → migrations/v2/index.ts
+   - Update src/commands/migrate/index.ts import path
+   - Verify tests pass (MigrateProgram behavior unchanged)
 
-Phase 4 (Asset-Dependent Commands):
-  commands/new/                ← depends on stubs/templates/, core.ts
-  commands/add/                ← depends on integrations.ts, update-app.ts, install-deps.ts
-  commands/build/              ← depends on core.ts, install-deps.ts
+4. CREATE-QWIK (depends on: stubs/apps/ populated)
+   - Add src/create-qwik/ with Program implementation
+   - Add bin/create-qwik.ts
+   - Update package.json bin + tsdown entry
+   - Add template-manager for stubs/apps/ loading
 
-Phase 5 (Complex Commands):
-  commands/migrate/            ← depends on codemods, install-deps.ts, Phase 1+2
-  create-qwik/                 ← depends on all services, stubs/apps/
+5. TOOLING (independent of all above)
+   - Remove @biomejs/biome devDependency
+   - Add oxlint + oxfmt devDependencies
+   - Delete biome.json
+   - Add .oxlintrc.json and .oxfmtrc.json
+   - Update package.json lint/format scripts
+   - Run formatter to verify no unexpected changes
 
-Phase 6 (Entry + Wiring):
-  router.ts                    ← depends on all commands
-  bin/qwik.ts, bin/create-qwik.ts
+6. TYPE ERRORS (done last, after all code is in place)
+   - Fix any type errors introduced by new components
+   - Fix pre-existing type errors in existing src/
 ```
 
-Build phases in the roadmap should respect this ordering. `core.ts` and `console.ts` are unblocked day one. `services/` cannot be tested until `stubs/` asset layout is established. Commands depending on `update-app.ts` (add, create-qwik) must come after services are complete.
+Steps 2, 3, and 5 have no dependencies on each other and can be done in any order. Step 4 (create-qwik) depends on step 2 (stubs/apps/ populated) but not on step 3 or 5.
 
-## Scaling Considerations
+---
 
-This is a CLI tool, not a web service. "Scaling" means adding commands and maintaining behavioral coverage.
+## Anti-Patterns to Avoid in New Features
 
-| Concern | Now (9 commands) | At 15+ commands |
-|---------|------------------|-----------------|
-| Adding a command | One folder in `commands/`, one entry in router map | Same — no structural change needed |
-| Test surface | One Japa test file per command | Same pattern; Japa suite files grow linearly |
-| Asset growth | stubs/ copied at build time | Build script copy list must be updated |
-| Behavioral regression | 67 MUST PRESERVE behaviors encoded in Japa | New behaviors added to existing test files |
+### Anti-Pattern 1: Creating a Top-Level starters/ Folder
 
-## Anti-Patterns
+**What people do:** Follow the Qwik monorepo naming and create a `starters/` directory at the repo root.
 
-### Anti-Pattern 1: Flat Function Per Command
+**Why it's wrong:** The existing `stubs/` directory already has the correct internal structure. Adding `starters/` creates a duplicate, and `load-integrations.ts` already resolves to `stubs/` by convention established in v1.0.
 
-**What people do:** Export a `runAddCommand(app)` function and call it directly from a switch statement, as the original Qwik CLI does.
+**Do this instead:** Populate the existing `stubs/adapters/`, `stubs/features/`, and `stubs/apps/` subdirectories.
 
-**Why it's wrong:** At 9 commands, prompt logic, validation, and execution are mixed in a single function. Adding `--yes` / `--no` skip logic requires touching every command. Testing non-interactive mode requires mocking prompts globally.
+### Anti-Pattern 2: Importing Monorepo Paths in create-qwik
 
-**Do this instead:** Each command is a `Program` subclass. `validate()` handles non-interactive paths. `interact()` handles prompts. `execute()` handles side effects. The base class `isIt()` gate handles the switch between them.
+**What people do:** Copy the reference `create-qwik/src/` files directly, including their `../../qwik/src/cli/` import paths.
 
-### Anti-Pattern 2: Build-Time Global for Behavioral Branching (CODE_MOD)
+**Why it's wrong:** Those paths don't exist in this standalone repo. The reference implementation is coupled to the Qwik monorepo by design. This repo is a standalone extraction.
 
-**What people do:** Inject `globalThis.CODE_MOD = true/false` via esbuild `define` to make shared code behave differently in different bundles.
+**Do this instead:** Map each monorepo import to its equivalent in this repo (see mapping table in Question 3). The function signatures and behavior are identical — only import paths change.
 
-**Why it's wrong:** The behavior difference is invisible at the call site. Any caller of `updateApp()` has no indication that vite config mutation may or may not happen. Extracting the code into a standalone package breaks the contract silently.
+### Anti-Pattern 3: Moving migrate/ Inside src/commands/migrate/
 
-**Do this instead:** Explicit `applyViteConfig: boolean` parameter. The caller declares intent. The function behavior is readable at the call site.
+**What people do:** Co-locate migration utilities with the migrate command because "the command owns the migration."
 
-### Anti-Pattern 3: `__dirname`-Relative Paths in Shared Code
+**Why it's wrong:** The `migrations/` folder is designed for version chaining — future v3 migrations will live at `migrations/v3/`. Nesting inside `src/commands/migrate/` makes version chaining impossible without restructuring again.
 
-**What people do:** Use `join(__dirname, 'starters')` inside a shared utility that gets bundled into multiple output files.
+**Do this instead:** `migrations/` at the repo root (parallel to `src/`, `stubs/`, `bin/`). The command imports from `migrations/v2/` as an external module.
 
-**Why it's wrong:** When bundled into a different package, `import.meta.url` points to the wrong bundle, and the `starters/` directory is not present there. The bug is silent — `loadIntegrations()` returns an empty array.
+### Anti-Pattern 4: Configuring oxfmt Identically to biome.json
 
-**Do this instead:** The standalone package owns its own `stubs/` directory. `loadIntegrations()` resolves paths relative to the single bundle that ships the function. No sharing of the path-resolution code across bundles — it's inlined alongside the assets it needs.
+**What people do:** Translate every biome.json option to an oxfmt option, including options that change default behavior.
 
-### Anti-Pattern 4: ts-morph for Migration Transforms
+**Why it's wrong:** oxfmt's defaults (printWidth: 100, tabWidth: 2, useTabs: false) already match what biome.json was configured for. Adding explicit options that match defaults creates maintenance noise and a diff when defaults change.
 
-**What people do:** Install ts-morph at migration runtime, use it for AST-based import renaming, then remove it from package.json (but not node_modules).
+**Do this instead:** Start with an empty `.oxfmtrc.json` and add only options that differ from oxfmt defaults. For this project, the existing 2-space indent is already the default — no config needed for it.
 
-**Why it's wrong:** ts-morph is 50+ MB, requires a runtime install step, and leaves node_modules dirty. The install/remove dance is fragile and confusing to users.
+---
 
-**Do this instead:** oxc-parser for AST parsing + magic-string for surgical text replacement. Both are fast, lightweight, and belong in the package's own dependencies. No runtime install required.
+## Integration Points Summary
 
-## Integration Points
+| New Component | Connects To | Via |
+|---------------|-------------|-----|
+| `stubs/adapters/` (populated) | `src/integrations/load-integrations.ts` | Filesystem; no code change |
+| `stubs/features/` (populated) | `src/integrations/load-integrations.ts` | Filesystem; no code change |
+| `stubs/apps/` (populated) | `src/create-qwik/template-manager.ts` | New; same resolution pattern as load-integrations |
+| `migrations/v2/index.ts` | `src/commands/migrate/index.ts` | Import path update |
+| `bin/create-qwik.ts` | `src/create-qwik/index.ts` | Direct import (thin entry) |
+| `src/create-qwik/` | `src/integrations/update-app.ts` | Direct import; `applyViteConfig: false` |
+| `.oxlintrc.json` | `package.json` lint script | `oxlint src/ tests/ bin/` |
+| `.oxfmtrc.json` | `package.json` format script | `oxfmt src/ tests/ bin/` |
 
-### External Services
-
-| Service | Integration Pattern | Notes |
-|---------|---------------------|-------|
-| npm registry | `execSync('npm dist-tag @qwik.dev/core')` in migrate Step 5 | Hardcoded npm, not user's package manager — acceptable since it's a one-time version lookup |
-| User's package manager | Detected via `which-pm-runs` at runtime | Used for all install, build, and run operations |
-| git | Spawned via `cross-spawn` / `panam/$` | Used by create-qwik and migrate-v2 |
-
-### Internal Boundaries
-
-| Boundary | Communication | Notes |
-|----------|---------------|-------|
-| `router.ts` → commands | Dynamic import + `.run(argv)` | Lazy loading keeps startup fast |
-| `commands/add/` → `services/integrations.ts` | Direct import | Cache is module-level; safe within process |
-| `commands/add/` → `services/update-app.ts` | Direct import | `applyViteConfig` parameter is the coupling contract |
-| `create-qwik/` → `services/update-app.ts` | Direct import | Same function, different `applyViteConfig` value |
-| `commands/migrate/` → `codemods/rename-import` | Dynamic import | Ensures ts-morph (old) / oxc (new) is available before loading the module |
-| All commands → `console.ts` | Via Program base class methods | `this.info()`, `this.scanBoolean()` etc. — not direct clack imports |
+---
 
 ## Sources
 
-- create-qwikdev-astro reference: `Program<T,U>` base class — [https://github.com/QwikDev/astro/blob/main/libs/create-qwikdev-astro/src/core.ts](https://github.com/QwikDev/astro/blob/main/libs/create-qwikdev-astro/src/core.ts) — HIGH confidence (direct source read)
-- create-qwikdev-astro reference: `Application extends Program` — [https://github.com/QwikDev/astro/blob/main/libs/create-qwikdev-astro/src/app.ts](https://github.com/QwikDev/astro/blob/main/libs/create-qwikdev-astro/src/app.ts) — HIGH confidence (direct source read)
-- `specs/CMD-INVENTORY.md` — 9-command surface, dispatch logic, flag schemas — HIGH confidence (verified at commit `bfe19e8d9`)
-- `specs/COUPLING-REPORT.md` — extraction blockers, CODE_MOD, __dirname coupling — HIGH confidence (verified at commit `bfe19e8d9`)
-- `specs/CQW-INTERACTIVE-FLOW.md` — create-qwik prompt sequence, background install — HIGH confidence (verified at commit `b197b42200`)
-- `specs/MIG-WORKFLOW.md` — migrate-v2 5-step orchestration — HIGH confidence (verified at commit `bfe19e8d9`)
-- `specs/ASSET-INVENTORY.md` — stubs/ layout, loadIntegrations() flow — HIGH confidence (verified at commit `bfe19e8d9`)
+- `/Users/jackshelton/dev/open-source/qwik-cli/src/integrations/load-integrations.ts` — stubs resolution logic verified (HIGH confidence, direct read)
+- `/Users/jackshelton/dev/open-source/qwik-cli/src/commands/new/templates.ts` — stubs/templates/ resolution verified (HIGH confidence, direct read)
+- `/Users/jackshelton/dev/open-source/qwik-cli/src/commands/migrate/index.ts` — current import path verified (HIGH confidence, direct read)
+- `/Users/jackshelton/dev/open-source/qwik-cli/src/migrate/run-migration.ts` — 5-step orchestration verified (HIGH confidence, direct read)
+- `/Users/jackshelton/dev/open-source/qwik-cli/tsdown.config.ts` — entry array verified (HIGH confidence, direct read)
+- `/Users/jackshelton/dev/open-source/qwik-cli/package.json` — bin entry, scripts, deps verified (HIGH confidence, direct read)
+- `/Users/jackshelton/dev/open-source/qwik-cli/biome.json` — current config verified (HIGH confidence, direct read)
+- `/Users/jackshelton/dev/open-source/qwik/packages/create-qwik/` — reference implementation read (HIGH confidence, direct read)
+- `/Users/jackshelton/dev/open-source/qwik/packages/qwik/dist/starters/` — adapter/feature content verified (HIGH confidence, direct read)
+- oxlint config reference: [https://oxc.rs/docs/guide/usage/linter/config-file-reference.html](https://oxc.rs/docs/guide/usage/linter/config-file-reference.html) — MEDIUM confidence (web, official docs)
+- oxfmt overview: [https://oxc.rs/docs/guide/usage/formatter](https://oxc.rs/docs/guide/usage/formatter) — MEDIUM confidence (web, official docs)
+- oxfmt beta announcement: [https://oxc.rs/blog/2026-02-24-oxfmt-beta](https://oxc.rs/blog/2026-02-24-oxfmt-beta) — MEDIUM confidence (web, official blog)
 
 ---
-*Architecture research for: Qwik CLI standalone package (@qwik.dev/cli)*
-*Researched: 2026-04-01*
+*Architecture research for: @qwik.dev/cli v1.1 feature integration*
+*Researched: 2026-04-02*

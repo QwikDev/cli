@@ -1,8 +1,8 @@
 # Pitfalls Research
 
 **Domain:** CLI extraction / reimplementation (monorepo → standalone package)
-**Researched:** 2026-04-01
-**Confidence:** HIGH — all critical pitfalls sourced directly from verified spec documents (branch `build/v2`, commit `bfe19e8d9`); supplemented with ecosystem research
+**Researched:** 2026-04-02 (v1.1 update appended to 2026-04-01 original)
+**Confidence:** HIGH — v1.0 pitfalls sourced from verified spec documents; v1.1 pitfalls sourced from live tsc --noEmit output, oxc-parser runtime inspection, npm documentation, and oxfmt beta release notes
 
 ---
 
@@ -177,6 +177,234 @@ Phase 1 (repository scaffold). The `package.json` dependency manifest must be co
 
 ---
 
+## Critical Pitfalls (v1.1 Milestone-Specific)
+
+These pitfalls are specific to the v1.1 milestone work: migration restructuring, oxfmt/oxlint switch, starters/ npm packaging, and bulk TypeScript error fixes.
+
+---
+
+### Pitfall 9: oxc-parser ModuleExportName Union — StringLiteral Has No `.name` Property
+
+**What goes wrong:**
+`src/migrate/rename-import.ts` line 96 accesses `specifier.imported.name` where `specifier.imported` is typed as `ModuleExportName` — a union of `Identifier | StringLiteral`. The `Identifier` variant has a `name` property. The `StringLiteral` variant does **not** — it has a `value` property instead. This generates `TS2339: Property 'name' does not exist on type 'StringLiteral'` and, at runtime, silently produces `undefined` for any module export using string-literal syntax (e.g., `import { "old-name" as foo } from "x"`), causing those imports to be missed by the rename pass.
+
+This was confirmed by live inspection of oxc-parser v0.123 at runtime:
+- `import { foo }` → `imported.type === "Identifier"`, has `.name`
+- `import { "foo" as bar }` → `imported.type === "Literal"`, has `.value` not `.name`
+
+**Why it happens:**
+The code was written treating `specifier.imported` as always an `Identifier`. The TypeScript compiler with `skipLibCheck: true` in tsconfig will not catch this when reading the oxc-parser-generated types unless the union is explicitly narrowed. In the current tsconfig `skipLibCheck: false` is the effective state for source files, so tsc catches it — but the runtime behavior is already wrong for string-literal import names even if the types were correct.
+
+**How to avoid:**
+Narrow the union before accessing the name. The correct pattern is:
+
+```typescript
+const importedName: string =
+  specifier.imported.type === "Identifier"
+    ? specifier.imported.name
+    : specifier.imported.value;
+```
+
+Apply the same narrowing to `specifier.local` when reading `localName`. This is a one-line fix per access but must be applied consistently to both the `imported` and `local` reads in `replaceImportInFiles`.
+
+**Warning signs:**
+- `tsc --noEmit` reports `TS2339: Property 'name' does not exist on type 'StringLiteral'` on any file accessing `.imported.name` or `.exported.name` on oxc-parser AST nodes.
+- The rename codemod test suite has no fixture using string-literal import syntax (e.g., `import { "useMount$" as useTask$ } from "@builder.io/qwik"`).
+
+**Phase to address:**
+v1.1 Phase 1 (Zero type errors). Fix immediately before any migration architecture restructuring — this is a correctness bug in the existing codemod, not just a type annotation issue.
+
+---
+
+### Pitfall 10: exactOptionalPropertyTypes — Spreading Undefined Into Optional Fields
+
+**What goes wrong:**
+With `exactOptionalPropertyTypes: true` in tsconfig, TypeScript distinguishes `{ foo?: string }` (foo may be absent) from `{ foo?: string | undefined }` (foo may be present with value undefined). Any object literal that conditionally produces an optional field by spreading a value that may be `undefined` — without first checking — generates a type error.
+
+The codebase has **four confirmed instances** caught by `tsc --noEmit`:
+
+1. `src/commands/add/index.ts:38` — Object literal `{ id: string | undefined; ... }` not assignable to `AddInput` because `AddInput.id` is `string?` not `string | undefined`. The `id` field is obtained from `definition._[1] as string | undefined`, which can be `undefined`, but the type `AddInput` does not have `id?: string | undefined`.
+
+2. `src/console.ts:64` — `{ message, initialValue: boolean | undefined }` passed to `@clack/prompts confirm()` whose `ConfirmOptions.initialValue` is `boolean?` not `boolean | undefined`. When `initial` parameter is `undefined`, passing `initialValue: undefined` is invalid under `exactOptionalPropertyTypes`.
+
+3. `src/console.ts:76` — Same pattern: `{ placeholder: string | undefined }` passed to `text()` whose `TextOptions.placeholder` is `string?` not `string | undefined`.
+
+4. `src/console.ts:88` — Option objects with `hint?: string` in the local type not matching `@clack/prompts` `Option<T>` which uses `exactOptionalPropertyTypes`-compatible definitions.
+
+**Why it happens:**
+The canonical fix people reach for — adding `| undefined` to the interface property type — is wrong when the interface is from a third-party library (like `@clack/prompts`). The library already defines `initialValue?: boolean` meaning "may be absent". Callers must not pass `initialValue: undefined` — they must **omit the key entirely**. The correct fix is conditional spreading: `...(initial !== undefined ? { initialValue: initial } : {})`.
+
+Bulk "fix" attempts using `ts-ignore` or broadening local types propagate the error into the type system instead of eliminating it.
+
+**How to avoid:**
+For each `exactOptionalPropertyTypes` error, determine whether the field belongs to a local type or a library type:
+
+- **Local type** (`AddInput.id`): Add `| undefined` to the property type definition: `id?: string | undefined`.
+- **Library type** (`ConfirmOptions.initialValue`, `TextOptions.placeholder`): Use conditional spread. Do not modify the library type. Pattern: `const opts: ConfirmOptions = { message, ...(initial !== undefined ? { initialValue: initial } : {}) }`.
+
+Never use `as any` or `// @ts-ignore` to suppress these errors — they signal a real semantic difference between "absent" and "undefined".
+
+**Warning signs:**
+- `tsc --noEmit` shows `TS2375` or `TS2379` mentioning `exactOptionalPropertyTypes`.
+- Code passes optional parameters directly into object literals without a defined-check: `{ someField: maybeUndefined }` where `someField` is `?`-typed in the target interface.
+- Unit tests pass because Jest/Japa don't enforce types at runtime — the error is only visible via `tsc`.
+
+**Phase to address:**
+v1.1 Phase 1 (Zero type errors). Fix before restructuring migration folders — a clean compile baseline is required to verify that restructuring doesn't introduce new errors.
+
+---
+
+### Pitfall 11: cross-spawn `spawnSync` Signature — Undefined String in Overload Resolution
+
+**What goes wrong:**
+`src/integrations/update-app.ts` line 66 calls `spawn.sync(executor, [command, ...args], { cwd, stdio: 'inherit' })` where `executor` is `string | undefined` (returned by `getPackageManagerName()` which can return `undefined`). The `cross-spawn` type definitions for `spawnSync` have 8 overloads — none accepts `string | undefined` as the first argument. TypeScript with `strict: true` rejects this with `TS2769: No overload matches this call`.
+
+This is a real nullability bug: if `getPackageManagerName()` returns `undefined` (no package manager detected), `executor` is `undefined`, and passing `undefined` to `spawn.sync` produces `ENOENT` at runtime. The type error is surfacing a real failure path, not a spurious annotation issue.
+
+**Why it happens:**
+The code assumes a package manager is always detected. `getPackageManagerName()` returns `string | undefined` because `which-pm-runs` can return `undefined` when no PM is in scope (e.g., a plain `node script.js` invocation). The integration install code does not guard against this.
+
+**How to avoid:**
+Add an explicit guard before the `spawn.sync` call:
+
+```typescript
+const pm = getPackageManagerName();
+if (!pm) {
+  throw new Error("No package manager detected; cannot run post-install script.");
+}
+const executor = pm === "npm" ? "npx" : pm;
+spawn.sync(executor, [command, ...args], { cwd, stdio: "inherit" });
+```
+
+Do not cast `executor` to `string` with `as string` — that silences the compiler but leaves the runtime crash in place.
+
+**Warning signs:**
+- `tsc --noEmit` reports `TS2769` on any `spawn.sync` or `spawnSync` call.
+- `getPackageManagerName()` return value is used without a null-check.
+- Post-install script runs are not tested in a fixture that simulates no-PM-detected environment.
+
+**Phase to address:**
+v1.1 Phase 1 (Zero type errors). The guard makes the failure path explicit and testable.
+
+---
+
+### Pitfall 12: noUncheckedIndexedAccess — Array/Map Indexing Returns T | undefined
+
+**What goes wrong:**
+`src/app-command.ts` lines 22/22 access `this.args[idx]` and `this.args[idx + 1]` where `args` is typed `string[]`. With `noUncheckedIndexedAccess: true`, any array index access returns `T | undefined` — TypeScript error `TS18048: 'arg' is possibly 'undefined'`. The same issue applies to `COMMANDS.help` in `src/router.ts` (line 31): `COMMANDS[task]` returns `(() => Promise<...>) | undefined`, and invoking it without a guard produces `TS2722: Cannot invoke an object which is possibly 'undefined'`.
+
+These are real nullability bugs: `args[idx + 1]` can be out-of-bounds when a flag is the last argument with no value, and `COMMANDS.help` is only safely callable after the guard `if (!task || !COMMANDS[task])` that already verified it. The compiler cannot infer this.
+
+**Why it happens:**
+`noUncheckedIndexedAccess` is part of the TypeScript "extra strict" options beyond `strict: true`. It changes the type of every array element access from `T` to `T | undefined`. Code written before this option was enabled, or code ported from a project without it, will have unanswered index accesses that look safe but aren't.
+
+**How to avoid:**
+Two patterns work:
+1. **Store and narrow**: `const arg = this.args[idx]; if (arg !== undefined) { ... }`. Preferred for logic where the undefined case needs a different code path.
+2. **Non-null assert after proven guard**: `COMMANDS.help!()` is acceptable only at the call site directly following the guard `if (!task || !COMMANDS[task])` — the `!COMMANDS[task]` branch exits, so the else branch is proven non-null. Use sparingly.
+
+Never suppress with `as string` casting — it hides the undefined case from downstream consumers.
+
+**Warning signs:**
+- `tsc --noEmit` reports `TS18048: 'X' is possibly 'undefined'` on any array index access.
+- `tsc --noEmit` reports `TS2722: Cannot invoke an object which is possibly 'undefined'`.
+- Code pattern `const x = arr[idx]; doSomethingWith(x)` without a null-check between the two lines.
+
+**Phase to address:**
+v1.1 Phase 1 (Zero type errors). Fix these before any other work since they block `tsc --noEmit` from producing a clean baseline.
+
+---
+
+### Pitfall 13: Migration Folder Restructuring Breaks Import Paths Silently
+
+**What goes wrong:**
+Moving `src/migrate/*.ts` files into `src/migrate/v2/*.ts` changes all relative import paths. There is exactly one inbound import in the production code: `src/commands/migrate/index.ts` imports `../../migrate/run-migration.js`. Tests in `tests/integration/golden/migrate.spec.ts` do not directly import from `src/migrate/` — they invoke the CLI via `runCli()` and check filesystem side effects. However, if any new test or helper imports `src/migrate/run-migration.ts` directly (common during restructuring), those imports break silently at runtime (not at compile time) because `tsconfig.json` excludes `tests/` from the TypeScript project. The `node --import tsx/esm` test runner will produce `MODULE_NOT_FOUND` at runtime rather than a compile-time error.
+
+The second risk is forgetting to update the single inbound production import when moving files.
+
+**Why it happens:**
+Two factors combine:
+1. TypeScript `exclude: ["tests"]` in tsconfig means test files are not type-checked, so a broken import in a test file won't appear in `tsc --noEmit`.
+2. Developers restructure the folder, update the single obvious import, and miss any test-side direct imports added during the restructure.
+
+**How to avoid:**
+- Before restructuring, run `grep -r "from.*migrate" src/ tests/` to enumerate all inbound imports across both source and tests.
+- Restructure in a single atomic step: move files, update all import paths, run `pnpm test` to confirm green.
+- Keep the `src/migrate/run-migration.ts` entry point in place as a thin re-export barrel during the transition if there are multiple consumers: `export { runV2Migration } from './v2/run-migration.js'`.
+- After restructuring, verify `tsc --noEmit` is still clean (it will not catch test imports, but it will catch any missed source import).
+
+**Warning signs:**
+- Any file in `tests/` that directly imports from `../../src/migrate/` — these are invisible to tsc but will fail at test runtime.
+- A restructuring PR that only updates `src/commands/migrate/index.ts` without searching tests for direct migrate imports.
+- Tests pass locally in an IDE that has a cached module graph but fail in CI on a clean install.
+
+**Phase to address:**
+v1.1 Phase 2 (Migration architecture restructuring). Run a full grep audit before moving any file.
+
+---
+
+### Pitfall 14: Biome→oxfmt Switch — Formatting Divergence Diffs All Source Files
+
+**What goes wrong:**
+Biome and oxfmt are both Prettier-compatible formatters, but they diverge on trailing commas, import grouping order, and a few other rules. Switching formatters mid-project produces a large reformatting diff that pollutes `git blame`, makes code review harder, and can introduce whitespace-only conflicts with in-progress branches. If the switch happens in the same commit or PR as functional changes (restructuring, type fixes), it becomes impossible to verify that no logic changed — the diff noise hides the signal.
+
+The second risk: the CI lint check (`pnpm lint`) currently runs `biome check`. After the switch, CI must run `oxlint` for linting and `oxfmt --check` for formatting. Forgetting to update the CI command means the old Biome check passes against old Biome-formatted files, then `oxfmt --check` fails on the next PR that changes any file.
+
+**Why it happens:**
+- Formatter switches are often treated as "cosmetic" changes that don't need their own isolated commit/PR.
+- oxfmt's `--migrate biome` command converts configuration but does not automatically reformat all files in one shot — developers must run `oxfmt --write` separately.
+- oxlint covers only a subset of Biome's lint rules. Rules that existed in Biome but have no oxlint equivalent will silently disappear.
+
+**How to avoid:**
+1. Dedicate one commit exclusively to the formatter switch: remove `@biomejs/biome`, add `oxfmt` + `oxlint`, run `oxfmt --write` on all source files, update `package.json` scripts and CI configuration. No functional changes in this commit.
+2. Run `oxfmt --migrate biome` to convert `biome.json` to `.oxfmtrc.json` — do not hand-edit the config.
+3. Audit Biome lint rules in `biome.json` against oxlint's supported rules list; explicitly document any rules that have no oxlint equivalent and decide whether to accept the gap.
+4. Update the `lint` and `format` scripts in `package.json` atomically with the switch:
+   - `"lint": "oxlint src/ tests/ bin/"` (replaces `biome check .`)
+   - `"format": "oxfmt --write"` (replaces `biome format --write .`)
+
+**Warning signs:**
+- The formatter switch and migration restructuring are in the same PR.
+- `package.json` still has `biome check` in the `lint` script after oxfmt/oxlint are installed.
+- `node_modules/@biomejs/biome` is still present after switching (indicates devDependency not removed).
+- CI shows no `oxfmt --check` step even though the switch has been made.
+
+**Phase to address:**
+v1.1 Phase 3 (Tooling switch). Isolated, single-purpose commit — no other changes mixed in.
+
+---
+
+### Pitfall 15: starters/ Folder Not Included in npm Tarball — The gitignore Override Gap
+
+**What goes wrong:**
+npm's `files` field in `package.json` is additive against `.gitignore` — files listed in `files` are included even if `.gitignore` would exclude them. However, this only applies to the entries in `files` themselves; **subdirectory contents** still follow npm's own ignore rules unless explicitly listed. The current `package.json` has `"files": ["dist", "stubs"]`. Adding `"starters"` to this array should include the starters folder, but there are two traps:
+
+1. **No .npmignore + .gitignore presence**: npm uses `.gitignore` as a fallback when no `.npmignore` exists. If `starters/` is not in `.gitignore` and is listed in `files`, it should be included — but any `node_modules/` directories nested inside starter templates (e.g., if any fixture has been `npm install`-ed) will be excluded by npm's built-in rules, potentially corrupting starter templates that declare their own `package.json`.
+
+2. **Tarball size**: 15 adapters + 6 apps + 22 features = potentially hundreds of template files. The entire `starters/` tree must be in the tarball. Running `npm pack --dry-run` will show the included file list and total size. A common mistake is running `npm publish` without checking the tarball first and shipping either a too-large package (if node_modules leaked) or a too-small one (if a pattern inadvertently excluded files).
+
+3. **Nested `.gitignore` files in starter templates**: Starter templates often include their own `.gitignore` files (e.g., `starters/apps/base/.gitignore` contains `node_modules/`, `dist/`). npm respects nested `.gitignore` files when building the tarball, which means `starters/apps/base/dist/` would be excluded even if it should be included in the template.
+
+**Why it happens:**
+npm's file inclusion rules have multiple layers (the `files` field, root `.gitignore`, nested `.gitignore`, built-in always-ignore list) and the interaction between them is non-obvious. Developers assume "listed in `files` means included, full stop."
+
+**How to avoid:**
+1. Add `"starters"` to the `files` array in `package.json`.
+2. Run `npm pack --dry-run 2>&1 | grep -E "^npm notice"` to inspect every file that would be included and verify the starters tree is present.
+3. If starter templates have nested `.gitignore` files that exclude directories needed in the template, add a `.npmignore` file at the repo root to override — an `.npmignore` at root takes precedence over `.gitignore`. Alternatively, add the specific directories to the `files` field: `"starters/apps/base/dist"`.
+4. Verify tarball size is reasonable before publishing (a starters tree of this size should be under 5MB uncompressed).
+
+**Warning signs:**
+- `npm pack --dry-run` output does not list files from `starters/`.
+- Starter templates contain their own `.gitignore` files with `dist/` exclusions.
+- Published package installs correctly but `loadIntegrations()` returns empty array (starters missing from tarball).
+- `npm pack` produces a `.tgz` file substantially smaller than expected.
+
+**Phase to address:**
+v1.1 Phase 4 (Starters integration). Run `npm pack --dry-run` as part of the acceptance criteria checklist.
+
+---
+
 ## Technical Debt Patterns
 
 | Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
@@ -188,6 +416,9 @@ Phase 1 (repository scaffold). The `package.json` dependency manifest must be co
 | Keeping `CODE_MOD` as a global constant with a hardcoded value | Avoids refactoring `updateApp()` signature | Wrong behavior in scaffolding flow if `updateApp()` is shared; vite configs corrupted on `create-qwik` | Never for standalone package |
 | Deferring `visitNotIgnoredFiles` `.git/` guard to "later" | Ships OQ-07 faster | Silent `.git/` corruption on projects with no `.gitignore`; lost commit history | Never — trivial to add, catastrophic to omit |
 | Not adding cross-package import normalization before implementation | Saves a one-time cleanup pass | Bulk search/replace during import boundary switch requires two grep patterns; risk of missing one form | Acceptable if IMPL-01 is tracking both forms explicitly |
+| Using `as string` to suppress `noUncheckedIndexedAccess` errors | Fast "fix" for TS18048 errors | Hides real null-path at runtime; `args[idx + 1]` can still be `undefined` | Never — use a guard or non-null assert with explanation |
+| Mixing formatter switch commit with functional changes | Saves one PR | Git blame becomes unreliable; code review cannot distinguish logic changes from formatting changes | Never — formatter switches must be isolated commits |
+| Not running `npm pack --dry-run` before first publish with starters | Saves one verification step | Starters missing from tarball; CLI installs but template loading silently broken | Never — takes 5 seconds and prevents a botched publish |
 
 ---
 
@@ -197,9 +428,13 @@ Phase 1 (repository scaffold). The `package.json` dependency manifest must be co
 |-------------|----------------|------------------|
 | `npm dist-tag` version query | Substituting `pnpm dist-tag` or `yarn info` because the project uses pnpm/yarn | `npm dist-tag @qwik.dev/core` is hardcoded intentionally — npm is the canonical registry query tool; other PMs have different output formats. Must use `npm` or update the parser. |
 | oxc-parser identifier binding | Using text-match rename (same bug as ts-morph) instead of binding-scoped rename | Resolve the import binding from the AST node, collect only its references via scope walk, not all identifiers with matching text |
+| oxc-parser `ModuleExportName` union | Accessing `.name` directly on `specifier.imported` | Narrow the union: `specifier.imported.type === "Identifier" ? specifier.imported.name : specifier.imported.value` |
 | `@clack/prompts` spinner in migration | Starting a spinner, then the step throws — spinner never stops | Always wrap spinner start/stop in try/finally; a hanging spinner leaves the terminal in broken state |
 | tsdown dual output | Omitting `exports` field or using only `main`/`module` | Configure `exports` with `import` / `require` conditions; Node's module resolution uses `exports` for ESM-aware resolution; `main`/`module` alone is insufficient for ESM consumers |
 | Template distribution (`stubs/`) | Forgetting to include `stubs/` in the `files` field of `package.json` | Add `stubs/` to `package.json` `files`; tsdown/tsc do not copy non-source assets; they must be explicitly included in the published package |
+| oxfmt migration from biome | Running `oxfmt --migrate biome` without also updating `package.json` scripts and CI | Migration command converts config only; scripts (`lint`, `format`) and CI commands must be manually updated to reference oxlint/oxfmt |
+| `@clack/prompts` `exactOptionalPropertyTypes` | Passing `initialValue: undefined` when `undefined` is not an option | Use conditional spread: `...(val !== undefined ? { initialValue: val } : {})` |
+| cross-spawn with possibly-undefined executor | Passing `pm === "npm" ? "npx" : pm` where `pm` can be `undefined` | Guard: `if (!pm) throw ...` before using `pm` as executor |
 
 ---
 
@@ -210,6 +445,7 @@ Phase 1 (repository scaffold). The `package.json` dependency manifest must be co
 | ts-morph loading all `.ts`/`.tsx` files for every round | Migration slows proportionally to project size; 3 sequential `new Project()` loads per run | oxc-parser replacement solves this; oxc is significantly faster and does not require a full TS project load | Any project with 100+ TypeScript files |
 | `execSync('npm dist-tag ...')` blocking the event loop | Hangs visibly when npm or network is slow; no timeout | Acceptable for a one-time CLI migration step; document that npm must be available on PATH | Any environment where npm is not on PATH (e.g., projects using only pnpm/bun with `--ignore-scripts`) |
 | `visitNotIgnoredFiles` symlink traversal | Migration descends into linked `node_modules/` or workspace siblings; runs indefinitely or modifies files outside project | Use `lstat` and explicitly skip symlinks, or add symlink traversal depth limit. OQ-07 must be addressed. | Any project with workspace symlinks or manually created symlinks |
+| Large `starters/` tree in npm tarball | `npm install @qwik.dev/cli` is slow for users who only want CLI commands (not scaffolding) | Accept: starters are required for `create-qwik`; ensure no `node_modules/` directories leak into tarball | First install on slow connections if tarball exceeds ~5MB |
 
 ---
 
@@ -225,6 +461,11 @@ Phase 1 (repository scaffold). The `package.json` dependency manifest must be co
 - [ ] **`.git/` exclusion without `.gitignore`:** Running `qwik upgrade` in a project with no `.gitignore` does not write any file under `.git/`.
 - [ ] **Unescaped regex in `replaceMentions`:** The regex `new RegExp(oldPackageName, 'g')` contains `.` (in `@builder.io`) which matches any character. While benign in practice for these specific strings, the reimplementation should escape dots or use a literal string match.
 - [ ] **Dual output imports resolve:** ESM consumer can `import` the CLI package and CJS consumer can `require` it — both code paths resolve correctly with proper `exports` conditions in `package.json`.
+- [ ] **Type baseline clean:** `tsc --noEmit` exits 0 before any migration restructuring begins — 13 existing errors must be resolved first.
+- [ ] **oxlint replaces all Biome lint rules:** Audit `biome.json` lint rules against oxlint rule list; document any rules dropped in the switch.
+- [ ] **starters/ in npm tarball:** `npm pack --dry-run` shows all files in `starters/adapters/`, `starters/apps/`, `starters/features/`, `starters/templates/` (expected: 15 + 6 + 22 + N entries).
+- [ ] **Migration v2/ folder import paths:** After restructuring `src/migrate/` → `src/migrate/v2/`, `tsc --noEmit` still exits 0 and all tests pass.
+- [ ] **Biome fully removed:** `node_modules/@biomejs/biome` absent, `biome.json` deleted, no `biome` references in `package.json` scripts after switch.
 
 ---
 
@@ -239,6 +480,10 @@ Phase 1 (repository scaffold). The `package.json` dependency manifest must be co
 | Stale starter versions | LOW | Patch release with corrected version injection; users re-scaffold or manually update `package.json` |
 | Undeclared runtime dependencies | MEDIUM | Patch release declaring deps; users who hit install failures unblock by running the fixed version |
 | Package rename wrong order (substring corruption) | HIGH | Users must manually replace corrupted package names; no automated fix available for partially-migrated projects |
+| oxc-parser `.name` on StringLiteral (runtime) | MEDIUM | Fix narrowing in `replaceImportInFiles`, republish; users re-run migration (idempotent for already-correct imports) |
+| exactOptionalPropertyTypes errors suppressed with `as` | MEDIUM | Audit all `as string` casts on optional fields, replace with guards; requires careful regression testing |
+| starters/ missing from tarball | MEDIUM | Publish patch with corrected `files` field; users who installed broken version must reinstall |
+| Formatter switch mixed with logic changes | LOW | Cherry-pick the functional changes onto a new branch, re-apply formatter separately; rewrites git history |
 
 ---
 
@@ -256,15 +501,28 @@ Phase 1 (repository scaffold). The `package.json` dependency manifest must be co
 | Undeclared runtime deps (EB-07) | Phase 1 — Repository scaffold; `package.json` manifest | CI: run `npm ci --only=production` in a clean environment and assert the CLI starts without module-not-found errors |
 | `qwik version` / `--version` output format (OQ-04) | IMPL-01 — CLI extraction; `version` command implementation | Golden test: `qwik version` output matches `/^\d+\.\d+\.\d+$/`; no label prefix |
 | `qwik migrate-v2` alias (backward compat) | IMPL-01 — command registration | Test: `qwik migrate-v2` and `qwik upgrade` both invoke the same handler |
+| oxc-parser ModuleExportName `.name` trap | v1.1 Phase 1 — Zero type errors | `tsc --noEmit` exits 0; add string-literal import fixture test to rename-import suite |
+| exactOptionalPropertyTypes (4 instances) | v1.1 Phase 1 — Zero type errors | `tsc --noEmit` exits 0 with no `TS2375`/`TS2379` errors; conditional spread pattern in console.ts wrappers |
+| cross-spawn undefined executor | v1.1 Phase 1 — Zero type errors | `tsc --noEmit` exits 0 on update-app.ts; guard present with explicit error message |
+| noUncheckedIndexedAccess array access | v1.1 Phase 1 — Zero type errors | `tsc --noEmit` exits 0 with no `TS18048`/`TS2722` errors |
+| Migration restructuring breaks import paths | v1.1 Phase 2 — Migration architecture | `grep -r "from.*migrate" src/ tests/` audit before moving; `pnpm test` green after restructure |
+| Biome→oxfmt formatting divergence | v1.1 Phase 3 — Tooling switch | Single isolated commit; `oxfmt --check` passes in CI; no Biome references remain |
+| starters/ missing from npm tarball | v1.1 Phase 4 — Starters integration | `npm pack --dry-run` lists all starter files; local install smoke test runs `qwik add` and lists integrations |
 
 ---
 
 ## Sources
 
+- Live `tsc --noEmit` output on qwik-cli source at `/Users/jackshelton/dev/open-source/qwik-cli/` (HIGH confidence — direct observation)
+- oxc-parser v0.123 runtime inspection: `parseSync` output for `Identifier` vs `StringLiteral` module export names (HIGH confidence — live Node.js execution)
+- oxc-parser `src-js/generated/deserialize/js.js` source: `deserializeStringLiteral` uses `.value` not `.name` (HIGH confidence — source inspection)
 - `specs/OPEN-QUESTIONS.md` — 7 open questions and 7 extraction blockers, verified against branch `build/v2` commit `bfe19e8d9` (HIGH confidence)
 - `specs/COUPLING-REPORT.md` — Full coupling analysis of create-qwik ↔ qwik CLI, verified from source (HIGH confidence)
 - `specs/MIG-MUTATION-RULES.md` — Complete AST rename and package substitution rules, verified from source (HIGH confidence)
 - `specs/MIG-DEPS-AND-UPGRADE.md` — ts-morph lifecycle, dist-tag resolution, `qwik upgrade` compatibility contract (HIGH confidence)
+- [Oxfmt Beta announcement — oxc.rs](https://oxc.rs/blog/2026-02-24-oxfmt-beta) — `oxfmt --migrate biome` command, configuration, known limitations (HIGH confidence)
+- [npm Files & Ignores wiki — github.com/npm/cli](https://github.com/npm/cli/wiki/Files-&-Ignores) — `files` field vs `.gitignore` interaction (HIGH confidence)
+- [TypeScript exactOptionalPropertyTypes reference — typescriptlang.org](https://www.typescriptlang.org/tsconfig/exactOptionalPropertyTypes.html) — absent vs undefined semantics (HIGH confidence)
 - [AST-based refactoring with ts-morph — kimmo.blog](https://kimmo.blog/posts/8-ast-based-refactoring-with-ts-morph/) — identifier rename scope risks (MEDIUM confidence)
 - [Refactoring with Codemods to Automate API Changes — martinfowler.com](https://martinfowler.com/articles/codemods-api-refactoring.html) — naming conflict handling in codemods (MEDIUM confidence)
 - [TypeScript in 2025 with ESM and CJS npm publishing is still a mess — Liran Tal](https://lirantal.com/blog/typescript-in-2025-with-esm-and-cjs-npm-publishing) — dual build pitfalls (MEDIUM confidence)
@@ -273,5 +531,5 @@ Phase 1 (repository scaffold). The `package.json` dependency manifest must be co
 - [Understanding __dirname in ES Modules — Medium](https://medium.com/@kishantashok/understanding-dirname-in-es-modules-solutions-for-modern-node-js-9d0560eb5ed7) — import.meta.url resolution mechanics (MEDIUM confidence)
 
 ---
-*Pitfalls research for: CLI extraction / reimplementation (qwik-cli)*
-*Researched: 2026-04-01*
+*Pitfalls research for: CLI extraction / reimplementation (qwik-cli v1.1)*
+*Researched: 2026-04-02 (v1.1 addendum to 2026-04-01 original)*
