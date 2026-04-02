@@ -132,6 +132,16 @@ Plans:
   6. Parity tests CHK-01/02/03 pass; all 25 golden-path parity tests are green
 **Plans**: TBD
 
+### Phase 12: CI setup
+
+**Goal:** GitHub Actions CI workflow runs all quality gates (format, lint, typecheck, build, Japa integration tests, Vitest unit tests) on every push to main and every PR
+**Requirements**: CI-WORKFLOW
+**Depends on:** Phase 11
+**Plans:** 1 plan
+
+Plans:
+- [ ] 12-01-PLAN.md — Create .github/workflows/ci.yml with setup-vp, all quality gate steps, and concurrency control
+
 ---
 
 ## v1.1 Phase Details
