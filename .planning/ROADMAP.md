@@ -12,7 +12,7 @@ A spec-driven reimplementation of the Qwik CLI as a standalone `@qwik.dev/cli` p
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Scaffold and Core Architecture** - Repo skeleton with all extraction blockers resolved; Program base class, command router, and console utilities wired
+- [x] **Phase 1: Scaffold and Core Architecture** - Repo skeleton with all extraction blockers resolved; Program base class, command router, and console utilities wired (completed 2026-04-02)
 - [ ] **Phase 2: Test Harness** - 8 fixture projects and 25 golden-path Japa tests written spec-first, before any command implementation
 - [ ] **Phase 3: Shared Foundations and Simple Commands** - Package manager detection, asset resolution services; version, joke, and help commands working end-to-end
 - [ ] **Phase 4: Build and New Commands** - Parallel build orchestration with lifecycle hooks; route and component file generation with token substitution
@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Tsdown builds dual ESM + CJS output and the `exports` field in package.json resolves both conditions correctly
   4. Biome runs clean with zero lint errors on the scaffolded source
   5. The `Program<T,U>` abstract base class enforces the parse → validate → interact → execute lifecycle and subclasses cannot skip a stage
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 01-01-PLAN.md — Repository scaffold: package.json, tsconfig, tsdown, biome, japa harness, types, stubs/ directory
@@ -107,7 +107,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffold and Core Architecture | 2/3 | In Progress|  |
+| 1. Scaffold and Core Architecture | 3/3 | Complete   | 2026-04-02 |
 | 2. Test Harness | 0/TBD | Not started | - |
 | 3. Shared Foundations and Simple Commands | 0/TBD | Not started | - |
 | 4. Build and New Commands | 0/TBD | Not started | - |
