@@ -5,7 +5,7 @@ milestone_name: Phases
 status: planning
 stopped_at: Completed 12-ci-setup-01-PLAN.md
 last_updated: "2026-04-02T22:36:32.982Z"
-last_activity: "2026-04-02 - Completed quick task 3: Remove cross-spawn, replace with native node:child_process"
+last_activity: "2026-04-02 - Completed quick task 8: Add cross-platform CI matrix with OS and runtime dimensions"
 progress:
   total_phases: 12
   completed_phases: 11
@@ -177,6 +177,7 @@ None.
 | 5 | Upgrade TypeScript to v6, fix tsconfig for TS6 breaking changes | 2026-04-02 | 71f5541 | [5-upgrade-typescript-to-v6-and-fix-tsconfi](./quick/5-upgrade-typescript-to-v6-and-fix-tsconfi/) |
 | 6 | Rewrite README with practical contributor guide for stubs | 2026-04-02 | f55d0fc | [6-rewrite-readme-with-practical-contributo](./quick/6-rewrite-readme-with-practical-contributo/) |
 | 7 | Derive stub priority from directory, make optional | 2026-04-02 | 1c5fe93 | [7-derive-stub-priority-from-directory-inst](./quick/7-derive-stub-priority-from-directory-inst/) |
+| 8 | Add cross-platform CI matrix with OS, runtime, and package manager dimensions | 2026-04-02 | 7580d26 | [8-add-cross-platform-ci-matrix-with-os-and](./quick/8-add-cross-platform-ci-matrix-with-os-and/) |
 
 ## Session Continuity
 
