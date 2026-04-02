@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-02)
 Phase: Phase 7 (Type Baseline) — ready to start
 Plan: —
 Status: Roadmap defined; ready for planning
-Last activity: 2026-04-02 - Completed quick task 3: Remove cross-spawn, replace with native node:child_process
+Last activity: 2026-04-02 - Completed quick task 5: Upgrade TypeScript to v6 and fix tsconfig
 
 **v1.1 Progress bar:** [----------] 0% (0/5 phases)
 
