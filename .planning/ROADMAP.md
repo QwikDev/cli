@@ -210,7 +210,7 @@ Plans:
   4. `npx create-qwik` resolves to the `bin/create-qwik.ts` entry point and runs correctly as a standalone binary (not a subcommand of `qwik`)
   5. Vitest unit tests pass for `createApp()` template resolution, `cleanPackageJson()` metadata removal, and `loadIntegrations()` discovery of all starter types (apps, adapters, features)
   6. All existing Japa golden-path tests remain green after create-qwik implementation is merged
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 11-01-PLAN.md — Core scaffolding: loadAppStarters, cleanPackageJson, createApp, binary entry point, non-interactive CLI, unit tests
@@ -234,4 +234,4 @@ v1.1: Phases execute in dependency order: 7 -> 8 -> 9 -> 10 -> 11 (Phase 8 and 9
 | 8. Content Population | 2/2 | Complete   | 2026-04-02 |
 | 9. Migration Architecture | 1/2 | In Progress|  |
 | 10. Tooling Switch | 1/1 | Complete    | 2026-04-02 |
-| 11. create-qwik Implementation | 0/2 | Not started | - |
+| 11. create-qwik Implementation | 1/2 | In Progress|  |

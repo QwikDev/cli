@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Phases
 status: planning
-stopped_at: Completed 10-tooling-switch 10-01-PLAN.md
-last_updated: "2026-04-02T18:50:24.110Z"
+stopped_at: Completed 11-create-qwik-implementation 11-01-PLAN.md
+last_updated: "2026-04-02T19:28:58.471Z"
 last_activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 progress:
   total_phases: 11
   completed_phases: 9
-  total_plans: 23
-  completed_plans: 23
+  total_plans: 25
+  completed_plans: 24
 ---
 
 # Project State
@@ -77,6 +77,7 @@ Last activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 | Phase 09-migration-architecture P01 | 25 | 2 tasks | 19 files |
 | Phase 09-migration-architecture P02 | 14 | 2 tasks | 3 files |
 | Phase 10-tooling-switch P01 | 15 | 2 tasks | 126 files |
+| Phase 11-create-qwik-implementation P01 | 13 | 2 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -142,6 +143,9 @@ Recent decisions affecting current work:
 - [Phase 10-tooling-switch]: stubs/** and specs/** added to lint ignorePatterns — template/doc dirs not in Biome's original scope
 - [Phase 10-tooling-switch]: eslint-disable-next-line for QWIK_VERSION ambient declare (build-time inject EB-05) and v3Run test variable (intentional unused)
 - [Phase 10-tooling-switch]: Pre-existing Japa failures (7/75) confirmed unchanged before and after vite-plus switch — ADD-02, CHK-01, CRE-02/03 deferred to future phases
+- [Phase 11-create-qwik-implementation]: Library path is self-contained (baseApp = libraryStarter, no starterApp): library never layers on top of base
+- [Phase 11-create-qwik-implementation]: assert.property() replaced with assert.isDefined() in CRE-01 — chai deep-path notation misinterprets dot in @qwik.dev/core as nested path separator
+- [Phase 11-create-qwik-implementation]: stubs/apps/empty: @qwik.dev/core added to dependencies (not devDependencies) — CRE-01 checks runtime deps
 
 ### Pending Todos
 
@@ -156,6 +160,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-02T18:41:42.096Z
-Stopped at: Completed 10-tooling-switch 10-01-PLAN.md
+Last session: 2026-04-02T19:28:58.469Z
+Stopped at: Completed 11-create-qwik-implementation 11-01-PLAN.md
 Resume file: None

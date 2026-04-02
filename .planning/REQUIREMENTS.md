@@ -136,12 +136,12 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 
 ### create-qwik
 
-- [ ] **CRQW-09**: User can run `create-qwik base ./my-app` non-interactively to scaffold a project
+- [x] **CRQW-09**: User can run `create-qwik base ./my-app` non-interactively to scaffold a project
 - [ ] **CRQW-10**: User can run `create-qwik` interactively with guided 6-step flow (starter, name, PM, install, git init)
 - [ ] **CRQW-11**: Dependencies install in the background while user answers remaining prompts
-- [ ] **CRQW-12**: `create-qwik` removes `__qwik__` metadata from generated package.json
-- [ ] **CRQW-13**: `create-qwik` initializes git repo with initial commit on new projects
-- [ ] **CRQW-14**: `bin/create-qwik.ts` entry point works as standalone `npm create qwik` binary
+- [x] **CRQW-12**: `create-qwik` removes `__qwik__` metadata from generated package.json
+- [x] **CRQW-13**: `create-qwik` initializes git repo with initial commit on new projects
+- [x] **CRQW-14**: `bin/create-qwik.ts` entry point works as standalone `npm create qwik` binary
 
 ### Tooling & Quality
 
@@ -156,9 +156,9 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 
 - [x] **VTST-01**: Vitest configured via vite-plus for unit testing alongside existing Japa integration tests
 - [x] **VTST-02**: Migration chaining logic has unit tests (version detection, chain building, sequential execution)
-- [ ] **VTST-03**: create-qwik `createApp()` core logic has unit tests (template resolution, package.json cleanup, directory scaffolding)
-- [ ] **VTST-04**: `loadIntegrations()` has unit tests verifying discovery of all starter types (apps, adapters, features)
-- [ ] **VTST-05**: Existing Japa golden-path tests remain green after all restructuring
+- [x] **VTST-03**: create-qwik `createApp()` core logic has unit tests (template resolution, package.json cleanup, directory scaffolding)
+- [x] **VTST-04**: `loadIntegrations()` has unit tests verifying discovery of all starter types (apps, adapters, features)
+- [x] **VTST-05**: Existing Japa golden-path tests remain green after all restructuring
 
 ## v2 Requirements
 
@@ -277,12 +277,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MIGR-03 | Phase 9 | Complete |
 | MIGR-04 | Phase 9 | Complete |
 | MIGR-05 | Phase 9 | Complete |
-| CRQW-09 | Phase 11 | Pending |
+| CRQW-09 | Phase 11 | Complete |
 | CRQW-10 | Phase 11 | Pending |
 | CRQW-11 | Phase 11 | Pending |
-| CRQW-12 | Phase 11 | Pending |
-| CRQW-13 | Phase 11 | Pending |
-| CRQW-14 | Phase 11 | Pending |
+| CRQW-12 | Phase 11 | Complete |
+| CRQW-13 | Phase 11 | Complete |
+| CRQW-14 | Phase 11 | Complete |
 | TOOL-01 | Phase 10 | Complete |
 | TOOL-02 | Phase 10 | Complete |
 | TOOL-03 | Phase 7 | Complete |
@@ -291,9 +291,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TOOL-05 | Phase 10 | Complete |
 | VTST-01 | Phase 10 | Complete |
 | VTST-02 | Phase 9 | Complete |
-| VTST-03 | Phase 11 | Pending |
-| VTST-04 | Phase 11 | Pending |
-| VTST-05 | Phase 11 | Pending |
+| VTST-03 | Phase 11 | Complete |
+| VTST-04 | Phase 11 | Complete |
+| VTST-05 | Phase 11 | Complete |
 
 **Coverage:**
 - v1 requirements: 74 total
