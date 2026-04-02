@@ -28,7 +28,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 7: Type Baseline** - Zero TypeScript type errors established before any structural change so regressions are detectable (completed 2026-04-02)
 - [x] **Phase 8: Content Population** - All starters, adapters, features, and jokes sourced from the Qwik repo; top-level adapters/ artifact removed (completed 2026-04-02)
 - [ ] **Phase 9: Migration Architecture** - Migrations folder restructured to migrations/v2/ with version-chaining support and upgrade command enhancements
-- [ ] **Phase 10: Tooling Switch** - Biome replaced by oxfmt + oxlint via vite-plus; vitest configured; isolated formatting commit
+- [x] **Phase 10: Tooling Switch** - Biome replaced by oxfmt + oxlint via vite-plus; vitest configured; isolated formatting commit (completed 2026-04-02)
 - [ ] **Phase 11: create-qwik Implementation** - Full interactive and non-interactive create-qwik binary with background install, git init, and complete test coverage
 
 ## Phase Details
@@ -194,7 +194,7 @@ Plans:
   3. Running the format check script produces no diff on the current source tree (all files already formatted by oxfmt)
   4. Running the lint script via oxlint exits 0 with zero errors on the current source
   5. Vitest can be invoked via `vite-plus` and discovers unit test files; existing Japa tests remain runnable alongside vitest unit tests
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 10-01-PLAN.md — Install vite-plus, remove Biome, create unified vite.config.ts, reformat source with oxfmt
@@ -229,5 +229,5 @@ v1.1: Phases execute in dependency order: 7 -> 8 -> 9 -> 10 -> 11 (Phase 8 and 9
 | 7. Type Baseline | 2/2 | Complete   | 2026-04-02 |
 | 8. Content Population | 2/2 | Complete   | 2026-04-02 |
 | 9. Migration Architecture | 1/2 | In Progress|  |
-| 10. Tooling Switch | 0/1 | Not started | - |
+| 10. Tooling Switch | 1/1 | Complete   | 2026-04-02 |
 | 11. create-qwik Implementation | 0/TBD | Not started | - |

@@ -145,16 +145,16 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 
 ### Tooling & Quality
 
-- [ ] **TOOL-01**: Project uses vite-plus as unified toolchain (oxfmt, oxlint, vitest, tsdown)
-- [ ] **TOOL-02**: Single `vite.config.ts` configures formatting, linting, and testing
+- [x] **TOOL-01**: Project uses vite-plus as unified toolchain (oxfmt, oxlint, vitest, tsdown)
+- [x] **TOOL-02**: Single `vite.config.ts` configures formatting, linting, and testing
 - [x] **TOOL-03**: `tsc --noEmit` passes with zero errors across all source files
 - [x] **TOOL-04**: `qwik joke` draws from the real 30-joke pool from the Qwik repo
-- [ ] **TOOL-05**: `biome.json` is removed and no Biome dependency remains
+- [x] **TOOL-05**: `biome.json` is removed and no Biome dependency remains
 - [x] **TOOL-06**: All regex patterns replaced with magic-regexp for readability and type-safety
 
 ### Testing
 
-- [ ] **VTST-01**: Vitest configured via vite-plus for unit testing alongside existing Japa integration tests
+- [x] **VTST-01**: Vitest configured via vite-plus for unit testing alongside existing Japa integration tests
 - [x] **VTST-02**: Migration chaining logic has unit tests (version detection, chain building, sequential execution)
 - [ ] **VTST-03**: create-qwik `createApp()` core logic has unit tests (template resolution, package.json cleanup, directory scaffolding)
 - [ ] **VTST-04**: `loadIntegrations()` has unit tests verifying discovery of all starter types (apps, adapters, features)
@@ -283,13 +283,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CRQW-12 | Phase 11 | Pending |
 | CRQW-13 | Phase 11 | Pending |
 | CRQW-14 | Phase 11 | Pending |
-| TOOL-01 | Phase 10 | Pending |
-| TOOL-02 | Phase 10 | Pending |
+| TOOL-01 | Phase 10 | Complete |
+| TOOL-02 | Phase 10 | Complete |
 | TOOL-03 | Phase 7 | Complete |
 | TOOL-06 | Phase 7 | Complete |
 | TOOL-04 | Phase 8 | Complete |
-| TOOL-05 | Phase 10 | Pending |
-| VTST-01 | Phase 10 | Pending |
+| TOOL-05 | Phase 10 | Complete |
+| VTST-01 | Phase 10 | Complete |
 | VTST-02 | Phase 9 | Complete |
 | VTST-03 | Phase 11 | Pending |
 | VTST-04 | Phase 11 | Pending |
