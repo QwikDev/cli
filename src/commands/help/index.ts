@@ -1,4 +1,5 @@
 import { Program } from "../../core.js";
+import { getPmRunCommand } from "../../utils/package-manager.js";
 
 type HelpArgs = { _: string[] };
 type HelpInput = Record<string, never>;
@@ -7,6 +8,7 @@ type HelpInput = Record<string, never>;
 export const COMMAND_LIST: { name: string; description: string }[] = [
   { name: "add", description: "Add an integration to this app" },
   { name: "build", description: "Build the application" },
+  { name: "build preview", description: 'Same as "build", but for preview server' },
   { name: "new", description: "Create a new component or route" },
   { name: "joke", description: "Tell a random dad joke" },
   { name: "migrate-v2", description: "Migrate to Qwik v2" },
@@ -30,10 +32,13 @@ export class HelpProgram extends Program<HelpArgs, HelpInput> {
   }
 
   protected async execute(_input: HelpInput): Promise<number> {
+    const pmRun = getPmRunCommand();
     console.log("Available commands:\n");
     for (const cmd of COMMAND_LIST) {
-      console.log(`  ${cmd.name.padEnd(16)} ${cmd.description}`);
+      console.log(`  ${cmd.name.padEnd(18)} ${cmd.description}`);
     }
+    console.log("");
+    console.log(`Usage: ${pmRun} qwik [command]`);
     console.log("");
     return 0;
   }

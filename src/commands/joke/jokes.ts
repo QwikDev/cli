@@ -41,5 +41,9 @@ export const JOKES: Joke[] = [
 ];
 
 export function getRandomJoke(): Joke {
-  return JOKES[Math.floor(Math.random() * JOKES.length)];
+  const joke = JOKES[Math.floor(Math.random() * JOKES.length)];
+  if (!joke) {
+    return ["Why do programmers prefer dark mode?", "Because light attracts bugs!"];
+  }
+  return joke;
 }
