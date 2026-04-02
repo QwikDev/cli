@@ -29,7 +29,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 8: Content Population** - All starters, adapters, features, and jokes sourced from the Qwik repo; top-level adapters/ artifact removed (completed 2026-04-02)
 - [ ] **Phase 9: Migration Architecture** - Migrations folder restructured to migrations/v2/ with version-chaining support and upgrade command enhancements
 - [x] **Phase 10: Tooling Switch** - Biome replaced by oxfmt + oxlint via vite-plus; vitest configured; isolated formatting commit (completed 2026-04-02)
-- [ ] **Phase 11: create-qwik Implementation** - Full interactive and non-interactive create-qwik binary with background install, git init, and complete test coverage
+- [x] **Phase 11: create-qwik Implementation** - Full interactive and non-interactive create-qwik binary with background install, git init, and complete test coverage (completed 2026-04-02)
 
 ## Phase Details
 
@@ -210,7 +210,7 @@ Plans:
   4. `npx create-qwik` resolves to the `bin/create-qwik.ts` entry point and runs correctly as a standalone binary (not a subcommand of `qwik`)
   5. Vitest unit tests pass for `createApp()` template resolution, `cleanPackageJson()` metadata removal, and `loadIntegrations()` discovery of all starter types (apps, adapters, features)
   6. All existing Japa golden-path tests remain green after create-qwik implementation is merged
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 11-01-PLAN.md — Core scaffolding: loadAppStarters, cleanPackageJson, createApp, binary entry point, non-interactive CLI, unit tests
@@ -234,4 +234,4 @@ v1.1: Phases execute in dependency order: 7 -> 8 -> 9 -> 10 -> 11 (Phase 8 and 9
 | 8. Content Population | 2/2 | Complete   | 2026-04-02 |
 | 9. Migration Architecture | 1/2 | In Progress|  |
 | 10. Tooling Switch | 1/1 | Complete    | 2026-04-02 |
-| 11. create-qwik Implementation | 1/2 | In Progress|  |
+| 11. create-qwik Implementation | 2/2 | Complete    | 2026-04-02 |

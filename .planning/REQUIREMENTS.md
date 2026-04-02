@@ -136,9 +136,9 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 
 ### create-qwik
 
-- [x] **CRQW-09**: User can run `create-qwik base ./my-app` non-interactively to scaffold a project
-- [ ] **CRQW-10**: User can run `create-qwik` interactively with guided 6-step flow (starter, name, PM, install, git init)
-- [ ] **CRQW-11**: Dependencies install in the background while user answers remaining prompts
+- [x] **CRQW-09**: User can run `create-qwik empty ./my-app` non-interactively to scaffold a project
+- [x] **CRQW-10**: User can run `create-qwik` interactively with guided 6-step flow (starter, name, PM, install, git init)
+- [x] **CRQW-11**: Dependencies install in the background while user answers remaining prompts
 - [x] **CRQW-12**: `create-qwik` removes `__qwik__` metadata from generated package.json
 - [x] **CRQW-13**: `create-qwik` initializes git repo with initial commit on new projects
 - [x] **CRQW-14**: `bin/create-qwik.ts` entry point works as standalone `npm create qwik` binary
@@ -278,8 +278,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MIGR-04 | Phase 9 | Complete |
 | MIGR-05 | Phase 9 | Complete |
 | CRQW-09 | Phase 11 | Complete |
-| CRQW-10 | Phase 11 | Pending |
-| CRQW-11 | Phase 11 | Pending |
+| CRQW-10 | Phase 11 | Complete |
+| CRQW-11 | Phase 11 | Complete |
 | CRQW-12 | Phase 11 | Complete |
 | CRQW-13 | Phase 11 | Complete |
 | CRQW-14 | Phase 11 | Complete |

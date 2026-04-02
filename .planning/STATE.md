@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Phases
 status: planning
-stopped_at: Completed 11-create-qwik-implementation 11-01-PLAN.md
-last_updated: "2026-04-02T19:28:58.471Z"
+stopped_at: Completed 11-create-qwik-implementation 11-02-PLAN.md
+last_updated: "2026-04-02T19:48:15.100Z"
 last_activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 progress:
   total_phases: 11
-  completed_phases: 9
+  completed_phases: 10
   total_plans: 25
-  completed_plans: 24
+  completed_plans: 25
 ---
 
 # Project State
@@ -78,6 +78,7 @@ Last activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 | Phase 09-migration-architecture P02 | 14 | 2 tasks | 3 files |
 | Phase 10-tooling-switch P01 | 15 | 2 tasks | 126 files |
 | Phase 11-create-qwik-implementation P01 | 13 | 2 tasks | 15 files |
+| Phase 11-create-qwik-implementation P02 | 7 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -146,6 +147,9 @@ Recent decisions affecting current work:
 - [Phase 11-create-qwik-implementation]: Library path is self-contained (baseApp = libraryStarter, no starterApp): library never layers on top of base
 - [Phase 11-create-qwik-implementation]: assert.property() replaced with assert.isDefined() in CRE-01 — chai deep-path notation misinterprets dot in @qwik.dev/core as nested path separator
 - [Phase 11-create-qwik-implementation]: stubs/apps/empty: @qwik.dev/core added to dependencies (not devDependencies) — CRE-01 checks runtime deps
+- [Phase 11-create-qwik-implementation]: panam/executor sub-path import (not panam/dist/executor.js) — exports map resolves correctly with NodeNext moduleResolution
+- [Phase 11-create-qwik-implementation]: bgInstall tracked as outer-scoped let var so try/catch error handler can abort without per-prompt references
+- [Phase 11-create-qwik-implementation]: Spinner polls bgInstall.success every 100ms during joke wait — avoids exposing proc.result to interactive layer
 
 ### Pending Todos
 
@@ -160,6 +164,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-02T19:28:58.469Z
-Stopped at: Completed 11-create-qwik-implementation 11-01-PLAN.md
+Last session: 2026-04-02T19:39:08.502Z
+Stopped at: Completed 11-create-qwik-implementation 11-02-PLAN.md
 Resume file: None
