@@ -7,6 +7,7 @@ import {
   parseInputName,
 } from "./parse-input.js";
 import {
+  NAME_TOKEN,
   getOutDir,
   loadTemplates,
   type TemplateType,
@@ -142,7 +143,7 @@ export class NewProgram extends Program<NewArgs, NewInput> {
         }
 
         const { name } = parseInputName(basename(input.nameArg));
-        const content = (templateFiles[0]!.content).replace(/\[name\]/g, name);
+        const content = templateFiles[0]!.content.replace(NAME_TOKEN, name);
         writeFileSync(fileOutput, content, "utf-8");
 
         console.log(`Created ${fileOutput}`);

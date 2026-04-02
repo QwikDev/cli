@@ -1,10 +1,17 @@
+import { createRegExp, oneOrMore, charIn, whitespace } from "magic-regexp";
+
+const SEPARATOR = createRegExp(oneOrMore(charIn("-_").or(whitespace)));
+const SEPARATOR_GLOBAL = createRegExp(oneOrMore(charIn("-_").or(whitespace)), [
+  "g",
+]);
+
 /**
  * Parse a raw name input into slug and PascalCase name.
  * Splits ONLY on [-_\s]. Forward slash (/) is NOT a separator.
  */
 export function parseInputName(input: string): { slug: string; name: string } {
   // Split on hyphens, underscores, and whitespace only
-  const parts = input.split(/[-_\s]+/).filter((p) => p.length > 0);
+  const parts = input.split(SEPARATOR).filter((p) => p.length > 0);
 
   if (parts.length === 0) {
     return { slug: input, name: input };
@@ -13,12 +20,12 @@ export function parseInputName(input: string): { slug: string; name: string } {
   // Slug: join with hyphen. But we need to preserve "/" characters.
   // Since "/" is not a separator, the whole input with "/" intact,
   // just replacing [-_\s] with "-"
-  const slug = input.replace(/[-_\s]+/g, "-");
+  const slug = input.replace(SEPARATOR_GLOBAL, "-");
 
   // PascalCase: capitalize only the split parts (not "/" segments)
   // We need to capitalize at [-_\s] boundaries, not at "/"
   const name = input
-    .split(/[-_\s]+/)
+    .split(SEPARATOR)
     .map((part) => {
       if (part.length === 0) return "";
       return part.charAt(0).toUpperCase() + part.slice(1);

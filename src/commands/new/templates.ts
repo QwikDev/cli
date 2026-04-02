@@ -7,6 +7,11 @@ import {
 } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRegExp, exactly } from "magic-regexp";
+
+export const SLUG_TOKEN = createRegExp(exactly("[slug]"), ["g"]);
+export const NAME_TOKEN = createRegExp(exactly("[name]"), ["g"]);
+const TEMPLATE_EXT = createRegExp(exactly(".template").and(exactly("").at.lineEnd()));
 
 export type TemplateType = "component" | "route" | "markdown" | "mdx";
 
@@ -97,8 +102,8 @@ export function writeTemplateFile(
 
   // Compute output filename: replace [slug] with slug, strip .template extension
   const outFilename = templateFile.filename
-    .replace(/\[slug\]/g, slug)
-    .replace(/\.template$/, "");
+    .replace(SLUG_TOKEN, slug)
+    .replace(TEMPLATE_EXT, "");
 
   const fileOutput = join(outDir, outFilename);
 
@@ -109,8 +114,8 @@ export function writeTemplateFile(
 
   // Replace [slug] and [name] tokens in content
   const content = templateFile.content
-    .replace(/\[slug\]/g, slug)
-    .replace(/\[name\]/g, name);
+    .replace(SLUG_TOKEN, slug)
+    .replace(NAME_TOKEN, name);
 
   writeFileSync(fileOutput, content, "utf-8");
 }
