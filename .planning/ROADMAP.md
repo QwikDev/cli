@@ -47,7 +47,7 @@ Plans:
   2. All 6 static fixture projects (FX-01 through FX-06) exist on disk per PARITY-TEST-PLAN.md specifications; FX-07 and FX-08 are runtime outputs of CRE-01/CRE-02 tests and will be produced in Phase 6 when `bin/create-qwik.ts` exists
   3. Every test asserts an exit code (0 or 1); no test omits exit code assertion
   4. Mtime manipulation helpers (setMtimePast, setMtimeFuture) can alter file timestamps on FX-06 dist/q-manifest.json to simulate stale and up-to-date states for check-client scenarios
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] 02-01-PLAN.md — Test infrastructure: CLI subprocess helper, mtime helpers, 6 static fixture directories (FX-01 through FX-06)
@@ -113,7 +113,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Scaffold and Core Architecture | 3/3 | Complete   | 2026-04-02 |
-| 2. Test Harness | 0/3 | Planned | - |
+| 2. Test Harness | 2/3 | In Progress|  |
 | 3. Shared Foundations and Simple Commands | 0/TBD | Not started | - |
 | 4. Build and New Commands | 0/TBD | Not started | - |
 | 5. Add and Upgrade Commands | 0/TBD | Not started | - |

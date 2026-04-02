@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-04-02T04:47:01.353Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-04-02T04:51:06.380Z"
 last_activity: "2026-04-02 — Phase 1 complete: scaffold, core modules, router + 8 command stubs"
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 6
-  completed_plans: 4
+  completed_plans: 5
   percent: 100
 ---
 
@@ -54,6 +54,7 @@ Progress: [██████████] 100% (Phase 1 complete)
 | Phase 01-scaffold-and-core-architecture P02 | 5 | 2 tasks | 9 files |
 | Phase 01-scaffold-and-core-architecture P03 | 8 | 2 tasks | 13 files |
 | Phase 02-test-harness P01 | 2 | 2 tasks | 21 files |
+| Phase 02-test-harness P02 | 5 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -76,6 +77,8 @@ Recent decisions affecting current work:
 - [Phase 01-scaffold-and-core-architecture]: tsdown entry updated to include src/router.ts and bin/qwik.ts — deferred from plan 01 as planned to avoid missing-entry build failures
 - [Phase 02-test-harness]: fx-02/fx-03 dist/.gitkeep omitted — fixture .gitignore correctly ignores dist/ (realistic for v1 projects)
 - [Phase 02-test-harness]: Root .gitignore negation added for tests/fixtures/fx-06/dist/ — q-manifest.json must be tracked for mtime tests (CHK-02/CHK-03)
+- [Phase 02-test-harness]: BUILD-04 injects failing build.server via writeFileSync in setup — avoids dedicated failing fixture, keeps setup self-contained
+- [Phase 02-test-harness]: NEW-04 asserts stdout+stderr concatenated for 'already exists' — implementation may write to either stream
 
 ### Pending Todos
 
@@ -89,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-02T04:47:01.352Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-04-02T04:51:06.378Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None
