@@ -106,5 +106,8 @@ export async function runPostInstall(postInstallCmd: string, cwd: string): Promi
   const pm = getPackageManagerName();
   const executor = pm === "npm" ? "npx" : pm;
 
-  spawnSync(executor, [command, ...args], { cwd, stdio: "inherit" });
+  const result = spawnSync(executor, [command, ...args], { cwd, stdio: "inherit" });
+  if (result.status !== 0) {
+    throw new Error(`Post-install command failed: ${postInstallCmd} (exit code ${result.status})`);
+  }
 }

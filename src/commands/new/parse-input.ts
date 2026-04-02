@@ -79,13 +79,16 @@ export function inferTypeAndName(args: string[]): {
  * Otherwise undefined (interactive).
  */
 export function inferTemplate(argv: string[], hasPositional: boolean): string | undefined {
-  const flagArgs = argv
-    .slice(2)
-    .filter((a) => a.startsWith("--"))
-    .map((a) => a.slice(2));
+  const sliced = argv.slice(2);
 
-  if (flagArgs.length > 0) {
-    return flagArgs[0];
+  for (let i = 0; i < sliced.length; i++) {
+    const arg = sliced[i];
+    if (arg === "--templateId" && i + 1 < sliced.length) {
+      return sliced[i + 1];
+    }
+    if (arg?.startsWith("--templateId=")) {
+      return arg.slice("--templateId=".length);
+    }
   }
 
   if (hasPositional) {

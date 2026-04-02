@@ -1,4 +1,4 @@
-import { join } from "node:path";
+import { resolve } from "node:path";
 import { bye, panic } from "../../console.ts";
 import { Program } from "../../core.ts";
 import {
@@ -83,7 +83,7 @@ export class AddProgram extends Program<AddArgs, AddInput> {
     }
 
     // Determine rootDir
-    const rootDir = input.projectDir ? join(process.cwd(), input.projectDir) : process.cwd();
+    const rootDir = input.projectDir ? resolve(process.cwd(), input.projectDir) : process.cwd();
 
     // ADD-05: Consent gate
     if (!input.skipConfirmation) {

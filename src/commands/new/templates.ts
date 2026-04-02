@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRegExp, exactly } from "magic-regexp";
 
@@ -138,7 +138,8 @@ export function getOutDir(rootDir: string, typeArg: TemplateType, nameArg: strin
   // Path traversal guard: resolved path must remain under src/routes/
   const expectedBase = resolve(rootDir, "src", "routes");
   const resolvedOut = resolve(outDir);
-  if (!resolvedOut.startsWith(expectedBase + "/") && resolvedOut !== expectedBase) {
+  const rel = relative(expectedBase, resolvedOut);
+  if (rel.startsWith("..") || rel.startsWith("/")) {
     throw new Error(
       `Invalid name: "${nameArg}" would escape the routes directory. Path traversal is not allowed.`,
     );
