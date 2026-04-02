@@ -1,4 +1,5 @@
 import { Program } from "../../core.js";
+import { getRandomJoke } from "./jokes.js";
 
 type JokeArgs = { _: string[] };
 type JokeInput = Record<string, never>;
@@ -13,7 +14,9 @@ export class JokeProgram extends Program<JokeArgs, JokeInput> {
   }
 
   protected async execute(_input: JokeInput): Promise<number> {
-    console.log("joke command (stub)");
+    const [setup, punchline] = getRandomJoke();
+    console.log(setup);
+    console.log(punchline);
     return 0;
   }
 }

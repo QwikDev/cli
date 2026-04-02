@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 02-04-PLAN.md
-last_updated: "2026-04-02T05:10:31.582Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-04-02T05:42:44.756Z"
 last_activity: "2026-04-01 — Phase 2 complete: 25 golden-path integration tests + 39 unit tests in genuine red state"
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 9
+  completed_plans: 8
   percent: 33
 ---
 
@@ -57,6 +57,7 @@ Progress: [████████░░] 33% (Phases 1-2 of 6 complete)
 | Phase 02-test-harness P02 | 5 | 2 tasks | 4 files |
 | Phase 02-test-harness P03 | 15 | 2 tasks | 4 files |
 | Phase 02-test-harness P04 | 8 | 1 task | 2 files |
+| Phase 03-shared-foundations-and-simple-commands P01 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,7 @@ Recent decisions affecting current work:
 - [Phase 02-test-harness]: runCli/runCreateQwik use absolute TSX_ESM path — Node.js ESM --import loader resolution not affected by NODE_PATH; absolute path required when cwd is outside project root
 - [Phase 02-test-harness]: MIG-01/MIG-04 have positive assertions (files MUST contain new imports) to guarantee genuine red state against stubs; MIG-02/03/05 are vacuous passes with documented TODO Phase 5 comments
 - [Phase 02-test-harness]: ADD-02 positive assertion targets sub/adapters/cloudflare-pages/vite.config.ts — matches --projectDir=./sub invocation pattern established in setup
+- [Phase 03-shared-foundations-and-simple-commands]: QWIK_VERSION ambient declaration must be in a separate globals.d.ts — types.ts has exports making it a module, so declare const there was module-scoped not globally visible
 
 ### Pending Todos
 
@@ -97,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T00:08:00.000Z
-Stopped at: Completed 02-04-PLAN.md
+Last session: 2026-04-02T05:42:44.753Z
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None

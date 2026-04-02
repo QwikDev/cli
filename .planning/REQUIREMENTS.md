@@ -23,7 +23,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ARCH-03**: `console.ts` prompt/color utilities wrapping @clack/prompts and kleur
 - [x] **ARCH-04**: `AppCommand` flag parsing with `getArg()` supporting `--flag=value` and `--flag value` forms
 - [x] **ARCH-05**: `printHeader()` ASCII art logo displayed before every command
-- [ ] **ARCH-06**: Package manager auto-detection via which-pm-runs with pnpm fallback
+- [x] **ARCH-06**: Package manager auto-detection via which-pm-runs with pnpm fallback
 - [x] **ARCH-07**: `bye()` (outro + exit 0) and `panic()` (error + exit 1) exit helpers
 - [x] **ARCH-08**: Unrecognized command handling: red error message + print help + exit 1
 
@@ -91,7 +91,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Simple Commands
 
-- [ ] **SIMP-01**: `qwik version` outputs bare semver string (one line, no label prefix)
+- [x] **SIMP-01**: `qwik version` outputs bare semver string (one line, no label prefix)
 - [ ] **SIMP-02**: `qwik joke` outputs setup + punchline, exit 0, no file writes or installs
 - [ ] **SIMP-03**: `qwik help` displays all commands with descriptions
 - [ ] **SIMP-04**: Jokes array is static data within CLI package (no cross-package import)
@@ -158,7 +158,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ARCH-03 | Phase 1 | Complete |
 | ARCH-04 | Phase 1 | Complete |
 | ARCH-05 | Phase 1 | Complete |
-| ARCH-06 | Phase 3 | Pending |
+| ARCH-06 | Phase 3 | Complete |
 | ARCH-07 | Phase 1 | Complete |
 | ARCH-08 | Phase 1 | Complete |
 | TEST-01 | Phase 2 | Complete |
@@ -205,7 +205,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CHKC-03 | Phase 6 | Pending |
 | CHKC-04 | Phase 6 | Pending |
 | CHKC-05 | Phase 6 | Pending |
-| SIMP-01 | Phase 3 | Pending |
+| SIMP-01 | Phase 3 | Complete |
 | SIMP-02 | Phase 3 | Pending |
 | SIMP-03 | Phase 3 | Pending |
 | SIMP-04 | Phase 3 | Pending |
