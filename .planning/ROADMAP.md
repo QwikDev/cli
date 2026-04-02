@@ -47,7 +47,12 @@ Plans:
   2. All 8 fixture projects (FX-01 through FX-08) exist on disk per PARITY-TEST-PLAN.md specifications
   3. Every test asserts an exit code (0 or 1); no test omits exit code assertion
   4. FX-07 and FX-08 fixture helpers can manipulate mtime on src files to simulate stale and up-to-date states for check-client scenarios
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Test infrastructure: CLI subprocess helper, mtime helpers, 6 static fixture directories (FX-01 through FX-06)
+- [ ] 02-02-PLAN.md — Golden-path tests: simple commands (VER-01, JOKE-01), build (BUILD-01-04), new (NEW-01-05), check-client (CHK-01-03)
+- [ ] 02-03-PLAN.md — Golden-path tests: add (ADD-01-03), migrate-v2 (MIG-01-05), create-qwik (CRE-01-02)
 
 ### Phase 3: Shared Foundations and Simple Commands
 **Goal**: Package manager detection and asset resolution services are available to all commands; the three simplest commands work correctly end-to-end with passing parity tests
@@ -108,7 +113,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Scaffold and Core Architecture | 3/3 | Complete   | 2026-04-02 |
-| 2. Test Harness | 0/TBD | Not started | - |
+| 2. Test Harness | 0/3 | Planned | - |
 | 3. Shared Foundations and Simple Commands | 0/TBD | Not started | - |
 | 4. Build and New Commands | 0/TBD | Not started | - |
 | 5. Add and Upgrade Commands | 0/TBD | Not started | - |
