@@ -56,6 +56,13 @@ export const IMPORT_RENAME_ROUNDS: ImportRenameRound[] = [
  * @param library - Import path prefix to match (e.g. "@builder.io/qwik-city")
  * @param filePaths - Absolute or cwd-relative file paths to process
  */
+function getModuleExportName(node: import("oxc-parser").ModuleExportName): string {
+  if (node.type === "Literal") {
+    return node.value;
+  }
+  return node.name;
+}
+
 export function replaceImportInFiles(
   changes: ImportRename[],
   library: string,
@@ -93,7 +100,7 @@ export function replaceImportInFiles(
       for (const specifier of node.specifiers) {
         if (specifier.type !== "ImportSpecifier") continue;
 
-        const importedName: string = specifier.imported.name;
+        const importedName = getModuleExportName(specifier.imported);
         const newName = changeMap.get(importedName);
         if (newName === undefined) continue;
 

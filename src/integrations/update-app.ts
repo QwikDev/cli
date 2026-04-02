@@ -59,6 +59,7 @@ export async function runPostInstall(
 ): Promise<void> {
   const parts = postInstallCmd.split(" ");
   const [command, ...args] = parts;
+  if (!command) return;
 
   const pm = getPackageManagerName();
   const executor = pm === "npm" ? "npx" : pm;

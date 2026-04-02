@@ -19,6 +19,7 @@ export class AppCommand {
     const idx = this.args.findIndex((a) => matcher.test(a));
     if (idx === -1) return undefined;
     const arg = this.args[idx];
+    if (arg === undefined) return undefined;
     if (arg.includes("=")) return arg.split("=")[1];
     return this.args[idx + 1];
   }

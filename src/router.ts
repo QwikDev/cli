@@ -28,14 +28,14 @@ export async function runCli(): Promise<void> {
       console.error(kleur.red(`Unrecognized qwik command: ${task}\n`));
     }
     // Both "no command" and "unrecognized" print help then exit 1
-    const { default: HelpProgram } = await COMMANDS.help();
+    const { default: HelpProgram } = await COMMANDS.help!();
     const help = new HelpProgram();
     help.setInteractive(false);
     await help.run(process.argv);
     process.exit(1);
   }
 
-  const { default: Cmd } = await COMMANDS[task]();
+  const { default: Cmd } = await COMMANDS[task]!();
   const program = new Cmd();
   const code = await program.run(process.argv);
   process.exit(code ?? 0);
