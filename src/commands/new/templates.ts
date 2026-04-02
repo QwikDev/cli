@@ -1,0 +1,135 @@
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+export type TemplateType = "component" | "route" | "markdown" | "mdx";
+
+export interface TemplateFile {
+  filename: string; // e.g. "index.tsx.template" or "[slug].tsx.template"
+  content: string;
+}
+
+export interface Template {
+  id: string; // e.g. "qwik"
+  component?: TemplateFile[];
+  route?: TemplateFile[];
+  markdown?: TemplateFile[];
+  mdx?: TemplateFile[];
+}
+
+/**
+ * Discover and load all templates from stubs/templates/.
+ * Resolves the directory using import.meta.url for ESM compatibility.
+ */
+export function loadTemplates(): Template[] {
+  const __filename = fileURLToPath(import.meta.url);
+  const templatesDir = join(
+    dirname(__filename),
+    "..",
+    "..",
+    "..",
+    "stubs",
+    "templates",
+  );
+
+  if (!existsSync(templatesDir)) {
+    return [];
+  }
+
+  const templateIds = readdirSync(templatesDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+    .sort((a, b) => {
+      // Sort 'qwik' first
+      if (a === "qwik") return -1;
+      if (b === "qwik") return 1;
+      return a.localeCompare(b);
+    });
+
+  const templates: Template[] = [];
+
+  for (const id of templateIds) {
+    const templateDir = join(templatesDir, id);
+    const template: Template = { id };
+
+    for (const type of ["component", "route", "markdown", "mdx"] as const) {
+      const typeDir = join(templateDir, type);
+
+      if (!existsSync(typeDir)) {
+        continue;
+      }
+
+      const files = readdirSync(typeDir, { withFileTypes: true })
+        .filter((f) => f.isFile() && f.name !== ".gitkeep")
+        .map((f) => ({
+          filename: f.name,
+          content: readFileSync(join(typeDir, f.name), "utf-8"),
+        }));
+
+      if (files.length > 0) {
+        template[type] = files;
+      }
+    }
+
+    templates.push(template);
+  }
+
+  return templates;
+}
+
+/**
+ * Write a single template file to disk, substituting [slug] and [name] tokens.
+ * Throws if the output file already exists (NEW-04 duplicate guard).
+ */
+export function writeTemplateFile(
+  outDir: string,
+  templateFile: TemplateFile,
+  slug: string,
+  name: string,
+): void {
+  mkdirSync(outDir, { recursive: true });
+
+  // Compute output filename: replace [slug] with slug, strip .template extension
+  const outFilename = templateFile.filename
+    .replace(/\[slug\]/g, slug)
+    .replace(/\.template$/, "");
+
+  const fileOutput = join(outDir, outFilename);
+
+  // NEW-04: Duplicate guard
+  if (existsSync(fileOutput)) {
+    throw new Error(`"${outFilename}" already exists in "${outDir}"`);
+  }
+
+  // Replace [slug] and [name] tokens in content
+  const content = templateFile.content
+    .replace(/\[slug\]/g, slug)
+    .replace(/\[name\]/g, name);
+
+  writeFileSync(fileOutput, content, "utf-8");
+}
+
+/**
+ * Get the output directory for a given type and nameArg.
+ * - component: flat path (src/components), no nameArg subdirectory
+ * - route/markdown/mdx: src/routes/<nameArg>
+ */
+export function getOutDir(
+  rootDir: string,
+  typeArg: TemplateType,
+  nameArg: string,
+): string {
+  if (typeArg === "component") {
+    // NEW-02: flat, no subdirectory
+    return join(rootDir, "src", "components");
+  }
+
+  // route, markdown, mdx: nameArg includes leading "/" which path.join normalizes
+  return join(rootDir, "src", "routes", nameArg);
+}
