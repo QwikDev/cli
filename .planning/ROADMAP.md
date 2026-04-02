@@ -194,7 +194,10 @@ Plans:
   3. Running the format check script produces no diff on the current source tree (all files already formatted by oxfmt)
   4. Running the lint script via oxlint exits 0 with zero errors on the current source
   5. Vitest can be invoked via `vite-plus` and discovers unit test files; existing Japa tests remain runnable alongside vitest unit tests
-**Plans**: TBD
+**Plans:** 1 plan
+
+Plans:
+- [ ] 10-01-PLAN.md — Install vite-plus, remove Biome, create unified vite.config.ts, reformat source with oxfmt
 
 ### Phase 11: create-qwik Implementation
 **Goal**: `create-qwik` works as a standalone `npm create qwik` binary in both interactive and non-interactive modes; background dep install starts while prompts continue; generated projects have clean package.json and an initial git commit; unit tests cover all core logic; all Japa golden-path tests remain green
@@ -226,5 +229,5 @@ v1.1: Phases execute in dependency order: 7 -> 8 -> 9 -> 10 -> 11 (Phase 8 and 9
 | 7. Type Baseline | 2/2 | Complete   | 2026-04-02 |
 | 8. Content Population | 2/2 | Complete   | 2026-04-02 |
 | 9. Migration Architecture | 1/2 | In Progress|  |
-| 10. Tooling Switch | 0/TBD | Not started | - |
+| 10. Tooling Switch | 0/1 | Not started | - |
 | 11. create-qwik Implementation | 0/TBD | Not started | - |
