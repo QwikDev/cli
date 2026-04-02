@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import crossSpawn from "cross-spawn";
+import { createRegExp, exactly, oneOrMore, char } from "magic-regexp";
 import { Program } from "../../core.js";
 
 type BuildArgs = { _: string[] };
@@ -75,9 +76,15 @@ export class BuildProgram extends Program<BuildArgs, BuildInput> {
         mode = argv[i + 1];
         break;
       }
-      const match = arg.match(/^--mode=(.+)$/);
+      const modePattern = createRegExp(
+        exactly("--mode=")
+          .at.lineStart()
+          .and(oneOrMore(char).groupedAs("value"))
+          .and(exactly("").at.lineEnd()),
+      );
+      const match = arg.match(modePattern);
       if (match) {
-        mode = match[1];
+        mode = match.groups?.value;
         break;
       }
     }

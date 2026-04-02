@@ -1,14 +1,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { createRegExp, exactly } from "magic-regexp";
 import { isBinaryPath } from "./binary-extensions.js";
 import { visitNotIgnoredFiles } from "./visit-not-ignored.js";
-
-/**
- * Escape a string for safe use inside a RegExp.
- */
-function escapeRegex(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
 
 /**
  * Replace all occurrences of `oldPkg` with `newPkg` in every non-binary,
@@ -26,7 +20,7 @@ export async function replacePackage(
 ): Promise<void> {
   // exact is a documentation marker — both paths use the same regex
   void exact;
-  const regex = new RegExp(escapeRegex(oldPkg), "g");
+  const regex = createRegExp(exactly(oldPkg), ["g"]);
 
   await visitNotIgnoredFiles(process.cwd(), (relPath) => {
     if (isBinaryPath(relPath)) return;

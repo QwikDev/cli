@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { createRegExp, exactly, anyOf } from "magic-regexp";
 
 export class AppCommand {
   readonly args: string[];
@@ -15,7 +16,11 @@ export class AppCommand {
   }
 
   getArg(name: string): string | undefined {
-    const matcher = new RegExp(`^--${name}($|=)`);
+    const matcher = createRegExp(
+      exactly("--" + name)
+        .at.lineStart()
+        .and(anyOf(exactly("="), exactly("").at.lineEnd())),
+    );
     const idx = this.args.findIndex((a) => matcher.test(a));
     if (idx === -1) return undefined;
     const arg = this.args[idx];

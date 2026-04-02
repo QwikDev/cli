@@ -33,6 +33,7 @@
     "fs-extra": "^11.3.0",
     "ignore": "^7.0.5",
     "kleur": "^4.1.5",
+    "magic-regexp": "^0.11.0",
     "magic-string": "^0.30",
     "oxc-parser": "^0.123",
     "panam": "^0.3.0",
