@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Phases
 status: planning
-stopped_at: Completed 09-migration-architecture 09-01-PLAN.md
-last_updated: "2026-04-02T18:00:56.011Z"
+stopped_at: Completed 09-migration-architecture 09-02-PLAN.md
+last_updated: "2026-04-02T18:17:45.104Z"
 last_activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 progress:
   total_phases: 11
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 22
-  completed_plans: 21
+  completed_plans: 22
 ---
 
 # Project State
@@ -75,6 +75,7 @@ Last activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 | Phase 08-content-population P01 | 6 | 2 tasks | 268 files |
 | Phase 08-content-population P02 | 8 | 1 tasks | 1 files |
 | Phase 09-migration-architecture P01 | 25 | 2 tasks | 19 files |
+| Phase 09-migration-architecture P02 | 14 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -135,6 +136,8 @@ Recent decisions affecting current work:
 - [Phase 09-migration-architecture]: updateDependencies called unconditionally when deps are behind — not gated by migration chain execution (MIGR-02)
 - [Phase 09-migration-architecture]: migrations/ added to tsconfig.json include array — necessary for tsc to resolve types across relative import boundary
 - [Phase 09-migration-architecture]: vitest.config.ts scoped to tests/unit/upgrade/ only — avoids Japa/Vitest collision on existing spec files
+- [Phase 09-migration-architecture]: buildMigrationChain coerces toVersion: semver.lte('2.0.0', '2.0.0-beta.30') === false; must coerce pre-release target before upper-bound check
+- [Phase 09-migration-architecture]: bin/test.ts excludes tests/unit/upgrade/** from Japa — Vitest describe/expect crashes Japa loader at file load
 
 ### Pending Todos
 
@@ -149,6 +152,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-02T18:00:56.009Z
-Stopped at: Completed 09-migration-architecture 09-01-PLAN.md
+Last session: 2026-04-02T18:17:45.102Z
+Stopped at: Completed 09-migration-architecture 09-02-PLAN.md
 Resume file: None

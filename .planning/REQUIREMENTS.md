@@ -155,7 +155,7 @@ Requirements for milestone v1.1: Course Correction & Completeness.
 ### Testing
 
 - [ ] **VTST-01**: Vitest configured via vite-plus for unit testing alongside existing Japa integration tests
-- [ ] **VTST-02**: Migration chaining logic has unit tests (version detection, chain building, sequential execution)
+- [x] **VTST-02**: Migration chaining logic has unit tests (version detection, chain building, sequential execution)
 - [ ] **VTST-03**: create-qwik `createApp()` core logic has unit tests (template resolution, package.json cleanup, directory scaffolding)
 - [ ] **VTST-04**: `loadIntegrations()` has unit tests verifying discovery of all starter types (apps, adapters, features)
 - [ ] **VTST-05**: Existing Japa golden-path tests remain green after all restructuring
@@ -290,7 +290,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TOOL-04 | Phase 8 | Complete |
 | TOOL-05 | Phase 10 | Pending |
 | VTST-01 | Phase 10 | Pending |
-| VTST-02 | Phase 9 | Pending |
+| VTST-02 | Phase 9 | Complete |
 | VTST-03 | Phase 11 | Pending |
 | VTST-04 | Phase 11 | Pending |
 | VTST-05 | Phase 11 | Pending |
