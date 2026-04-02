@@ -1,55 +1,60 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: milestone
-status: completed
-stopped_at: Completed 05-04-PLAN.md
-last_updated: "2026-04-02T07:18:24.795Z"
-last_activity: "2026-04-02 — Phase 5 complete: migrate-v2 and upgrade commands fully implemented with 5-step v1→v2 migration"
+milestone_name: Phases
+status: planning
+stopped_at: Completed 07-type-baseline-regex-cleanup 07-01-PLAN.md
+last_updated: "2026-04-02T16:24:34.470Z"
+last_activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 progress:
-  total_phases: 6
+  total_phases: 11
   completed_phases: 5
-  total_plans: 16
-  completed_plans: 16
-  percent: 93
+  total_plans: 18
+  completed_plans: 17
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-01)
+See: .planning/PROJECT.md (updated 2026-04-02)
 
 **Core value:** Every command in the existing Qwik CLI must work identically in the new package — 67 MUST PRESERVE behaviors cannot regress.
-**Current focus:** Phase 5 — Add and Upgrade Commands (COMPLETE)
+**Current focus:** Milestone v1.1 — Course Correction & Completeness
 
 ## Current Position
 
-Phase: 5 of 6 (Add and Upgrade Commands) — COMPLETE
-Plan: 4 of 4 in Phase 5
-Status: Phase 5 complete, ready for Phase 6 (create-qwik)
-Last activity: 2026-04-02 — Phase 5 complete: migrate-v2 and upgrade commands fully implemented with 5-step v1→v2 migration
+Phase: Phase 7 (Type Baseline) — ready to start
+Plan: —
+Status: Roadmap defined; ready for planning
+Last activity: 2026-04-02 — v1.1 roadmap created (phases 7-11)
 
-Progress: [█████████░] 93% (Phases 1-5 of 6 complete)
+**v1.1 Progress bar:** [----------] 0% (0/5 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
+- Total plans completed: 0 (v1.1)
 - Average duration: —
 - Total execution time: 0 hours
 
-**By Phase:**
+**By Phase (v1.1):**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 7. Type Baseline | TBD | - | - |
+| 8. Content Population | TBD | - | - |
+| 9. Migration Architecture | TBD | - | - |
+| 10. Tooling Switch | TBD | - | - |
+| 11. create-qwik Implementation | TBD | - | - |
 
 **Recent Trend:**
 - Last 5 plans: —
 - Trend: —
 
 *Updated after each plan completion*
+
+**v1.0 historical velocity (reference):**
 | Phase 01-scaffold-and-core-architecture P01 | 15 | 2 tasks | 13 files |
 | Phase 01-scaffold-and-core-architecture P02 | 5 | 2 tasks | 9 files |
 | Phase 01-scaffold-and-core-architecture P03 | 8 | 2 tasks | 13 files |
@@ -65,6 +70,7 @@ Progress: [█████████░] 93% (Phases 1-5 of 6 complete)
 | Phase 05-add-and-upgrade-commands P01 | 8 | 2 tasks | 6 files |
 | Phase 05-add-and-upgrade-commands P03 | 15 | 2 tasks | 4 files |
 | Phase 05-add-and-upgrade-commands P02 | 15 | 2 tasks | 3 files |
+| Phase 07-type-baseline-regex-cleanup P01 | 4 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -112,19 +118,23 @@ Recent decisions affecting current work:
 - [Phase 05-add-and-upgrade-commands]: Cancel path uses Ctrl+C (\x03) piped to stdin — @clack/prompts isCancel() returns true for SIGINT; EOF does NOT trigger cancel (hangs with exit 13)
 - [Phase 05-add-and-upgrade-commands]: process.chdir/restore wraps visitNotIgnoredFiles and runAllPackageReplacements — both use process.cwd() internally for path resolution and gitignore loading
 - [Phase 05-add-and-upgrade-commands]: upgrade alias in router.ts points to same import as migrate-v2 — single source of truth, both commands always in sync
+- [Phase 07-type-baseline-regex-cleanup]: Non-null assertion used for COMMANDS.help! and COMMANDS[task]! — keys are statically defined in Record literal
+- [Phase 07-type-baseline-regex-cleanup]: getModuleExportName() discriminates on node.type === 'Literal' for oxc-parser ModuleExportName union
+- [Phase 07-type-baseline-regex-cleanup]: Option<T> from @clack/prompts imported as ClackOption in core.ts to avoid collision with local Option type for yargs config
 
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
-- Phase 6 (upgrade): oxc-parser binding-scoped identifier rename API not yet verified (OQ-06) — needs research spike during Phase 5 planning
-- Phase 6 (upgrade): visitNotIgnoredFiles symlink handling decision deferred (OQ-07)
-- Phase 6 (create-qwik): Runtime version injection approach for starters not confirmed in ESM context (EB-05) — needs validation during Phase 6 planning
+- Phase 11 (create-qwik): Background install abort pattern with cross-spawn vs execa needs validation before implementation — research during Phase 11 planning
+- Phase 11 (create-qwik): Runtime version injection approach for starter package.json dep versions needs a confirmed approach — two candidates documented in SUMMARY.md
+- Phase 10 (tooling): oxlint rule coverage gap vs Biome needs audit before switch — document any rules with no oxlint equivalent
+- Phase 6 (v1.0): create-qwik Runtime version injection approach for starters not confirmed in ESM context (EB-05) — needs validation during Phase 6 planning
 
 ## Session Continuity
 
-Last session: 2026-04-02T07:08:47.238Z
-Stopped at: Completed 05-04-PLAN.md
+Last session: 2026-04-02T16:24:34.467Z
+Stopped at: Completed 07-type-baseline-regex-cleanup 07-01-PLAN.md
 Resume file: None

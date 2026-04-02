@@ -4,6 +4,8 @@
 
 A spec-driven reimplementation of the Qwik CLI as a standalone `@qwik.dev/cli` package, extracted from the QwikDev monorepo. The build proceeds in six phases ordered by dependency: scaffold and core architecture first, then a spec-first test harness, then shared foundations and simple commands, then the build and new commands, then the complex add and upgrade commands, and finally the create-qwik scaffolding flow with check-client and packaging. Every phase delivers a verifiable capability; nothing ships until all 25 golden-path parity tests pass.
 
+The v1.1 milestone (phases 7-11) corrects structural gaps from v1.0: type errors fixed first to establish a clean baseline, real starters content populated from the Qwik repo, migration folder restructured for version-chaining, tooling switched from Biome to oxfmt+oxlint in an isolated commit, and create-qwik implemented last when all its dependencies are in place.
+
 ## Phases
 
 **Phase Numbering:**
@@ -12,12 +14,22 @@ A spec-driven reimplementation of the Qwik CLI as a standalone `@qwik.dev/cli` p
 
 Decimal phases appear between their surrounding integers in numeric order.
 
+### v1.0 Phases
+
 - [x] **Phase 1: Scaffold and Core Architecture** - Repo skeleton with all extraction blockers resolved; Program base class, command router, and console utilities wired (completed 2026-04-02)
 - [x] **Phase 2: Test Harness** - 6 static fixture projects, 25 golden-path Japa tests written spec-first, before any command implementation (completed 2026-04-02)
 - [x] **Phase 3: Shared Foundations and Simple Commands** - Package manager detection, asset resolution services; version, joke, and help commands working end-to-end (completed 2026-04-02)
 - [ ] **Phase 4: Build and New Commands** - Parallel build orchestration with lifecycle hooks; route and component file generation with token substitution
 - [x] **Phase 5: Add and Upgrade Commands** - Integration installation with consent gate; AST-based migration with exact 5-step ordering and oxc-parser codemods (completed 2026-04-02)
 - [ ] **Phase 6: Create-Qwik, Check-Client, and Packaging** - Standalone scaffolding binary; manifest-based staleness detection; dual ESM+CJS package published as @qwik.dev/cli
+
+### v1.1 Phases
+
+- [ ] **Phase 7: Type Baseline** - Zero TypeScript type errors established before any structural change so regressions are detectable
+- [ ] **Phase 8: Content Population** - All starters, adapters, features, and jokes sourced from the Qwik repo; top-level adapters/ artifact removed
+- [ ] **Phase 9: Migration Architecture** - Migrations folder restructured to migrations/v2/ with version-chaining support and upgrade command enhancements
+- [ ] **Phase 10: Tooling Switch** - Biome replaced by oxfmt + oxlint via vite-plus; vitest configured; isolated formatting commit
+- [ ] **Phase 11: create-qwik Implementation** - Full interactive and non-interactive create-qwik binary with background install, git init, and complete test coverage
 
 ## Phase Details
 
@@ -30,7 +42,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `qwik someUnknownCommand` prints a red error message and exits 1; `qwik help` exits 0 with all command names listed
   3. Tsdown builds dual ESM + CJS output and the `exports` field in package.json resolves both conditions correctly
   4. Biome runs clean with zero lint errors on the scaffolded source
-  5. The `Program<T,U>` abstract base class enforces the parse → validate → interact → execute lifecycle and subclasses cannot skip a stage
+  5. The `Program<T,U>` abstract base class enforces the parse -> validate -> interact -> execute lifecycle and subclasses cannot skip a stage
 **Plans:** 3/3 plans complete
 
 Plans:
@@ -120,16 +132,91 @@ Plans:
   6. Parity tests CHK-01/02/03 pass; all 25 golden-path parity tests are green
 **Plans**: TBD
 
+---
+
+## v1.1 Phase Details
+
+### Phase 7: Type Baseline & Regex Cleanup
+**Goal**: `tsc --noEmit` passes with zero errors across all existing source files and all regex patterns are replaced with magic-regexp for readability and type-safety, establishing a clean codebase before any structural change
+**Depends on**: Phase 6 (v1.0 complete)
+**Requirements**: TOOL-03, TOOL-06
+**Success Criteria** (what must be TRUE):
+  1. `tsc --noEmit` completes with zero errors and zero warnings on the current source tree
+  2. All four confirmed error categories are resolved: `ModuleExportName` union in rename-import.ts, `exactOptionalPropertyTypes` in add/index.ts and console.ts, `cross-spawn` overload in update-app.ts, `noUncheckedIndexedAccess` in app-command.ts and router.ts
+  3. All regex literals and `new RegExp()` calls are replaced with magic-regexp equivalents
+  4. No runtime behavior changes — every existing Japa golden-path test that was passing before Phase 7 still passes after
+**Plans:** 1/2 plans executed
+
+Plans:
+- [ ] 07-01-PLAN.md — Fix all 9 TypeScript compiler errors across 6 files (tsc --noEmit zero errors)
+- [ ] 07-02-PLAN.md — Replace all 12 regex patterns with magic-regexp equivalents
+
+### Phase 8: Content Population
+**Goal**: All starters, adapters, features, and app templates are sourced from the Qwik monorepo and live in `stubs/`; `qwik add` presents the full 14-adapter and 22-feature menus; jokes draw from the real 30-joke pool; the incorrect top-level `adapters/` artifact is removed
+**Depends on**: Phase 7
+**Requirements**: STRT-01, STRT-02, STRT-03, STRT-04, STRT-05, TOOL-04
+**Success Criteria** (what must be TRUE):
+  1. `qwik add` interactive prompt lists all 14 deployment adapters as selectable options
+  2. `qwik add` interactive prompt lists all 22 feature integrations as selectable options
+  3. `stubs/apps/` contains all 4 app starters (base, empty, playground, library), each with a valid `__qwik__` metadata block in their package.json
+  4. `qwik joke` outputs a joke drawn from the 30-entry pool sourced from the Qwik repo (not the original 10-entry hardcoded list)
+  5. The top-level `adapters/` directory no longer exists in the repository
+  6. `npm pack --dry-run` lists all starters content files in the tarball output
+**Plans**: TBD
+
+### Phase 9: Migration Architecture
+**Goal**: Migration code lives in a version-scoped `migrations/v2/` folder; the `upgrade` command checks and installs latest Qwik deps and can chain all required version migrations sequentially; running upgrade on a current project is a clean no-op; migration chaining has unit test coverage
+**Depends on**: Phase 7
+**Requirements**: MIGR-01, MIGR-02, MIGR-03, MIGR-04, MIGR-05, VTST-02
+**Success Criteria** (what must be TRUE):
+  1. The directory `src/migrate/` no longer exists; migration code lives in `migrations/v2/index.ts` which exports `runV2Migration(rootDir)`
+  2. `qwik upgrade` checks for the latest `@qwik.dev/*` package versions and installs them if newer than what is installed
+  3. `qwik upgrade` detects the current Qwik version from the project's package.json and runs only the migrations needed to reach the current release (v1 project chains through v2; an already-v2 project skips the v2 migration)
+  4. Running `qwik upgrade` on a project already at the latest version produces no file changes and exits 0 with an "already up to date" message
+  5. Vitest unit tests cover version detection, migration chain building, and sequential execution of the chaining orchestrator; all tests pass
+**Plans**: TBD
+
+### Phase 10: Tooling Switch
+**Goal**: Biome is fully replaced by oxfmt + oxlint via vite-plus; a single `vite.config.ts` drives formatting, linting, and testing; the switch lands as an isolated commit with no logic changes mixed in; vitest is available for unit tests
+**Depends on**: Phase 9
+**Requirements**: TOOL-01, TOOL-02, TOOL-05, VTST-01
+**Success Criteria** (what must be TRUE):
+  1. `biome.json` does not exist in the repository and `@biomejs/biome` does not appear in any package.json dependency field
+  2. `vite.config.ts` exists at the repo root and configures oxfmt formatting, oxlint linting, and vitest test running as a unified toolchain
+  3. Running the format check script produces no diff on the current source tree (all files already formatted by oxfmt)
+  4. Running the lint script via oxlint exits 0 with zero errors on the current source
+  5. Vitest can be invoked via `vite-plus` and discovers unit test files; existing Japa tests remain runnable alongside vitest unit tests
+**Plans**: TBD
+
+### Phase 11: create-qwik Implementation
+**Goal**: `create-qwik` works as a standalone `npm create qwik` binary in both interactive and non-interactive modes; background dep install starts while prompts continue; generated projects have clean package.json and an initial git commit; unit tests cover all core logic; all Japa golden-path tests remain green
+**Depends on**: Phase 8, Phase 10
+**Requirements**: CRQW-09, CRQW-10, CRQW-11, CRQW-12, CRQW-13, CRQW-14, VTST-03, VTST-04, VTST-05
+**Success Criteria** (what must be TRUE):
+  1. `create-qwik base ./my-app` non-interactively scaffolds a project in `./my-app` using the base starter, removes `__qwik__` metadata from package.json, initializes a git repo with an initial commit, and exits 0
+  2. `create-qwik` with no arguments launches the interactive 6-step flow (project dir, starter selection, package manager, install confirm, git init confirm, background install with a joke displayed) and exits 0 with next-steps output
+  3. Dependency installation starts in the background as soon as the output directory is set, running concurrently while the user answers remaining prompts
+  4. `npx create-qwik` resolves to the `bin/create-qwik.ts` entry point and runs correctly as a standalone binary (not a subcommand of `qwik`)
+  5. Vitest unit tests pass for `createApp()` template resolution, `cleanPackageJson()` metadata removal, and `loadIntegrations()` discovery of all starter types (apps, adapters, features)
+  6. All existing Japa golden-path tests remain green after create-qwik implementation is merged
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+v1.0: Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+v1.1: Phases execute in dependency order: 7 -> 8 -> 9 -> 10 -> 11 (Phase 8 and 9 can run in parallel after Phase 7; Phase 11 depends on both Phase 8 and Phase 10)
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffold and Core Architecture | 3/3 | Complete   | 2026-04-02 |
-| 2. Test Harness | 4/4 | Complete   | 2026-04-02 |
-| 3. Shared Foundations and Simple Commands | 2/2 | Complete   | 2026-04-02 |
-| 4. Build and New Commands | 2/3 | In Progress|  |
-| 5. Add and Upgrade Commands | 4/4 | Complete   | 2026-04-02 |
+| 1. Scaffold and Core Architecture | 3/3 | Complete | 2026-04-02 |
+| 2. Test Harness | 4/4 | Complete | 2026-04-02 |
+| 3. Shared Foundations and Simple Commands | 2/2 | Complete | 2026-04-02 |
+| 4. Build and New Commands | 2/3 | In Progress | - |
+| 5. Add and Upgrade Commands | 4/4 | Complete | 2026-04-02 |
 | 6. Create-Qwik, Check-Client, and Packaging | 0/TBD | Not started | - |
+| 7. Type Baseline | 1/2 | In Progress|  |
+| 8. Content Population | 0/TBD | Not started | - |
+| 9. Migration Architecture | 0/TBD | Not started | - |
+| 10. Tooling Switch | 0/TBD | Not started | - |
+| 11. create-qwik Implementation | 0/TBD | Not started | - |

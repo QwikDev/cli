@@ -114,6 +114,52 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **PKG-03**: `create-qwik` binary registered (same or separate package)
 - [ ] **PKG-04**: ESM + CJS dual output verified in package.json exports
 
+## v1.1 Requirements
+
+Requirements for milestone v1.1: Course Correction & Completeness.
+
+### Starters & Content
+
+- [ ] **STRT-01**: User can run `qwik add` and see all 14 deployment adapters as options
+- [ ] **STRT-02**: User can run `qwik add` and see all 22 feature integrations as options
+- [ ] **STRT-03**: Stubs/apps contains all 4 app starters (base, empty, playground, library) with correct `__qwik__` metadata
+- [ ] **STRT-04**: Top-level `adapters/` directory is removed from the repository
+- [ ] **STRT-05**: `npm pack --dry-run` includes all starters content in the tarball
+
+### Migration Architecture
+
+- [ ] **MIGR-01**: Migration code lives in `migrations/v2/` scoped folder (not flat `src/migrate/`)
+- [ ] **MIGR-02**: `upgrade` command checks and installs latest Qwik dependencies
+- [ ] **MIGR-03**: `upgrade` command detects current Qwik version from package.json and chains all necessary migrations (v1→v2→v3→vN) sequentially
+- [ ] **MIGR-04**: Each version migration is self-contained in its own `migrations/vN/` folder
+- [ ] **MIGR-05**: Running upgrade on an already-current project is a clean no-op
+
+### create-qwik
+
+- [ ] **CRQW-09**: User can run `create-qwik base ./my-app` non-interactively to scaffold a project
+- [ ] **CRQW-10**: User can run `create-qwik` interactively with guided 6-step flow (starter, name, PM, install, git init)
+- [ ] **CRQW-11**: Dependencies install in the background while user answers remaining prompts
+- [ ] **CRQW-12**: `create-qwik` removes `__qwik__` metadata from generated package.json
+- [ ] **CRQW-13**: `create-qwik` initializes git repo with initial commit on new projects
+- [ ] **CRQW-14**: `bin/create-qwik.ts` entry point works as standalone `npm create qwik` binary
+
+### Tooling & Quality
+
+- [ ] **TOOL-01**: Project uses vite-plus as unified toolchain (oxfmt, oxlint, vitest, tsdown)
+- [ ] **TOOL-02**: Single `vite.config.ts` configures formatting, linting, and testing
+- [x] **TOOL-03**: `tsc --noEmit` passes with zero errors across all source files
+- [ ] **TOOL-04**: `qwik joke` draws from the real 30-joke pool from the Qwik repo
+- [ ] **TOOL-05**: `biome.json` is removed and no Biome dependency remains
+- [ ] **TOOL-06**: All regex patterns replaced with magic-regexp for readability and type-safety
+
+### Testing
+
+- [ ] **VTST-01**: Vitest configured via vite-plus for unit testing alongside existing Japa integration tests
+- [ ] **VTST-02**: Migration chaining logic has unit tests (version detection, chain building, sequential execution)
+- [ ] **VTST-03**: create-qwik `createApp()` core logic has unit tests (template resolution, package.json cleanup, directory scaffolding)
+- [ ] **VTST-04**: `loadIntegrations()` has unit tests verifying discovery of all starter types (apps, adapters, features)
+- [ ] **VTST-05**: Existing Japa golden-path tests remain green after all restructuring
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -221,12 +267,42 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PKG-02 | Phase 6 | Pending |
 | PKG-03 | Phase 6 | Pending |
 | PKG-04 | Phase 6 | Pending |
+| STRT-01 | Phase 8 | Pending |
+| STRT-02 | Phase 8 | Pending |
+| STRT-03 | Phase 8 | Pending |
+| STRT-04 | Phase 8 | Pending |
+| STRT-05 | Phase 8 | Pending |
+| MIGR-01 | Phase 9 | Pending |
+| MIGR-02 | Phase 9 | Pending |
+| MIGR-03 | Phase 9 | Pending |
+| MIGR-04 | Phase 9 | Pending |
+| MIGR-05 | Phase 9 | Pending |
+| CRQW-09 | Phase 11 | Pending |
+| CRQW-10 | Phase 11 | Pending |
+| CRQW-11 | Phase 11 | Pending |
+| CRQW-12 | Phase 11 | Pending |
+| CRQW-13 | Phase 11 | Pending |
+| CRQW-14 | Phase 11 | Pending |
+| TOOL-01 | Phase 10 | Pending |
+| TOOL-02 | Phase 10 | Pending |
+| TOOL-03 | Phase 7 | Complete |
+| TOOL-06 | Phase 7 | Pending |
+| TOOL-04 | Phase 8 | Pending |
+| TOOL-05 | Phase 10 | Pending |
+| VTST-01 | Phase 10 | Pending |
+| VTST-02 | Phase 9 | Pending |
+| VTST-03 | Phase 11 | Pending |
+| VTST-04 | Phase 11 | Pending |
+| VTST-05 | Phase 11 | Pending |
 
 **Coverage:**
 - v1 requirements: 74 total
 - Mapped to phases: 74
 - Unmapped: 0
+- v1.1 requirements: 27 total
+- Mapped to phases: 27
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-01*
-*Last updated: 2026-04-01 — TEST-01 clarified: 6 static fixtures (Phase 2) + 2 runtime outputs (Phase 6)*
+*Last updated: 2026-04-02 — v1.1 traceability added (phases 7-11; 26 requirements mapped)*
