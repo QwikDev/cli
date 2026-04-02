@@ -1,3 +1,7 @@
 node_modules/
 dist/
 *.tgz
+
+# Allow fx-06 dist directory contents to be tracked in git (needed for check-client tests)
+!tests/fixtures/fx-06/dist/
+!tests/fixtures/fx-06/dist/**
