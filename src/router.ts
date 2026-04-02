@@ -1,18 +1,18 @@
 import kleur from "kleur";
-import { printHeader } from "./console.js";
-import type { Program } from "./core.js";
+import { printHeader } from "./console.ts";
+import type { Program } from "./core.ts";
 
 // COMMANDS map with dynamic imports for fast startup (ARCH-02)
 const COMMANDS: Record<string, () => Promise<{ default: new () => Program<unknown, unknown> }>> = {
-  add: () => import("./commands/add/index.js"),
-  build: () => import("./commands/build/index.js"),
-  new: () => import("./commands/new/index.js"),
-  joke: () => import("./commands/joke/index.js"),
-  "migrate-v2": () => import("./commands/migrate/index.js"),
-  upgrade: () => import("./commands/migrate/index.js"),
-  "check-client": () => import("./commands/check-client/index.js"),
-  help: () => import("./commands/help/index.js"),
-  version: () => import("./commands/version/index.js"),
+  add: () => import("./commands/add/index.ts"),
+  build: () => import("./commands/build/index.ts"),
+  new: () => import("./commands/new/index.ts"),
+  joke: () => import("./commands/joke/index.ts"),
+  "migrate-v2": () => import("./commands/migrate/index.ts"),
+  upgrade: () => import("./commands/migrate/index.ts"),
+  "check-client": () => import("./commands/check-client/index.ts"),
+  help: () => import("./commands/help/index.ts"),
+  version: () => import("./commands/version/index.ts"),
 };
 
 export async function runCli(): Promise<void> {

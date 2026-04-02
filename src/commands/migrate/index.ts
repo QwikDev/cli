@@ -1,6 +1,6 @@
-import { bye } from "../../console.js";
-import { Program } from "../../core.js";
-import { runUpgrade } from "../../upgrade/orchestrator.js";
+import { bye } from "../../console.ts";
+import { Program } from "../../core.ts";
+import { runUpgrade } from "../../upgrade/orchestrator.ts";
 
 type MigrateArgs = { _: string[] };
 type MigrateInput = { confirmed: boolean };

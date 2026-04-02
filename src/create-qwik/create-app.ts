@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import type { CreateAppResult, IntegrationData } from "../types.js";
-import { loadAppStarters } from "../integrations/load-app-starters.js";
+import type { CreateAppResult, IntegrationData } from "../types.ts";
+import { loadAppStarters } from "../integrations/load-app-starters.ts";
 
 /**
  * Ordered list of package.json keys to preserve in output.
@@ -242,7 +242,7 @@ export async function createApp(opts: {
   writePkgJson(decodedOutDir, initialPkg);
 
   // Apply file layers
-  createFromStarter({ baseApp, starterApp, outDir: decodedOutDir });
+  createFromStarter({ baseApp, ...(starterApp !== undefined && { starterApp }), outDir: decodedOutDir });
 
   return { outDir: decodedOutDir, appId };
 }

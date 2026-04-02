@@ -1,13 +1,13 @@
 import { join } from "node:path";
-import { IMPORT_RENAME_ROUNDS, replaceImportInFiles } from "./rename-import.js";
-import { runAllPackageReplacements } from "./replace-package.js";
+import { IMPORT_RENAME_ROUNDS, replaceImportInFiles } from "./rename-import.ts";
+import { runAllPackageReplacements } from "./replace-package.ts";
 import {
   checkTsMorphPreExisting,
   removeTsMorphFromPackageJson,
   updateDependencies,
-} from "./update-dependencies.js";
-import { resolveV2Versions } from "./versions.js";
-import { visitNotIgnoredFiles } from "./visit-not-ignored.js";
+} from "./update-dependencies.ts";
+import { resolveV2Versions } from "./versions.ts";
+import { visitNotIgnoredFiles } from "./visit-not-ignored.ts";
 
 /**
  * Run the full 5-step v1→v2 migration in the given project root.

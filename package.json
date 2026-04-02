@@ -21,7 +21,7 @@
   },
   "scripts": {
     "build": "vp pack",
-    "test": "node --import tsx/esm bin/test.ts",
+    "test": "node bin/test.ts",
     "test:unit": "vp test",
     "lint": "vp lint",
     "lint:fix": "vp lint --fix",
@@ -31,7 +31,6 @@
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "cross-spawn": "^7.0.6",
-    "fs-extra": "^11.3.0",
     "ignore": "^7.0.5",
     "kleur": "^4.1.5",
     "magic-regexp": "^0.11.0",
@@ -47,18 +46,15 @@
     "@japa/assert": "^4.0.1",
     "@japa/runner": "^4.2.0",
     "@types/cross-spawn": "*",
-    "@types/fs-extra": "*",
     "@types/node": "^24.0.0",
     "@types/semver": "^7.7.1",
     "@types/which": "*",
     "@types/which-pm-runs": "*",
     "@types/yargs": "*",
-    "tsx": "*",
     "typescript": "^5.8.3",
-    "vite-plus": "^0.1.15",
-    "vitest": "^4.1.2"
+    "vite-plus": "^0.1.15"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=24.0.0"
   }
 }

@@ -2,14 +2,14 @@ import os from "node:os";
 import { existsSync, readdirSync } from "node:fs";
 import { relative, resolve } from "node:path";
 import { confirm, intro, isCancel, note, outro, select, spinner, text } from "@clack/prompts";
-import { bye } from "../console.js";
-import { getRandomJoke } from "../commands/joke/jokes.js";
-import { installDeps } from "../integrations/update-app.js";
-import { loadAppStarters } from "../integrations/load-app-starters.js";
-import { getPackageManagerName } from "../utils/package-manager.js";
-import { backgroundInstallDeps } from "./background-install.js";
-import { createApp } from "./create-app.js";
-import { initGitRepo } from "./git-init.js";
+import { bye } from "../console.ts";
+import { getRandomJoke } from "../commands/joke/jokes.ts";
+import { installDeps } from "../integrations/update-app.ts";
+import { loadAppStarters } from "../integrations/load-app-starters.ts";
+import { getPackageManagerName } from "../utils/package-manager.ts";
+import { backgroundInstallDeps } from "./background-install.ts";
+import { createApp } from "./create-app.ts";
+import { initGitRepo } from "./git-init.ts";
 
 /**
  * Run the create-qwik interactive CLI.

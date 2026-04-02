@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import os from "node:os";
 import { join } from "node:path";
 import { test } from "@japa/runner";
-import { runCreateQwik } from "../helpers/cli.js";
+import { runCreateQwik } from "../helpers/cli.ts";
 
 test.group("CRE-01 -- create-qwik empty", (group) => {
   let tmpDir: string;

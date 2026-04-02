@@ -5,8 +5,8 @@ processCLIArgs(process.argv.splice(2));
 
 configure({
   plugins: [assert()],
-  // Exclude tests/unit/upgrade/ — those use Vitest API (describe/expect), not Japa.
-  // Run them separately with: pnpm vitest run tests/unit/upgrade/
+  // Exclude Vitest-based unit tests — those use Vitest API (describe/expect), not Japa.
+  // Run them separately with: pnpm run test:unit
   files: ["tests/**/*.spec.ts", "!tests/unit/upgrade/**", "!tests/unit/create-qwik/**"],
 });
 

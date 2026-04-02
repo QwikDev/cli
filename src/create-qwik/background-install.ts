@@ -1,7 +1,7 @@
 import { copyFileSync, mkdirSync, renameSync, rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { $ } from "panam/executor";
-import { getPackageManagerName } from "../utils/package-manager.js";
+import { getPackageManagerName } from "../utils/package-manager.ts";
 
 /**
  * Result object for a background dependency install.

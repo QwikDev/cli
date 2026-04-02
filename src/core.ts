@@ -1,7 +1,7 @@
 import type { Option as ClackOption } from "@clack/prompts";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { scanBoolean, scanChoice, scanString } from "./console.js";
+import { scanBoolean, scanChoice, scanString } from "./console.ts";
 
 type Option = {
   type?: "string" | "boolean" | "number";

@@ -2,12 +2,12 @@ import os from "node:os";
 import { existsSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import yargs from "yargs";
-import { outro } from "../console.js";
-import { installDeps } from "../integrations/update-app.js";
-import { getPackageManagerName } from "../utils/package-manager.js";
-import { createApp } from "./create-app.js";
-import { initGitRepo } from "./git-init.js";
-import { loadAppStarters } from "../integrations/load-app-starters.js";
+import { outro } from "../console.ts";
+import { installDeps } from "../integrations/update-app.ts";
+import { getPackageManagerName } from "../utils/package-manager.ts";
+import { createApp } from "./create-app.ts";
+import { initGitRepo } from "./git-init.ts";
+import { loadAppStarters } from "../integrations/load-app-starters.ts";
 
 /**
  * Run the create-qwik CLI in non-interactive mode.

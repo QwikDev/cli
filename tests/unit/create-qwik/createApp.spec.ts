@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cleanPackageJson } from "../../../src/create-qwik/create-app.js";
+import { cleanPackageJson } from "../../../src/create-qwik/create-app.ts";
 
 describe("cleanPackageJson", () => {
   it("removes __qwik__ metadata key from input object", () => {

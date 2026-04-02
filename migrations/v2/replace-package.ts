@@ -1,8 +1,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createRegExp, exactly } from "magic-regexp";
-import { isBinaryPath } from "./binary-extensions.js";
-import { visitNotIgnoredFiles } from "./visit-not-ignored.js";
+import { isBinaryPath } from "./binary-extensions.ts";
+import { visitNotIgnoredFiles } from "./visit-not-ignored.ts";
 
 /**
  * Replace all occurrences of `oldPkg` with `newPkg` in every non-binary,

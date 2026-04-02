@@ -2,8 +2,8 @@ import { cpSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } f
 import os from "node:os";
 import { join } from "node:path";
 import { test } from "@japa/runner";
-import { runCli } from "../helpers/cli.js";
-import { getFixturePath } from "../helpers/fixtures.js";
+import { runCli } from "../helpers/cli.ts";
+import { getFixturePath } from "../helpers/fixtures.ts";
 
 const FX_02 = getFixturePath("fx-02");
 const FX_03 = getFixturePath("fx-03");

@@ -1,5 +1,5 @@
 import { test } from "@japa/runner";
-import { runCli } from "../helpers/cli.js";
+import { runCli } from "../helpers/cli.ts";
 
 test.group("VER-01 -- qwik version", () => {
   test("outputs bare semver string, no label prefix, exit 0", ({ assert }) => {

@@ -4,32 +4,32 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 
 // Mock external dependencies before importing the orchestrator
-vi.mock("../../../src/upgrade/detect-version.js", () => ({
+vi.mock("../../../src/upgrade/detect-version.ts", () => ({
   detectInstalledVersion: vi.fn(),
 }));
 
-vi.mock("../../../migrations/v2/index.js", () => ({
+vi.mock("../../../migrations/v2/index.ts", () => ({
   runV2Migration: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock("../../../migrations/v2/update-dependencies.js", () => ({
+vi.mock("../../../migrations/v2/update-dependencies.ts", () => ({
   updateDependencies: vi.fn().mockResolvedValue(undefined),
   checkTsMorphPreExisting: vi.fn().mockReturnValue(false),
   removeTsMorphFromPackageJson: vi.fn(),
 }));
 
-vi.mock("../../../migrations/v2/versions.js", () => ({
+vi.mock("../../../migrations/v2/versions.ts", () => ({
   getLatestV2Version: vi.fn(),
   resolveV2Versions: vi.fn().mockReturnValue({}),
   PACKAGE_NAMES: ["@qwik.dev/core"],
   VERSION_TAG_PRIORITY: ["latest"],
 }));
 
-import { runUpgrade } from "../../../src/upgrade/orchestrator.js";
-import { detectInstalledVersion } from "../../../src/upgrade/detect-version.js";
-import { runV2Migration } from "../../../migrations/v2/index.js";
-import { updateDependencies } from "../../../migrations/v2/update-dependencies.js";
-import { getLatestV2Version } from "../../../migrations/v2/versions.js";
+import { runUpgrade } from "../../../src/upgrade/orchestrator.ts";
+import { detectInstalledVersion } from "../../../src/upgrade/detect-version.ts";
+import { runV2Migration } from "../../../migrations/v2/index.ts";
+import { updateDependencies } from "../../../migrations/v2/update-dependencies.ts";
+import { getLatestV2Version } from "../../../migrations/v2/versions.ts";
 
 describe("runUpgrade", () => {
   let tmpDir: string;

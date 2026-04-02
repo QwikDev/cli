@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { Program } from "../../core.js";
+import { Program } from "../../core.ts";
 
 type VersionArgs = { _: string[] };
 type VersionInput = Record<string, never>;

@@ -1,5 +1,5 @@
 import { test } from "@japa/runner";
-import { Program } from "../../src/core.js";
+import { Program } from "../../src/core.ts";
 
 // Minimal concrete subclass to test lifecycle ordering
 class TestProgram extends Program<{ name?: string }, { name: string }> {

@@ -1,5 +1,5 @@
 import { test } from "@japa/runner";
-import * as consoleModule from "../../src/console.js";
+import * as consoleModule from "../../src/console.ts";
 
 test.group("console.ts - bye", () => {
   test("bye() calls process.exit(0)", ({ assert }) => {

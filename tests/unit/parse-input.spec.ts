@@ -1,5 +1,5 @@
 import { test } from "@japa/runner";
-import { inferTypeAndName, parseInputName } from "../../src/commands/new/parse-input.js";
+import { inferTypeAndName, parseInputName } from "../../src/commands/new/parse-input.ts";
 
 test.group("parseInputName", () => {
   test("splits on hyphen", ({ assert }) => {

@@ -1,16 +1,16 @@
 import { join } from "node:path";
-import { bye, panic } from "../../console.js";
-import { Program } from "../../core.js";
+import { bye, panic } from "../../console.ts";
+import { Program } from "../../core.ts";
 import {
   loadIntegrations,
   sortIntegrationsAndReturnAsClackOptions,
-} from "../../integrations/load-integrations.js";
+} from "../../integrations/load-integrations.ts";
 import {
   commitIntegration,
   installDeps,
   integrationHasDeps,
   runPostInstall,
-} from "../../integrations/update-app.js";
+} from "../../integrations/update-app.ts";
 
 type AddArgs = {
   _: string[];

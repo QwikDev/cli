@@ -1,11 +1,11 @@
 import semver from "semver";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { runV2Migration } from "../../migrations/v2/index.js";
-import { updateDependencies } from "../../migrations/v2/update-dependencies.js";
-import { getLatestV2Version, resolveV2Versions } from "../../migrations/v2/versions.js";
-import { buildMigrationChain, type MigrationStep } from "./chain-builder.js";
-import { detectInstalledVersion } from "./detect-version.js";
+import { runV2Migration } from "../../migrations/v2/index.ts";
+import { updateDependencies } from "../../migrations/v2/update-dependencies.ts";
+import { getLatestV2Version, resolveV2Versions } from "../../migrations/v2/versions.ts";
+import { buildMigrationChain, type MigrationStep } from "./chain-builder.ts";
+import { detectInstalledVersion } from "./detect-version.ts";
 
 /**
  * The ordered registry of all available migration steps.

@@ -1,4 +1,4 @@
-import { panic, printHeader } from "../console.js";
+import { panic, printHeader } from "../console.ts";
 
 /**
  * Entry dispatcher for create-qwik binary.
@@ -12,10 +12,10 @@ export async function runCreateQwikCli(): Promise<void> {
     const args = process.argv.slice(2);
 
     if (args.length > 0) {
-      const { runCreateCli } = await import("./run-non-interactive.js");
+      const { runCreateCli } = await import("./run-non-interactive.ts");
       await runCreateCli(args);
     } else {
-      const { runCreateInteractiveCli } = await import("./run-interactive.js");
+      const { runCreateInteractiveCli } = await import("./run-interactive.ts");
       await runCreateInteractiveCli();
     }
   } catch (e: unknown) {

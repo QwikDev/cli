@@ -1,14 +1,14 @@
 import { mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
-import { Program } from "../../core.js";
-import { inferTemplate, inferTypeAndName, parseInputName } from "./parse-input.js";
+import { Program } from "../../core.ts";
+import { inferTemplate, inferTypeAndName, parseInputName } from "./parse-input.ts";
 import {
   NAME_TOKEN,
   getOutDir,
   loadTemplates,
   type TemplateType,
   writeTemplateFile,
-} from "./templates.js";
+} from "./templates.ts";
 
 type NewArgs = { _: string[] };
 type NewInput = {

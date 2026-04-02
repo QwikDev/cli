@@ -1,5 +1,5 @@
-import { Program } from "../../core.js";
-import { getPmRunCommand } from "../../utils/package-manager.js";
+import { Program } from "../../core.ts";
+import { getPmRunCommand } from "../../utils/package-manager.ts";
 
 type HelpArgs = { _: string[] };
 type HelpInput = Record<string, never>;

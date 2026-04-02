@@ -1,5 +1,5 @@
-import { Program } from "../../core.js";
-import { getRandomJoke } from "./jokes.js";
+import { Program } from "../../core.ts";
+import { getRandomJoke } from "./jokes.ts";
 
 type JokeArgs = { _: string[] };
 type JokeInput = Record<string, never>;

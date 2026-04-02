@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import crossSpawn from "cross-spawn";
 import { createRegExp, exactly, oneOrMore, char } from "magic-regexp";
-import { Program } from "../../core.js";
+import { Program } from "../../core.ts";
 
 type BuildArgs = { _: string[] };
 type BuildInput = {

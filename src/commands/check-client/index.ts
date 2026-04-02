@@ -1,4 +1,4 @@
-import { Program } from "../../core.js";
+import { Program } from "../../core.ts";
 
 type CheckClientArgs = { _: string[] };
 type CheckClientInput = Record<string, never>;

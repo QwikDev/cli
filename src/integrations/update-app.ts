@@ -2,8 +2,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import spawn from "cross-spawn";
 import { install } from "panam";
-import type { IntegrationData } from "../types.js";
-import { getPackageManagerName } from "../utils/package-manager.js";
+import type { IntegrationData } from "../types.ts";
+import { getPackageManagerName } from "../utils/package-manager.ts";
 
 /**
  * Copy all integration files into the project rootDir.

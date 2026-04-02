@@ -1,5 +1,5 @@
 import { test } from "@japa/runner";
-import { AppCommand } from "../../src/app-command.js";
+import { AppCommand } from "../../src/app-command.ts";
 
 test.group("AppCommand - getArg", () => {
   test("getArg supports --flag=value form", ({ assert }) => {

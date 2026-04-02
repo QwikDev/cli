@@ -4,4 +4,4 @@ export type {
   IntegrationData,
   UpdateAppOptions,
   UpdateAppResult,
-} from "./types.js";
+} from "./types.ts";
