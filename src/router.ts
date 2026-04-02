@@ -1,6 +1,6 @@
 import kleur from "kleur";
-import { Program } from "./core.js";
 import { printHeader } from "./console.js";
+import type { Program } from "./core.js";
 
 // COMMANDS map with dynamic imports for fast startup (ARCH-02)
 const COMMANDS: Record<
@@ -27,7 +27,7 @@ export async function runCli(): Promise<void> {
       console.error(kleur.red(`Unrecognized qwik command: ${task}\n`));
     }
     // Both "no command" and "unrecognized" print help then exit 1
-    const { default: HelpProgram } = await COMMANDS["help"]();
+    const { default: HelpProgram } = await COMMANDS.help();
     const help = new HelpProgram();
     help.setInteractive(false);
     await help.run(process.argv);
