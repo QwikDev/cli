@@ -1,3 +1,6 @@
+import { cpSync, mkdirSync, rmSync } from "node:fs";
+import os from "node:os";
+import { join } from "node:path";
 import { test } from "@japa/runner";
 import { COMMAND_NAMES } from "../../src/router.js";
 
@@ -69,7 +72,23 @@ test.group("Router - COMMANDS dynamic imports", () => {
   });
 });
 
-test.group("Router - command stubs return 0", () => {
+test.group("Router - command stubs return 0", (group) => {
+  let tmpDir: string;
+  const origCwd = process.cwd();
+
+  group.each.setup(() => {
+    tmpDir = join(os.tmpdir(), `qwik-router-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    mkdirSync(tmpDir, { recursive: true });
+    // Copy a minimal fixture so the add command has a package.json to read
+    cpSync(join(origCwd, "tests", "fixtures", "fx-01"), tmpDir, { recursive: true });
+    process.chdir(tmpDir);
+  });
+
+  group.each.teardown(() => {
+    process.chdir(origCwd);
+    rmSync(tmpDir, { recursive: true, force: true });
+  });
+
   test("help command stub executes and returns 0", async ({ assert }) => {
     const { default: HelpProgram } = await import("../../src/commands/help/index.js");
     const program = new HelpProgram();
