@@ -11,6 +11,28 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  quality:
+    name: Quality checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: "24"
+          cache: true
+
+      - name: Format check
+        run: vp check
+
+      - name: Lint
+        run: vp lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
   test:
     name: Test on ${{ matrix.runtime }} / ${{ matrix.os }} / ${{ matrix.pm }}
     runs-on: ${{ matrix.os }}
@@ -42,12 +64,6 @@ jobs:
         with:
           node-version: "24"
           cache: true
-
-      - name: Lint
-        run: vp lint
-
-      - name: Type check
-        run: npx tsc --noEmit
 
       - name: Build
         run: vp pack
