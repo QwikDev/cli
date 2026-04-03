@@ -36,8 +36,9 @@ describe("migrateUseResourceTransform - useResource$ call: rewrites callee to us
   return await fetchData(props.id);
 });`;
     const result = transform(source);
-    expect(result).toContain("useAsync$");
-    expect(result).not.toContain("useResource$");
+    expect(result).toContain("useAsync$(async ({ track, cleanup }) => {");
+    // The TODO comment may contain "useResource$" literally; the call site must be rewritten
+    expect(result).not.toContain("= useResource$(");
   });
 });
 
@@ -52,7 +53,8 @@ const res = useResource$(async ({ track }) => {
 });`;
     const result = transform(source);
     expect(result).toContain('import { useAsync$ } from "@qwik.dev/core"');
-    expect(result).not.toContain("useResource$");
+    // Call site rewritten (the TODO comment may contain "useResource$" as a string)
+    expect(result).not.toContain("= useResource$(");
   });
 });
 
@@ -67,7 +69,8 @@ const res = useResource$(async ({ track }) => {
 });`;
     const result = transform(source);
     expect(result).toContain('import { useAsync$ } from "@builder.io/qwik"');
-    expect(result).not.toContain("useResource$");
+    // Call site rewritten (the TODO comment may contain "useResource$" as a string)
+    expect(result).not.toContain("= useResource$(");
   });
 });
 
@@ -101,7 +104,8 @@ describe("migrateUseResourceTransform - nested in component$: deep traversal fin
 })`;
     const result = transform(source);
     expect(result).toContain("useAsync$(async ({ track }) => {");
-    expect(result).not.toContain("useResource$");
+    // Call site rewritten (the TODO comment may contain "useResource$" as a string)
+    expect(result).not.toContain("= useResource$(");
   });
 });
 
@@ -117,8 +121,10 @@ const res2 = useResource$(async ({ track, cleanup }) => {
   return await fetchSecond();
 });`;
     const result = transform(source);
-    expect(result).not.toContain("useResource$");
-    const asyncCount = (result.match(/useAsync\$/g) || []).length;
+    // Call sites rewritten (the TODO comment may contain "useResource$" as a string)
+    expect(result).not.toContain("= useResource$(");
+    // Count only call sites (useAsync$ followed by '('), not TODO comment occurrences
+    const asyncCount = (result.match(/useAsync\$\(/g) || []).length;
     expect(asyncCount).toBe(2);
   });
 });
