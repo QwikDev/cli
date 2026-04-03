@@ -39,7 +39,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 14: Config Validation and Simple Behavioral Transform** - tsconfig.json and package.json auto-fix transforms; useVisibleTask$ eagerness option removal via AST (completed 2026-04-03)
 - [x] **Phase 15: Ecosystem Migration and Async Hook Transforms** - @builder.io/qwik-labs known-API migration with TODO warnings; useComputed$(async) and useResource$ rewrites (pending useAsync$ API clarification) (completed 2026-04-03)
 - [x] **Phase 16: QwikCityProvider Structural Rewrite** - Context-aware QwikCityProvider → useQwikRouter() JSX structural rewrite for Qwik Router apps; Astro project skip (completed 2026-04-03)
-- [ ] **Phase 17: Transform Test Coverage** - Unit test fixture pairs for every new transform; end-to-end integration test validating full migration pipeline
+- [x] **Phase 17: Transform Test Coverage** - Unit test fixture pairs for every new transform; end-to-end integration test validating full migration pipeline (completed 2026-04-03)
 
 ## Phase Details
 
@@ -315,7 +315,7 @@ Plans:
   2. A combined fixture file containing all migratable patterns (qwik-labs import, useVisibleTask$ with eagerness, useComputed$ async, useResource$, QwikCityProvider) is run through the full `runV2Migration()` pipeline in a single integration test; the output matches a known-good expected string with all transforms applied in the correct order
   3. All Vitest unit tests pass with zero failures
   4. All existing Japa golden-path integration tests remain green after the v1.2 changes are merged
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 17-01-PLAN.md — Audit existing unit tests (MTEST-01) + pipeline integration test (MTEST-02)
@@ -345,4 +345,4 @@ v1.2: Phases execute in dependency order: 13 -> 14, 15, 16 (in parallel after 13
 | 14. Config Validation and Simple Behavioral Transform | 2/2 | Complete    | 2026-04-03 |
 | 15. Ecosystem Migration and Async Hook Transforms | 2/2 | Complete    | 2026-04-03 |
 | 16. QwikCityProvider Structural Rewrite | 1/1 | Complete    | 2026-04-03 |
-| 17. Transform Test Coverage | 0/TBD | Not started | - |
+| 17. Transform Test Coverage | 1/1 | Complete   | 2026-04-03 |

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Phases
 status: executing
-stopped_at: Completed 16-qwikcityprovider-structural-rewrite/16-01-PLAN.md
-last_updated: "2026-04-03T22:43:36.250Z"
+stopped_at: Completed 17-transform-test-coverage/17-01-PLAN.md
+last_updated: "2026-04-03T23:14:31.055Z"
 last_activity: "2026-04-03 — Phase 13-01 complete: SourceReplacement/TransformFn types + applyTransforms orchestrator"
 progress:
   total_phases: 17
-  completed_phases: 15
-  total_plans: 33
-  completed_plans: 33
+  completed_phases: 16
+  total_plans: 34
+  completed_plans: 34
   percent: 65
 ---
 
@@ -60,6 +60,7 @@ Progress: [███████████░░░░░░] 65% (phases 1-12
 | Phase 15-ecosystem-migration-and-async-hook-transforms P01 | 5 | 1 tasks | 4 files |
 | Phase 15 P02 | 3 | 2 tasks | 5 files |
 | Phase 16-qwikcityprovider-structural-rewrite P01 | 2 | 2 tasks | 3 files |
+| Phase 17-transform-test-coverage P01 | 15 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,8 @@ Recent decisions affecting current work:
 - [Phase 15]: hasSyncUsage flag for mixed useComputed$ — if any sync call exists, import not renamed; TODO prepended instead
 - [Phase 16-qwikcityprovider-structural-rewrite]: XFRM-04 looks for @qwik.dev/router import (not @builder.io/qwik-city) — Phase 13 import renaming runs first in Step 2 before Step 2b behavioral transforms
 - [Phase 16-qwikcityprovider-structural-rewrite]: Factory reads package.json once at factory call time (not per-file) — performance optimization for large projects
+- [Phase 17-transform-test-coverage]: realpathSync() on mkdtempSync() result before runV2Migration() — macOS /var→/private/var symlink causes relative() to produce ../ paths rejected by ignore library
+- [Phase 17-transform-test-coverage]: describe.sequential() for process.chdir()-using pipeline tests — prevents cwd corruption across parallel test cases
 
 ### Pending Todos
 
@@ -98,6 +101,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-03T22:41:26.890Z
-Stopped at: Completed 16-qwikcityprovider-structural-rewrite/16-01-PLAN.md
+Last session: 2026-04-03T23:14:31.053Z
+Stopped at: Completed 17-transform-test-coverage/17-01-PLAN.md
 Resume file: None
