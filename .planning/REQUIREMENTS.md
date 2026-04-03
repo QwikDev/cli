@@ -184,9 +184,9 @@ Requirements for milestone v1.2: Comprehensive V2 Migration Automation.
 
 ### Config Validation
 
-- [ ] **CONF-01**: tsconfig.json `jsxImportSource` auto-fixed to `@qwik.dev/core`
-- [ ] **CONF-02**: tsconfig.json `moduleResolution` auto-fixed to `Bundler`
-- [ ] **CONF-03**: package.json `"type": "module"` ensured present
+- [x] **CONF-01**: tsconfig.json `jsxImportSource` auto-fixed to `@qwik.dev/core`
+- [x] **CONF-02**: tsconfig.json `moduleResolution` auto-fixed to `Bundler`
+- [x] **CONF-03**: package.json `"type": "module"` ensured present
 
 ### Ecosystem
 
@@ -338,9 +338,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RNME-01 | Phase 13 | Complete |
 | RNME-02 | Phase 13 | Complete |
 | XFRM-02 | Phase 14 | Pending |
-| CONF-01 | Phase 14 | Pending |
-| CONF-02 | Phase 14 | Pending |
-| CONF-03 | Phase 14 | Pending |
+| CONF-01 | Phase 14 | Complete |
+| CONF-02 | Phase 14 | Complete |
+| CONF-03 | Phase 14 | Complete |
 | ECOS-01 | Phase 15 | Pending |
 | XFRM-01 | Phase 15 | Pending |
 | XFRM-03 | Phase 15 | Pending |

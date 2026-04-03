@@ -266,7 +266,7 @@ Plans:
   3. Running `qwik migrate-v2` on a project whose `package.json` lacks `"type": "module"` adds it; a project that already has it is not modified
   4. Running `qwik migrate-v2` on a file containing `useVisibleTask$({eagerness: 'load'}, ...)` produces output with the `eagerness` property removed from the options object; all other properties in the options object are preserved unchanged
   5. All three config transforms and the eagerness transform have Vitest unit tests with before/after fixture strings; every test passes
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 14-01-PLAN.md — Config transforms (tsconfig jsxImportSource + moduleResolution, package.json type:module) with TDD + wire into runV2Migration Step 3b
@@ -328,7 +328,7 @@ v1.2: Phases execute in dependency order: 13 -> 14, 15, 16 (in parallel after 13
 | 11. create-qwik Implementation | 2/2 | Complete    | 2026-04-02 |
 | 12. CI setup | 1/1 | Complete | 2026-04-03 |
 | 13. Transform Infrastructure | 2/2 | Complete    | 2026-04-03 |
-| 14. Config Validation and Simple Behavioral Transform | 0/2 | Not started | - |
+| 14. Config Validation and Simple Behavioral Transform | 1/2 | In Progress|  |
 | 15. Ecosystem Migration and Async Hook Transforms | 0/TBD | Not started | - |
 | 16. QwikCityProvider Structural Rewrite | 0/TBD | Not started | - |
 | 17. Transform Test Coverage | 0/TBD | Not started | - |
