@@ -46,7 +46,7 @@ describe("replaceImportInFiles - RNME-02 (QwikCityProps → QwikRouterProps)", (
       const filePath = join(dir, "test.tsx");
       writeFileSync(
         filePath,
-        `import { QwikCityProps } from "@builder.io/qwik-city";\nexport type MyProps = QwikCityProps;`,
+        `import { QwikCityProps } from "@builder.io/qwik-city";\nexport default function App() {}`,
       );
 
       replaceImportInFiles([["QwikCityProps", "QwikRouterProps"]], "@builder.io/qwik-city", [

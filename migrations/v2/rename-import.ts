@@ -25,6 +25,8 @@ export const IMPORT_RENAME_ROUNDS: ImportRenameRound[] = [
       ["QwikCityProvider", "QwikRouterProvider"],
       ["QwikCityPlan", "QwikRouterConfig"],
       ["qwikCity", "qwikRouter"],
+      ["QwikCityMockProvider", "QwikRouterMockProvider"], // RNME-01
+      ["QwikCityProps", "QwikRouterProps"], // RNME-02
     ],
   },
   {
