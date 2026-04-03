@@ -1,2 +1,4 @@
 #!/bin/sh
-npx vp check
+npx vp fmt
+npx vp lint --fix
+git update-index --again
