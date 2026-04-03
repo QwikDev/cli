@@ -172,9 +172,9 @@ Requirements for milestone v1.2: Comprehensive V2 Migration Automation.
 
 ### Behavioral Transforms
 
-- [ ] **XFRM-01**: `useComputed$(async ...)` detected via AST (CallExpression + async ArrowFunctionExpression) and rewritten to `useAsync$(...)`
+- [x] **XFRM-01**: `useComputed$(async ...)` detected via AST (CallExpression + async ArrowFunctionExpression) and rewritten to `useAsync$(...)`
 - [x] **XFRM-02**: `useVisibleTask$` eagerness option detected and removed via AST (strip property from second argument ObjectExpression)
-- [ ] **XFRM-03**: `useResource$` rewritten to `useAsync$` with best-effort API shape migration (track syntax, abort pattern) and TODO comments for manual review items (Resource component → if/else branching)
+- [x] **XFRM-03**: `useResource$` rewritten to `useAsync$` with best-effort API shape migration (track syntax, abort pattern) and TODO comments for manual review items (Resource component → if/else branching)
 - [ ] **XFRM-04**: `QwikCityProvider` rewritten to `useQwikRouter()` hook in root.tsx (only for Qwik Router apps detected via `@builder.io/qwik-city` in package.json; skipped for Astro projects)
 
 ### Import/Type Renames
@@ -342,8 +342,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONF-02 | Phase 14 | Complete |
 | CONF-03 | Phase 14 | Complete |
 | ECOS-01 | Phase 15 | Complete |
-| XFRM-01 | Phase 15 | Pending |
-| XFRM-03 | Phase 15 | Pending |
+| XFRM-01 | Phase 15 | Complete |
+| XFRM-03 | Phase 15 | Complete |
 | XFRM-04 | Phase 16 | Pending |
 | MTEST-01 | Phase 17 | Pending |
 | MTEST-02 | Phase 17 | Pending |
