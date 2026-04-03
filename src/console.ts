@@ -35,7 +35,6 @@ export function panic(msg: string): never {
  * Prints the ASCII art logo with kleur.blue() for geometry and kleur.magenta() for inner dots.
  */
 export function printHeader(): void {
-  // biome-ignore format: intentional ASCII art alignment
   const lines = [
     kleur.magenta("      ............"),
     `    ${kleur.blue("::::")} ${kleur.blue(":--------:")}.`,

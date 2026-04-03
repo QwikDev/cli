@@ -5,7 +5,6 @@ test.group("console.ts - bye", () => {
   test("bye() calls process.exit(0)", ({ assert }) => {
     const original = process.exit;
     let capturedCode: number | undefined;
-    // biome-ignore lint/suspicious/noExplicitAny: test override
     (process as any).exit = (code?: number): never => {
       capturedCode = code;
       throw new Error(`exit:${code}`);
@@ -30,7 +29,6 @@ test.group("console.ts - panic", () => {
     console.error = (...args: unknown[]) => {
       stderrChunks.push(args.map(String).join(" "));
     };
-    // biome-ignore lint/suspicious/noExplicitAny: test override
     (process as any).exit = (code?: number): never => {
       capturedCode = code;
       throw new Error(`exit:${code}`);
