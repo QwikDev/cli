@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Phases
 status: executing
-stopped_at: Completed 14-config-validation-and-simple-behavioral-transform/14-02-PLAN.md
-last_updated: "2026-04-03T21:20:05.394Z"
+stopped_at: Completed 15-ecosystem-migration-and-async-hook-transforms/15-01-PLAN.md
+last_updated: "2026-04-03T22:09:22.660Z"
 last_activity: "2026-04-03 — Phase 13-01 complete: SourceReplacement/TransformFn types + applyTransforms orchestrator"
 progress:
   total_phases: 17
   completed_phases: 13
-  total_plans: 30
-  completed_plans: 30
+  total_plans: 32
+  completed_plans: 31
   percent: 65
 ---
 
@@ -57,6 +57,7 @@ Progress: [███████████░░░░░░] 65% (phases 1-12
 | Phase 13-transform-infrastructure P02 | 6 | 2 tasks | 4 files |
 | Phase 14-config-validation-and-simple-behavioral-transform P01 | 2 | 2 tasks | 3 files |
 | Phase 14-config-validation-and-simple-behavioral-transform P02 | 5 | 2 tasks | 3 files |
+| Phase 15-ecosystem-migration-and-async-hook-transforms P01 | 5 | 1 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,8 @@ Recent decisions affecting current work:
 - [Phase 14-01]: fixPackageType uses JSON.parse (not raw string) because package.json is always standard JSON
 - [Phase 14-02]: Import Node type from oxc-parser (not @oxc-project/types) — oxc-parser re-exports the full type surface and is the only declared dep
 - [Phase 14-02]: Solo eagerness replacement targets opts.start→args[1].start (not opts.end) to capture the trailing comma+space separator
+- [Phase 15-ecosystem-migration-and-async-hook-transforms]: walkNode extracted to shared walk.ts — remove-eagerness.ts and migrate-qwik-labs.ts both import from shared utility
+- [Phase 15-ecosystem-migration-and-async-hook-transforms]: First-char overwrite trick for TODO comment insertion (start/start+1 range) — zero-width MagicString overwrite not supported
 
 ### Pending Todos
 
@@ -89,6 +92,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-03T21:20:05.391Z
-Stopped at: Completed 14-config-validation-and-simple-behavioral-transform/14-02-PLAN.md
+Last session: 2026-04-03T22:09:22.658Z
+Stopped at: Completed 15-ecosystem-migration-and-async-hook-transforms/15-01-PLAN.md
 Resume file: None

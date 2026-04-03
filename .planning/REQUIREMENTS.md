@@ -190,7 +190,7 @@ Requirements for milestone v1.2: Comprehensive V2 Migration Automation.
 
 ### Ecosystem
 
-- [ ] **ECOS-01**: `@builder.io/qwik-labs` known APIs migrated to v2 equivalents (`usePreventNavigate` → `@qwik.dev/router`), unknown APIs get warning comments
+- [x] **ECOS-01**: `@builder.io/qwik-labs` known APIs migrated to v2 equivalents (`usePreventNavigate` → `@qwik.dev/router`), unknown APIs get warning comments
 
 ### Testing
 
@@ -341,7 +341,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONF-01 | Phase 14 | Complete |
 | CONF-02 | Phase 14 | Complete |
 | CONF-03 | Phase 14 | Complete |
-| ECOS-01 | Phase 15 | Pending |
+| ECOS-01 | Phase 15 | Complete |
 | XFRM-01 | Phase 15 | Pending |
 | XFRM-03 | Phase 15 | Pending |
 | XFRM-04 | Phase 16 | Pending |
