@@ -99,11 +99,11 @@ describe("applyTransforms", () => {
     const source = "hello world";
     writeFileSync(tmpFile, source, "utf-8");
 
-    const overlap1: TransformFn = (_filePath, src, _parseResult): SourceReplacement[] => {
+    const overlap1: TransformFn = (): SourceReplacement[] => {
       return [{ start: 0, end: 5, replacement: "HELLO" }];
     };
 
-    const overlap2: TransformFn = (_filePath, src, _parseResult): SourceReplacement[] => {
+    const overlap2: TransformFn = (): SourceReplacement[] => {
       return [{ start: 0, end: 5, replacement: "GREET" }];
     };
 
