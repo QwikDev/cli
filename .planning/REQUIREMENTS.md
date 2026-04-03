@@ -175,7 +175,7 @@ Requirements for milestone v1.2: Comprehensive V2 Migration Automation.
 - [x] **XFRM-01**: `useComputed$(async ...)` detected via AST (CallExpression + async ArrowFunctionExpression) and rewritten to `useAsync$(...)`
 - [x] **XFRM-02**: `useVisibleTask$` eagerness option detected and removed via AST (strip property from second argument ObjectExpression)
 - [x] **XFRM-03**: `useResource$` rewritten to `useAsync$` with best-effort API shape migration (track syntax, abort pattern) and TODO comments for manual review items (Resource component → if/else branching)
-- [ ] **XFRM-04**: `QwikCityProvider` rewritten to `useQwikRouter()` hook in root.tsx (only for Qwik Router apps detected via `@builder.io/qwik-city` in package.json; skipped for Astro projects)
+- [x] **XFRM-04**: `QwikCityProvider` rewritten to `useQwikRouter()` hook in root.tsx (only for Qwik Router apps detected via `@builder.io/qwik-city` in package.json; skipped for Astro projects)
 
 ### Import/Type Renames
 
@@ -344,7 +344,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ECOS-01 | Phase 15 | Complete |
 | XFRM-01 | Phase 15 | Complete |
 | XFRM-03 | Phase 15 | Complete |
-| XFRM-04 | Phase 16 | Pending |
+| XFRM-04 | Phase 16 | Complete |
 | MTEST-01 | Phase 17 | Pending |
 | MTEST-02 | Phase 17 | Pending |
 

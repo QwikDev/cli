@@ -115,11 +115,11 @@ describe("replaceImportInFiles - aliased imports", () => {
 });
 
 describe("IMPORT_RENAME_ROUNDS Round 1", () => {
-  it("has exactly 5 entries in Round 1 changes (3 existing + RNME-01 + RNME-02)", () => {
+  it("has exactly 4 entries in Round 1 changes (2 existing + RNME-01 + RNME-02; QwikCityProvider handled by XFRM-04)", () => {
     const round1 = IMPORT_RENAME_ROUNDS[0];
     expect(round1).toBeDefined();
     expect(round1!.library).toBe("@builder.io/qwik-city");
-    expect(round1!.changes).toHaveLength(5);
+    expect(round1!.changes).toHaveLength(4);
   });
 
   it("Round 1 includes QwikCityMockProvider rename (RNME-01)", () => {

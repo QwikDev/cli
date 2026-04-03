@@ -38,7 +38,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 13: Transform Infrastructure** - SourceReplacement[] interfaces, apply-transforms.ts parse-once fan-out orchestrator, binary-extensions pruning, and simple import renames (completed 2026-04-03)
 - [x] **Phase 14: Config Validation and Simple Behavioral Transform** - tsconfig.json and package.json auto-fix transforms; useVisibleTask$ eagerness option removal via AST (completed 2026-04-03)
 - [x] **Phase 15: Ecosystem Migration and Async Hook Transforms** - @builder.io/qwik-labs known-API migration with TODO warnings; useComputed$(async) and useResource$ rewrites (pending useAsync$ API clarification) (completed 2026-04-03)
-- [ ] **Phase 16: QwikCityProvider Structural Rewrite** - Context-aware QwikCityProvider → useQwikRouter() JSX structural rewrite for Qwik Router apps; Astro project skip
+- [x] **Phase 16: QwikCityProvider Structural Rewrite** - Context-aware QwikCityProvider → useQwikRouter() JSX structural rewrite for Qwik Router apps; Astro project skip (completed 2026-04-03)
 - [ ] **Phase 17: Transform Test Coverage** - Unit test fixture pairs for every new transform; end-to-end integration test validating full migration pipeline
 
 ## Phase Details
@@ -301,7 +301,7 @@ Plans:
   2. Running `qwik migrate-v2` on an Astro project (detected by absence of `@builder.io/qwik-city` in package.json) leaves any `QwikCityProvider` usage untouched and logs a skip message
   3. The transform correctly handles nested children of arbitrary depth — no child node content is overwritten or truncated
   4. Vitest unit tests cover: standard root.tsx rewrite, Astro project skip, and a file with multiple JSX nesting levels confirming children are preserved intact
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 16-01-PLAN.md — TDD: QwikCityProvider -> useQwikRouter() transform with 4 unit tests, wire into run-migration.ts Step 2b
@@ -345,5 +345,5 @@ v1.2: Phases execute in dependency order: 13 -> 14, 15, 16 (in parallel after 13
 | 13. Transform Infrastructure | 2/2 | Complete    | 2026-04-03 |
 | 14. Config Validation and Simple Behavioral Transform | 2/2 | Complete    | 2026-04-03 |
 | 15. Ecosystem Migration and Async Hook Transforms | 2/2 | Complete    | 2026-04-03 |
-| 16. QwikCityProvider Structural Rewrite | 0/1 | Not started | - |
+| 16. QwikCityProvider Structural Rewrite | 1/1 | Complete    | 2026-04-03 |
 | 17. Transform Test Coverage | 0/TBD | Not started | - |

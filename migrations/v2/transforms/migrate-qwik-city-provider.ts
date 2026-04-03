@@ -209,14 +209,16 @@ export const qwikCityProviderTransform: TransformFn = (
 
   // -----------------------------------------------------------------------
   // Step 5: Mutate the import specifier
-  // By Step 2b, Phase 13 import renaming has already run — look for @qwik.dev/router.
+  // At Step 2b time, the import source is still @builder.io/qwik-city
+  // (Step 3 package replacement has not run yet). QwikCityProvider is NOT
+  // renamed by Step 2's import rename rounds — this transform handles it.
   // -----------------------------------------------------------------------
   const bodyNodes = (program as unknown as { body: Node[] }).body;
 
   const importDecl = bodyNodes.find(
     (stmt) =>
       stmt.type === "ImportDeclaration" &&
-      (stmt as unknown as ImportDeclaration).source.value === "@qwik.dev/router",
+      (stmt as unknown as ImportDeclaration).source.value === "@builder.io/qwik-city",
   ) as ImportDeclaration | undefined;
 
   if (!importDecl) return replacements;

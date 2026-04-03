@@ -38,7 +38,7 @@ function transform(source: string): string {
 // -----------------------------------------------------------------------
 describe("qwikCityProviderTransform - standard rewrite: QwikCityProvider -> useQwikRouter()", () => {
   it("removes opening and closing tags, injects hook, renames import specifier", () => {
-    const source = `import { QwikCityProvider, RouterOutlet } from "@qwik.dev/router";
+    const source = `import { QwikCityProvider, RouterOutlet } from "@builder.io/qwik-city";
 import { component$ } from "@qwik.dev/core";
 
 export default component$(() => {
@@ -147,7 +147,7 @@ describe("detectQwikRouterProject - Astro project: returns false when @builder.i
 // -----------------------------------------------------------------------
 describe("qwikCityProviderTransform - nested children: deeply nested elements preserved", () => {
   it("preserves deeply nested JSX children unchanged after QwikCityProvider tag removal", () => {
-    const source = `import { QwikCityProvider } from "@qwik.dev/router";
+    const source = `import { QwikCityProvider } from "@builder.io/qwik-city";
 import { component$ } from "@qwik.dev/core";
 
 export default component$(() => {
@@ -182,7 +182,7 @@ export default component$(() => {
 // -----------------------------------------------------------------------
 describe("qwikCityProviderTransform - useQwikRouter already imported: QwikCityProvider removed", () => {
   it("removes QwikCityProvider specifier when useQwikRouter is already in the import", () => {
-    const source = `import { QwikCityProvider, useQwikRouter, RouterOutlet } from "@qwik.dev/router";
+    const source = `import { QwikCityProvider, useQwikRouter, RouterOutlet } from "@builder.io/qwik-city";
 import { component$ } from "@qwik.dev/core";
 
 export default component$(() => {
@@ -199,7 +199,9 @@ export default component$(() => {
     expect(result).not.toContain("QwikCityProvider");
 
     // useQwikRouter appears exactly once in the import (no duplicate)
-    const importMatch = result.match(/import\s*\{([^}]+)\}\s*from\s*["']@qwik\.dev\/router["']/);
+    const importMatch = result.match(
+      /import\s*\{([^}]+)\}\s*from\s*["']@builder\.io\/qwik-city["']/,
+    );
     expect(importMatch).not.toBeNull();
     const specifiers = importMatch![1]!;
     const useQwikRouterOccurrences = (specifiers.match(/useQwikRouter/g) || []).length;

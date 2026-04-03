@@ -22,7 +22,9 @@ export const IMPORT_RENAME_ROUNDS: ImportRenameRound[] = [
   {
     library: "@builder.io/qwik-city",
     changes: [
-      ["QwikCityProvider", "QwikRouterProvider"],
+      // NOTE: QwikCityProvider is NOT renamed here — Phase 16's structural
+      // transform (XFRM-04) handles it by removing the JSX element entirely
+      // and injecting useQwikRouter(). Renaming here would break that transform.
       ["QwikCityPlan", "QwikRouterConfig"],
       ["qwikCity", "qwikRouter"],
       ["QwikCityMockProvider", "QwikRouterMockProvider"], // RNME-01
