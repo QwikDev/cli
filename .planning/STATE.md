@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: Phases
 status: executing
-stopped_at: Completed 14-config-validation-and-simple-behavioral-transform/14-01-PLAN.md
-last_updated: "2026-04-03T21:15:57.114Z"
+stopped_at: Completed 14-config-validation-and-simple-behavioral-transform/14-02-PLAN.md
+last_updated: "2026-04-03T21:20:05.394Z"
 last_activity: "2026-04-03 — Phase 13-01 complete: SourceReplacement/TransformFn types + applyTransforms orchestrator"
 progress:
   total_phases: 17
-  completed_phases: 12
+  completed_phases: 13
   total_plans: 30
-  completed_plans: 29
+  completed_plans: 30
   percent: 65
 ---
 
@@ -56,6 +56,7 @@ Progress: [███████████░░░░░░] 65% (phases 1-12
 *Updated after each plan completion*
 | Phase 13-transform-infrastructure P02 | 6 | 2 tasks | 4 files |
 | Phase 14-config-validation-and-simple-behavioral-transform P01 | 2 | 2 tasks | 3 files |
+| Phase 14-config-validation-and-simple-behavioral-transform P02 | 5 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,8 @@ Recent decisions affecting current work:
 - [Phase 13-transform-infrastructure]: RNME-01/RNME-02 placed in Round 1 of IMPORT_RENAME_ROUNDS (not a new round) since they share the @builder.io/qwik-city library prefix
 - [Phase 14-01]: Raw-string regex for tsconfig transforms preserves JSONC comments without a full JSONC parser
 - [Phase 14-01]: fixPackageType uses JSON.parse (not raw string) because package.json is always standard JSON
+- [Phase 14-02]: Import Node type from oxc-parser (not @oxc-project/types) — oxc-parser re-exports the full type surface and is the only declared dep
+- [Phase 14-02]: Solo eagerness replacement targets opts.start→args[1].start (not opts.end) to capture the trailing comma+space separator
 
 ### Pending Todos
 
@@ -86,6 +89,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-03T21:15:57.112Z
-Stopped at: Completed 14-config-validation-and-simple-behavioral-transform/14-01-PLAN.md
+Last session: 2026-04-03T21:20:05.391Z
+Stopped at: Completed 14-config-validation-and-simple-behavioral-transform/14-02-PLAN.md
 Resume file: None
