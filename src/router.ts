@@ -15,9 +15,15 @@ const COMMANDS: Record<string, () => Promise<{ default: new () => Program<unknow
   version: () => import("./commands/version/index.ts"),
 };
 
+// Commands that must produce no extraneous output (used in CI/git hooks)
+const SILENT_COMMANDS = new Set(["check-client"]);
+
 export async function runCli(): Promise<void> {
-  printHeader();
   const task = process.argv[2];
+
+  if (!task || !SILENT_COMMANDS.has(task)) {
+    printHeader();
+  }
 
   if (!task || !COMMANDS[task]) {
     if (task) {
