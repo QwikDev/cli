@@ -35,7 +35,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 ### v1.2 Phases
 
-- [ ] **Phase 13: Transform Infrastructure** - SourceReplacement[] interfaces, apply-transforms.ts parse-once fan-out orchestrator, binary-extensions pruning, and simple import renames
+- [x] **Phase 13: Transform Infrastructure** - SourceReplacement[] interfaces, apply-transforms.ts parse-once fan-out orchestrator, binary-extensions pruning, and simple import renames (completed 2026-04-03)
 - [ ] **Phase 14: Config Validation and Simple Behavioral Transform** - tsconfig.json and package.json auto-fix transforms; useVisibleTask$ eagerness option removal via AST
 - [ ] **Phase 15: Ecosystem Migration and Async Hook Transforms** - @builder.io/qwik-labs known-API migration with TODO warnings; useComputed$(async) and useResource$ rewrites (pending useAsync$ API clarification)
 - [ ] **Phase 16: QwikCityProvider Structural Rewrite** - Context-aware QwikCityProvider → useQwikRouter() JSX structural rewrite for Qwik Router apps; Astro project skip
@@ -250,7 +250,7 @@ Plans:
   3. A stub TransformFn added to the orchestrator in a Vitest unit test produces the expected output without throwing a magic-string range collision error, demonstrating the infrastructure is safe for multiple concurrent transforms
   4. `binary-extensions.ts` is reduced from 248 lines to ~50 essential extensions; the pruned list still correctly skips images, fonts, archives, executables, audio, and video files during migration traversal
   5. Running `qwik migrate-v2` on a fixture containing `QwikCityMockProvider` and `QwikCityProps` imports produces output with `QwikRouterMockProvider` and `QwikRouterProps` respectively
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 13-01-PLAN.md — SourceReplacement/TransformFn types and applyTransforms parse-once fan-out orchestrator with unit tests
@@ -323,7 +323,7 @@ v1.2: Phases execute in dependency order: 13 -> 14, 15, 16 (in parallel after 13
 | 10. Tooling Switch | 1/1 | Complete    | 2026-04-02 |
 | 11. create-qwik Implementation | 2/2 | Complete    | 2026-04-02 |
 | 12. CI setup | 1/1 | Complete | 2026-04-03 |
-| 13. Transform Infrastructure | 0/2 | Not started | - |
+| 13. Transform Infrastructure | 2/2 | Complete   | 2026-04-03 |
 | 14. Config Validation and Simple Behavioral Transform | 0/TBD | Not started | - |
 | 15. Ecosystem Migration and Async Hook Transforms | 0/TBD | Not started | - |
 | 16. QwikCityProvider Structural Rewrite | 0/TBD | Not started | - |
