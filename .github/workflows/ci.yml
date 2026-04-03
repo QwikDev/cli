@@ -48,11 +48,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Remove lockfile and packageManager field
-        run: |
-          rm pnpm-lock.yaml
-          node -e "const p=require('./package.json'); delete p.packageManager; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n')"
-        shell: bash
+      - name: Remove lockfile
+        run: rm pnpm-lock.yaml
 
       - name: Install panam
         run: npm i -g panam-cli
@@ -61,17 +58,4 @@ jobs:
         with:
           runtime: ${{ matrix.runtime }}
           pm: ${{ matrix.pm }}
-
-      - uses: voidzero-dev/setup-vp@v1
-        with:
-          node-version: "24"
-          cache: true
-
-      - name: Build
-        run: vp pack
-
-      - name: Test (Japa integration)
-        run: node bin/test.ts
-
-      - name: Test (Vitest unit)
-        run: vp test
+          scripts: build,test,test:unit
