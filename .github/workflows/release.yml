@@ -1,0 +1,77 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      npm_tag:
+        description: "npm dist-tag"
+        required: true
+        type: choice
+        options:
+          - latest
+          - alpha
+      version:
+        description: "Version to publish (e.g. 1.0.0, 1.0.0-alpha.1)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: "24"
+          cache: true
+
+      - name: Build
+        run: vp pack
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Set version
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = '${{ inputs.version }}';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+      - name: Publish @qwik.dev/cli
+        run: pnpm publish --tag ${{ inputs.npm_tag }} --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Uncomment when create-qwik is ready for v2
+      # - name: Publish create-qwik
+      #   run: |
+      #     cp package.json package.json.bak
+      #     node -e "
+      #       const fs = require('fs');
+      #       const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+      #       pkg.name = 'create-qwik';
+      #       fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+      #     "
+      #     pnpm publish --tag ${{ inputs.npm_tag }} --access public --no-git-checks
+      #     mv package.json.bak package.json
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          generate_release_notes: true
