@@ -140,7 +140,11 @@ Plans:
   4. `check-client` exits 0 in a CI environment with no TTY (fully non-interactive)
   5. `npm pack --dry-run` on the final package shows `stubs/` contents in the tarball, and `exports` resolves both `import` and `require` conditions to existing files
   6. Parity tests CHK-01/02/03 pass; all 25 golden-path parity tests are green
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 15-01-PLAN.md — Extract shared walkNode utility, implement @builder.io/qwik-labs ecosystem migration transform (ECOS-01) with unit tests
+- [ ] 15-02-PLAN.md — useComputed$(async) -> useAsync$ (XFRM-01), useResource$ -> useAsync$ (XFRM-03) transforms with tests, wire all Phase 15 transforms into run-migration.ts
 
 ### Phase 12: CI setup
 
@@ -282,7 +286,11 @@ Plans:
   3. Running `qwik migrate-v2` on a file containing `useComputed$(async () => ...)` rewrites it to the confirmed target hook call with the async body preserved (requires useAsync$ API clarification before this criterion is verifiable)
   4. Running `qwik migrate-v2` on a file containing `useResource$` rewrites the call to the confirmed target API; properties with clear equivalents are mapped automatically; properties that require manual review receive inline TODO comments
   5. ECOS-01, XFRM-01, and XFRM-03 each have Vitest unit tests with input/output fixture strings covering aliased import variants and multi-use-per-file cases
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 15-01-PLAN.md — Extract shared walkNode utility, implement @builder.io/qwik-labs ecosystem migration transform (ECOS-01) with unit tests
+- [ ] 15-02-PLAN.md — useComputed$(async) -> useAsync$ (XFRM-01), useResource$ -> useAsync$ (XFRM-03) transforms with tests, wire all Phase 15 transforms into run-migration.ts
 
 ### Phase 16: QwikCityProvider Structural Rewrite
 **Goal**: The most complex AST transform — removing QwikCityProvider JSX element and injecting a useQwikRouter() hook call — works correctly for Qwik Router projects and is skipped entirely for Astro projects
@@ -293,7 +301,11 @@ Plans:
   2. Running `qwik migrate-v2` on an Astro project (detected by absence of `@builder.io/qwik-city` in package.json) leaves any `QwikCityProvider` usage untouched and logs a skip message
   3. The transform correctly handles nested children of arbitrary depth — no child node content is overwritten or truncated
   4. Vitest unit tests cover: standard root.tsx rewrite, Astro project skip, and a file with multiple JSX nesting levels confirming children are preserved intact
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 15-01-PLAN.md — Extract shared walkNode utility, implement @builder.io/qwik-labs ecosystem migration transform (ECOS-01) with unit tests
+- [ ] 15-02-PLAN.md — useComputed$(async) -> useAsync$ (XFRM-01), useResource$ -> useAsync$ (XFRM-03) transforms with tests, wire all Phase 15 transforms into run-migration.ts
 
 ### Phase 17: Transform Test Coverage
 **Goal**: Every new AST transform introduced in phases 13-16 has dedicated unit test fixture pairs, and a single integration test fixture exercises the complete migration pipeline end-to-end to confirm all transforms compose correctly
@@ -304,7 +316,11 @@ Plans:
   2. A combined fixture file containing all migratable patterns (qwik-labs import, useVisibleTask$ with eagerness, useComputed$ async, useResource$, QwikCityProvider) is run through the full `runV2Migration()` pipeline in a single integration test; the output matches a known-good expected string with all transforms applied in the correct order
   3. All Vitest unit tests pass with zero failures
   4. All existing Japa golden-path integration tests remain green after the v1.2 changes are merged
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 15-01-PLAN.md — Extract shared walkNode utility, implement @builder.io/qwik-labs ecosystem migration transform (ECOS-01) with unit tests
+- [ ] 15-02-PLAN.md — useComputed$(async) -> useAsync$ (XFRM-01), useResource$ -> useAsync$ (XFRM-03) transforms with tests, wire all Phase 15 transforms into run-migration.ts
 
 ## Progress
 
@@ -328,7 +344,7 @@ v1.2: Phases execute in dependency order: 13 -> 14, 15, 16 (in parallel after 13
 | 11. create-qwik Implementation | 2/2 | Complete    | 2026-04-02 |
 | 12. CI setup | 1/1 | Complete | 2026-04-03 |
 | 13. Transform Infrastructure | 2/2 | Complete    | 2026-04-03 |
-| 14. Config Validation and Simple Behavioral Transform | 2/2 | Complete   | 2026-04-03 |
-| 15. Ecosystem Migration and Async Hook Transforms | 0/TBD | Not started | - |
+| 14. Config Validation and Simple Behavioral Transform | 2/2 | Complete    | 2026-04-03 |
+| 15. Ecosystem Migration and Async Hook Transforms | 0/2 | Planning complete | - |
 | 16. QwikCityProvider Structural Rewrite | 0/TBD | Not started | - |
 | 17. Transform Test Coverage | 0/TBD | Not started | - |
