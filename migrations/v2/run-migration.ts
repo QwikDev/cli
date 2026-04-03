@@ -1,7 +1,9 @@
 import { join } from "node:path";
+import { applyTransforms } from "./apply-transforms.ts";
 import { fixJsxImportSource, fixModuleResolution, fixPackageType } from "./fix-config.ts";
 import { IMPORT_RENAME_ROUNDS, replaceImportInFiles } from "./rename-import.ts";
 import { runAllPackageReplacements } from "./replace-package.ts";
+import { removeEagernessTransform } from "./transforms/remove-eagerness.ts";
 import {
   checkTsMorphPreExisting,
   removeTsMorphFromPackageJson,
@@ -16,6 +18,7 @@ import { visitNotIgnoredFiles } from "./visit-not-ignored.ts";
  * Steps:
  * 1. Check ts-morph pre-existence (idempotency guard)
  * 2. AST import rename via oxc-parser + magic-string
+ * 2b. Behavioral AST transforms (eagerness removal, etc.)
  * 3. Text-based package string replacement (substring-safe order)
  * 3b. Config validation (jsxImportSource, moduleResolution, package type)
  * 4. Conditionally remove ts-morph (only if it was NOT pre-existing)
@@ -50,6 +53,12 @@ export async function runV2Migration(rootDir: string): Promise<void> {
 
   for (const round of IMPORT_RENAME_ROUNDS) {
     replaceImportInFiles(round.changes, round.library, absolutePaths);
+  }
+
+  // Step 2b: Behavioral AST transforms
+  console.log("Step 2b: Applying behavioral transforms...");
+  for (const filePath of absolutePaths) {
+    applyTransforms(filePath, [removeEagernessTransform]);
   }
 
   // Step 3: Text-based package replacement (substring-safe order)
