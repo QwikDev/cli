@@ -20,61 +20,16 @@ pnpm qwik new component my-button
 ## 🏗️ Architecture
 
 ```mermaid
-graph TB
-    subgraph Entry["Entry Points"]
-        CQ["create-qwik"]
-        Q["qwik"]
-    end
+graph LR
+    CQ["create-qwik"] --> Scaffold["Scaffold App"]
+    Q["qwik"] --> Router
+    Router -->|lazy import| Commands
+    Commands --> Stubs["stubs/"]
 
-    subgraph Core["Core"]
-        R["Router"]
-        P["Program Base Class"]
-    end
-
-    subgraph Commands["Commands"]
-        ADD["add"]
-        NEW["new"]
-        BUILD["build"]
-        MIGRATE["migrate-v2 / upgrade"]
-        HELP["help / version"]
-    end
-
-    subgraph Integrations["Integrations"]
-        LOAD["load-integrations"]
-        UPDATE["update-app"]
-        STUBS["stubs/"]
-    end
-
-    subgraph CreateFlow["Create Flow"]
-        INTERACTIVE["Interactive prompts"]
-        NONINTERACTIVE["Non-interactive (CI)"]
-        SCAFFOLD["create-app"]
-    end
-
-    subgraph Stubs["stubs/"]
-        ADAPTERS["adapters/\ncloudflare, vercel, netlify..."]
-        FEATURES["features/\ntailwind, vitest, drizzle..."]
-        APPS["apps/\nbase, spa, ssr..."]
-        TEMPLATES["templates/\ncomponent, route, mdx..."]
-    end
-
-    CQ --> INTERACTIVE & NONINTERACTIVE
-    INTERACTIVE & NONINTERACTIVE --> SCAFFOLD
-    SCAFFOLD --> LOAD
-
-    Q --> R
-    R -->|"lazy import"| ADD & NEW & BUILD & MIGRATE & HELP
-    ADD & NEW & BUILD & MIGRATE & HELP -.->|extends| P
-
-    ADD --> LOAD
-    NEW --> LOAD
-    LOAD --> STUBS
-    LOAD --> UPDATE
-
-    P -->|lifecycle| CONFIGURE["configure → parse → interact/validate → execute"]
+    Scaffold --> Stubs
 ```
 
-Every command extends `Program<T, U>` which provides a consistent lifecycle: **configure → parse → interact/validate → execute**. Commands are lazy-imported for fast startup.
+All commands extend a shared `Program` base class with a consistent lifecycle: **configure → parse → interact/validate → execute**. Integrations in `stubs/` are auto-discovered — no registration needed.
 
 ## 🧑‍💻 Development
 
@@ -183,13 +138,13 @@ That's all you need. `displayName` is what appears in the `qwik add` menu. Prior
 
 ### `__qwik__` field reference
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `displayName` | ✅ | Label in the `qwik add` selection menu |
-| `priority` | | Override sort order within group. Default: 20 (adapters), -10 (features) |
-| `viteConfig` | | Auto-adds imports and plugins to `vite.config.ts` |
-| `docs` | | Documentation URLs shown after install |
-| `nextSteps` | | Instructions shown after install |
+| Field         | Required | Description                                                              |
+| ------------- | -------- | ------------------------------------------------------------------------ |
+| `displayName` | ✅       | Label in the `qwik add` selection menu                                   |
+| `priority`    |          | Override sort order within group. Default: 20 (adapters), -10 (features) |
+| `viteConfig`  |          | Auto-adds imports and plugins to `vite.config.ts`                        |
+| `docs`        |          | Documentation URLs shown after install                                   |
+| `nextSteps`   |          | Instructions shown after install                                         |
 
 ### Adapter-specific files
 

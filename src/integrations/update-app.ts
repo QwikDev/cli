@@ -10,10 +10,7 @@ import { getPackageManagerName } from "../utils/package-manager.ts";
  * package.json into the target project's package.json.
  * Integration values overwrite target values on conflict.
  */
-export function mergeIntegrationPackageJson(
-  integration: IntegrationData,
-  rootDir: string,
-): void {
+export function mergeIntegrationPackageJson(integration: IntegrationData, rootDir: string): void {
   const targetPath = join(rootDir, "package.json");
   const target = JSON.parse(readFileSync(targetPath, "utf-8")) as Record<string, unknown>;
   const source = integration.pkgJson;
