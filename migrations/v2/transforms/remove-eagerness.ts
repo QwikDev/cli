@@ -1,27 +1,7 @@
 import type { Node } from "oxc-parser";
 import type { ParseResult } from "oxc-parser";
 import type { SourceReplacement, TransformFn } from "../types.ts";
-
-/**
- * Recursively walk an AST node, visiting every child node.
- * Iterates over all values of a node: arrays have each element with a `type`
- * property walked; objects with a `type` property are walked directly.
- */
-function walkNode(node: Node, visitor: (node: Node) => void): void {
-  visitor(node);
-
-  for (const value of Object.values(node)) {
-    if (Array.isArray(value)) {
-      for (const item of value) {
-        if (item !== null && typeof item === "object" && typeof item.type === "string") {
-          walkNode(item as Node, visitor);
-        }
-      }
-    } else if (value !== null && typeof value === "object" && typeof value.type === "string") {
-      walkNode(value as Node, visitor);
-    }
-  }
-}
+import { walkNode } from "./walk.ts";
 
 /**
  * AST transform that removes the `eagerness` option from `useVisibleTask$` calls.

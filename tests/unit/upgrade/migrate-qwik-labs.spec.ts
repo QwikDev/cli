@@ -115,7 +115,6 @@ describe("migrateQwikLabsTransform - usage renaming: call sites renamed for unal
       ``,
       `export const MyComponent = component$(() => {`,
       `  const navigate = usePreventNavigate();`,
-      `  return <div />;`,
       `});`,
     ].join("\n");
     const result = transform(source);
