@@ -1,4 +1,5 @@
 import { join } from "node:path";
+import { fixJsxImportSource, fixModuleResolution, fixPackageType } from "./fix-config.ts";
 import { IMPORT_RENAME_ROUNDS, replaceImportInFiles } from "./rename-import.ts";
 import { runAllPackageReplacements } from "./replace-package.ts";
 import {
@@ -16,6 +17,7 @@ import { visitNotIgnoredFiles } from "./visit-not-ignored.ts";
  * 1. Check ts-morph pre-existence (idempotency guard)
  * 2. AST import rename via oxc-parser + magic-string
  * 3. Text-based package string replacement (substring-safe order)
+ * 3b. Config validation (jsxImportSource, moduleResolution, package type)
  * 4. Conditionally remove ts-morph (only if it was NOT pre-existing)
  * 5. Resolve v2 versions and update dependencies
  *
@@ -58,6 +60,12 @@ export async function runV2Migration(rootDir: string): Promise<void> {
   } finally {
     process.chdir(origCwd);
   }
+
+  // Step 3b: Validate config files
+  console.log("Step 3b: Validating config files...");
+  fixJsxImportSource(rootDir);
+  fixModuleResolution(rootDir);
+  fixPackageType(rootDir);
 
   // Step 4: Conditionally remove ts-morph
   console.log("Step 4: Cleaning up ts-morph...");
