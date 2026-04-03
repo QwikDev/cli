@@ -29,9 +29,6 @@ jobs:
           node-version: "24"
           cache: true
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Format check
         run: pnpm run format:check
 
