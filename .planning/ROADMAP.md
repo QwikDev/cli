@@ -140,7 +140,7 @@ Plans:
   4. `check-client` exits 0 in a CI environment with no TTY (fully non-interactive)
   5. `npm pack --dry-run` on the final package shows `stubs/` contents in the tarball, and `exports` resolves both `import` and `require` conditions to existing files
   6. Parity tests CHK-01/02/03 pass; all 25 golden-path parity tests are green
-**Plans:** 2 plans
+**Plans:** 1 plan
 
 Plans:
 - [ ] 15-01-PLAN.md — Extract shared walkNode utility, implement @builder.io/qwik-labs ecosystem migration transform (ECOS-01) with unit tests
@@ -315,11 +315,10 @@ Plans:
   2. A combined fixture file containing all migratable patterns (qwik-labs import, useVisibleTask$ with eagerness, useComputed$ async, useResource$, QwikCityProvider) is run through the full `runV2Migration()` pipeline in a single integration test; the output matches a known-good expected string with all transforms applied in the correct order
   3. All Vitest unit tests pass with zero failures
   4. All existing Japa golden-path integration tests remain green after the v1.2 changes are merged
-**Plans:** 2 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] 17-01-PLAN.md — TBD
-- [ ] 17-02-PLAN.md — TBD
+- [ ] 17-01-PLAN.md — Audit existing unit tests (MTEST-01) + pipeline integration test (MTEST-02)
 
 ## Progress
 
