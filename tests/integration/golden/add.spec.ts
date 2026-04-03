@@ -51,7 +51,10 @@ test.group("ADD-02 -- qwik add with --projectDir", (group) => {
   });
 
   test("adds integration to --projectDir subdirectory", ({ assert }) => {
-    const result = runCli(["add", "--projectDir=./sub", "--skipConfirmation=true"], tmpDir);
+    const result = runCli(
+      ["add", "cloudflare-pages", "--projectDir=./sub", "--skipConfirmation=true"],
+      tmpDir,
+    );
     assert.strictEqual(result.status, 0);
     const adapterFile = join(tmpDir, "sub", "adapters", "cloudflare-pages", "vite.config.ts");
     assert.isTrue(
