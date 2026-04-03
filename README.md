@@ -1,52 +1,112 @@
-# @qwik.dev/cli
+# ⚡ @qwik.dev/cli
 
-The official CLI for Qwik projects. Provides `qwik` and `create-qwik` commands.
+The official CLI for creating and managing Qwik projects.
 
 ```bash
 # Create a new project
 pnpm create qwik
 
-# Add an integration to an existing project
+# Add an integration
 pnpm qwik add tailwind
 
-# Create a new component/route
+# Scaffold a component or route
 pnpm qwik new component my-button
 ```
 
-## Requirements
+## 📋 Requirements
 
 - Node.js >= 24.0.0
 
-## Development
+## 🏗️ Architecture
+
+```mermaid
+graph TB
+    subgraph Entry["Entry Points"]
+        CQ["create-qwik"]
+        Q["qwik"]
+    end
+
+    subgraph Core["Core"]
+        R["Router"]
+        P["Program Base Class"]
+    end
+
+    subgraph Commands["Commands"]
+        ADD["add"]
+        NEW["new"]
+        BUILD["build"]
+        MIGRATE["migrate-v2 / upgrade"]
+        HELP["help / version"]
+    end
+
+    subgraph Integrations["Integrations"]
+        LOAD["load-integrations"]
+        UPDATE["update-app"]
+        STUBS["stubs/"]
+    end
+
+    subgraph CreateFlow["Create Flow"]
+        INTERACTIVE["Interactive prompts"]
+        NONINTERACTIVE["Non-interactive (CI)"]
+        SCAFFOLD["create-app"]
+    end
+
+    subgraph Stubs["stubs/"]
+        ADAPTERS["adapters/\ncloudflare, vercel, netlify..."]
+        FEATURES["features/\ntailwind, vitest, drizzle..."]
+        APPS["apps/\nbase, spa, ssr..."]
+        TEMPLATES["templates/\ncomponent, route, mdx..."]
+    end
+
+    CQ --> INTERACTIVE & NONINTERACTIVE
+    INTERACTIVE & NONINTERACTIVE --> SCAFFOLD
+    SCAFFOLD --> LOAD
+
+    Q --> R
+    R -->|"lazy import"| ADD & NEW & BUILD & MIGRATE & HELP
+    ADD & NEW & BUILD & MIGRATE & HELP -.->|extends| P
+
+    ADD --> LOAD
+    NEW --> LOAD
+    LOAD --> STUBS
+    LOAD --> UPDATE
+
+    P -->|lifecycle| CONFIGURE["configure → parse → interact/validate → execute"]
+```
+
+Every command extends `Program<T, U>` which provides a consistent lifecycle: **configure → parse → interact/validate → execute**. Commands are lazy-imported for fast startup.
+
+## 🧑‍💻 Development
 
 ```bash
 pnpm install
-pnpm build        # Build CLI
-pnpm test         # Run all tests
-pnpm test:unit    # Run unit tests only
+pnpm build        # Build CLI (vp pack)
+pnpm test         # Integration tests (Japa)
+pnpm test:unit    # Unit tests (Vitest)
 pnpm lint         # Lint
 pnpm format       # Format
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
+bin/                # CLI entry points
 src/
-  commands/       # CLI command implementations (add, new, build, migrate, etc.)
-  integrations/   # Loading and applying stubs to user projects
-  create-qwik/    # create-qwik scaffolding logic
-  core.ts         # Program base class (all commands extend this)
-  router.ts       # Command routing
+  commands/         # CLI commands (add, new, build, migrate, etc.)
+  integrations/     # Loading and applying stubs to user projects
+  create-qwik/      # create-qwik scaffolding logic
+  core.ts           # Program base class (all commands extend this)
+  router.ts         # Command routing with lazy imports
 stubs/
-  adapters/       # Server deployment targets (cloudflare-pages, vercel-edge, etc.)
-  features/       # Optional integrations (tailwind, vitest, drizzle, etc.)
-  apps/           # Starter templates for create-qwik (base, empty, library, playground)
-  templates/      # File generators for `qwik new` (component, route, markdown, mdx)
+  adapters/         # Server deployment targets (cloudflare, vercel, netlify, etc.)
+  features/         # Optional integrations (tailwind, vitest, drizzle, etc.)
+  apps/             # Starter templates for create-qwik
+  templates/        # File generators for `qwik new`
 migrations/
-  v2/             # v1 to v2 migration pipeline
+  v2/               # v1 → v2 migration pipeline
 ```
 
-## Contributing Stubs
+## 🔌 Contributing Stubs
 
 Stubs are the most common contribution. They live in `stubs/adapters/` and `stubs/features/` and are **auto-discovered** — no registration needed. Drop a folder with a `package.json` and it shows up in `qwik add`.
 
@@ -125,11 +185,11 @@ That's all you need. `displayName` is what appears in the `qwik add` menu. Prior
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `displayName` | Yes | Label in the `qwik add` selection menu |
-| `priority` | No | Override sort order within group. Default: 20 (adapters), -10 (features) |
-| `viteConfig` | No | Auto-adds imports and plugins to `vite.config.ts` |
-| `docs` | No | Documentation URLs shown after install |
-| `nextSteps` | No | Instructions shown after install |
+| `displayName` | ✅ | Label in the `qwik add` selection menu |
+| `priority` | | Override sort order within group. Default: 20 (adapters), -10 (features) |
+| `viteConfig` | | Auto-adds imports and plugins to `vite.config.ts` |
+| `docs` | | Documentation URLs shown after install |
+| `nextSteps` | | Instructions shown after install |
 
 ### Adapter-specific files
 
@@ -170,6 +230,6 @@ Or run the existing integration tests:
 pnpm test
 ```
 
-## License
+## 📄 License
 
 MIT
