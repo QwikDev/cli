@@ -48,8 +48,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Remove lockfile
-        run: rm pnpm-lock.yaml
+      - name: Remove lockfile and packageManager field
+        run: |
+          rm pnpm-lock.yaml
+          node -e "const p=require('./package.json'); delete p.packageManager; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 2) + '\n')"
         shell: bash
 
       - name: Install panam
