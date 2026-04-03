@@ -1,7 +1,7 @@
 import { mkdtempSync, writeFileSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { describe, expect, it, afterEach } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   IMPORT_RENAME_ROUNDS,
   replaceImportInFiles,

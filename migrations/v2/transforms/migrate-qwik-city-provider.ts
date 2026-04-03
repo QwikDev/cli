@@ -88,9 +88,9 @@ export function detectQwikRouterProject(rootDir: string): boolean {
       unknown
     >;
     const allDeps = {
-      ...((pkg["dependencies"] as Record<string, string> | undefined) ?? {}),
-      ...((pkg["devDependencies"] as Record<string, string> | undefined) ?? {}),
-      ...((pkg["peerDependencies"] as Record<string, string> | undefined) ?? {}),
+      ...(pkg["dependencies"] as Record<string, string> | undefined),
+      ...(pkg["devDependencies"] as Record<string, string> | undefined),
+      ...(pkg["peerDependencies"] as Record<string, string> | undefined),
     };
     return "@builder.io/qwik-city" in allDeps;
   } catch {
