@@ -50,7 +50,7 @@ jobs:
         run: vp lint
 
       - name: Type check
-        run: pnpm exec tsc --noEmit
+        run: npx tsc --noEmit
 
       - name: Build
         run: vp pack
