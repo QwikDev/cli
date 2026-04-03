@@ -144,7 +144,7 @@ Plans:
 
 Plans:
 - [ ] 15-01-PLAN.md — Extract shared walkNode utility, implement @builder.io/qwik-labs ecosystem migration transform (ECOS-01) with unit tests
-- [ ] 15-02-PLAN.md — useComputed$(async) -> useAsync$ (XFRM-01), useResource$ -> useAsync$ (XFRM-03) transforms with tests, wire all Phase 15 transforms into run-migration.ts
+- [x] 15-02-PLAN.md — useComputed$(async) -> useAsync$ (XFRM-01), useResource$ -> useAsync$ (XFRM-03) transforms with tests, wire all Phase 15 transforms into run-migration.ts (completed 2026-04-03)
 
 ### Phase 12: CI setup
 
@@ -301,11 +301,10 @@ Plans:
   2. Running `qwik migrate-v2` on an Astro project (detected by absence of `@builder.io/qwik-city` in package.json) leaves any `QwikCityProvider` usage untouched and logs a skip message
   3. The transform correctly handles nested children of arbitrary depth — no child node content is overwritten or truncated
   4. Vitest unit tests cover: standard root.tsx rewrite, Astro project skip, and a file with multiple JSX nesting levels confirming children are preserved intact
-**Plans:** 2 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] 15-01-PLAN.md — Extract shared walkNode utility, implement @builder.io/qwik-labs ecosystem migration transform (ECOS-01) with unit tests
-- [ ] 15-02-PLAN.md — useComputed$(async) -> useAsync$ (XFRM-01), useResource$ -> useAsync$ (XFRM-03) transforms with tests, wire all Phase 15 transforms into run-migration.ts
+- [ ] 16-01-PLAN.md — TDD: QwikCityProvider -> useQwikRouter() transform with 4 unit tests, wire into run-migration.ts Step 2b
 
 ### Phase 17: Transform Test Coverage
 **Goal**: Every new AST transform introduced in phases 13-16 has dedicated unit test fixture pairs, and a single integration test fixture exercises the complete migration pipeline end-to-end to confirm all transforms compose correctly
@@ -319,8 +318,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 15-01-PLAN.md — Extract shared walkNode utility, implement @builder.io/qwik-labs ecosystem migration transform (ECOS-01) with unit tests
-- [ ] 15-02-PLAN.md — useComputed$(async) -> useAsync$ (XFRM-01), useResource$ -> useAsync$ (XFRM-03) transforms with tests, wire all Phase 15 transforms into run-migration.ts
+- [ ] 17-01-PLAN.md — TBD
+- [ ] 17-02-PLAN.md — TBD
 
 ## Progress
 
@@ -345,6 +344,6 @@ v1.2: Phases execute in dependency order: 13 -> 14, 15, 16 (in parallel after 13
 | 12. CI setup | 1/1 | Complete | 2026-04-03 |
 | 13. Transform Infrastructure | 2/2 | Complete    | 2026-04-03 |
 | 14. Config Validation and Simple Behavioral Transform | 2/2 | Complete    | 2026-04-03 |
-| 15. Ecosystem Migration and Async Hook Transforms | 2/2 | Complete   | 2026-04-03 |
-| 16. QwikCityProvider Structural Rewrite | 0/TBD | Not started | - |
+| 15. Ecosystem Migration and Async Hook Transforms | 2/2 | Complete    | 2026-04-03 |
+| 16. QwikCityProvider Structural Rewrite | 0/1 | Not started | - |
 | 17. Transform Test Coverage | 0/TBD | Not started | - |
