@@ -5,8 +5,8 @@ import { test } from "@japa/runner";
 import { runCli } from "../helpers/cli.ts";
 import { getFixturePath, setMtimeFuture, setMtimePast } from "../helpers/fixtures.ts";
 
-const FX_01 = getFixturePath("fx-01");
-const FX_06 = getFixturePath("fx-06");
+const FX_01 = getFixturePath("minimal-qwik-v2-app");
+const FX_06 = getFixturePath("built-project");
 
 test.group("CHK-01 -- no dist directory", (group) => {
   let tmpDir: string;

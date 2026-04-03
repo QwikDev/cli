@@ -80,7 +80,7 @@ test.group("Router - command stubs return 0", (group) => {
     tmpDir = join(os.tmpdir(), `qwik-router-${Date.now()}-${Math.random().toString(36).slice(2)}`);
     mkdirSync(tmpDir, { recursive: true });
     // Copy a minimal fixture so the add command has a package.json to read
-    cpSync(join(origCwd, "tests", "fixtures", "fx-01"), tmpDir, { recursive: true });
+    cpSync(join(origCwd, "tests", "fixtures", "minimal-qwik-v2-app"), tmpDir, { recursive: true });
     process.chdir(tmpDir);
   });
 

@@ -5,8 +5,8 @@ import { test } from "@japa/runner";
 import { runCli } from "../helpers/cli.ts";
 import { getFixturePath } from "../helpers/fixtures.ts";
 
-const FX_02 = getFixturePath("fx-02");
-const FX_03 = getFixturePath("fx-03");
+const FX_02 = getFixturePath("v1-project");
+const FX_03 = getFixturePath("v1-project-with-ts-morph");
 
 /**
  * Recursively collect all files under a directory.
@@ -186,7 +186,7 @@ test.group("MIG-05 -- gitignore-respected traversal", (group) => {
     mkdirSync(tmpDir, { recursive: true });
     cpSync(FX_02, tmpDir, { recursive: true });
     // Create dist/bundle.js containing @builder.io/qwik text.
-    // dist/ is in fx-02's .gitignore; migration must NOT rewrite this file.
+    // dist/ is in v1-project's .gitignore; migration must NOT rewrite this file.
     mkdirSync(join(tmpDir, "dist"), { recursive: true });
     writeFileSync(
       join(tmpDir, "dist", "bundle.js"),

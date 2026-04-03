@@ -5,8 +5,8 @@ import { test } from "@japa/runner";
 import { runCli } from "../helpers/cli.ts";
 import { getFixturePath } from "../helpers/fixtures.ts";
 
-const FX_04 = getFixturePath("fx-04");
-const FX_05 = getFixturePath("fx-05");
+const FX_04 = getFixturePath("empty-project");
+const FX_05 = getFixturePath("existing-files");
 
 test.group("NEW-01 -- qwik new /dashboard", (group) => {
   let tmpDir: string;

@@ -1,5 +1,5 @@
 {
-  "name": "fx-01-minimal-qwik-v2-app",
+  "name": "minimal-qwik-v2-app",
   "version": "0.0.1",
   "scripts": {
     "build.client": "echo build-client-ok",

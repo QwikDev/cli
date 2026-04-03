@@ -5,7 +5,7 @@ import { test } from "@japa/runner";
 import { runCli } from "../helpers/cli.ts";
 import { getFixturePath } from "../helpers/fixtures.ts";
 
-const FX_01 = getFixturePath("fx-01");
+const FX_01 = getFixturePath("minimal-qwik-v2-app");
 
 test.group("ADD-01 -- qwik add with --skipConfirmation", (group) => {
   let tmpDir: string;

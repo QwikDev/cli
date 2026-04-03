@@ -4,6 +4,6 @@ dist/
 .claude
 .planning
 
-# Allow fx-06 dist directory contents to be tracked in git (needed for check-client tests)
-!tests/fixtures/fx-06/dist/
-!tests/fixtures/fx-06/dist/**
+# Allow built-project dist directory contents to be tracked in git (needed for check-client tests)
+!tests/fixtures/built-project/dist/
+!tests/fixtures/built-project/dist/**

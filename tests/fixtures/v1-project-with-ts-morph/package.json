@@ -1,5 +1,5 @@
 {
-  "name": "fx-03-v1-project-with-ts-morph",
+  "name": "v1-project-with-ts-morph",
   "version": "0.0.1",
   "dependencies": {
     "@builder.io/qwik": "^1.0.0",

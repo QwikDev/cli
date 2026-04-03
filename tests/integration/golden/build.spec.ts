@@ -5,7 +5,7 @@ import { test } from "@japa/runner";
 import { runCli } from "../helpers/cli.ts";
 import { getFixturePath } from "../helpers/fixtures.ts";
 
-const FX_01 = getFixturePath("fx-01");
+const FX_01 = getFixturePath("minimal-qwik-v2-app");
 
 test.group("BUILD-01 -- qwik build", (group) => {
   let tmpDir: string;
@@ -76,7 +76,7 @@ test.group("BUILD-04 -- qwik build with failing script", (group) => {
 
     // Overwrite package.json to make build.server fail
     const pkg = {
-      name: "fx-01-failing-build",
+      name: "failing-build",
       version: "0.0.1",
       dependencies: {
         "@qwik.dev/core": "^2.0.0",
