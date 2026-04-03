@@ -3,6 +3,7 @@ import { applyTransforms } from "./apply-transforms.ts";
 import { fixJsxImportSource, fixModuleResolution, fixPackageType } from "./fix-config.ts";
 import { IMPORT_RENAME_ROUNDS, replaceImportInFiles } from "./rename-import.ts";
 import { runAllPackageReplacements } from "./replace-package.ts";
+import { makeQwikCityProviderTransform } from "./transforms/migrate-qwik-city-provider.ts";
 import { migrateQwikLabsTransform } from "./transforms/migrate-qwik-labs.ts";
 import { migrateUseComputedAsyncTransform } from "./transforms/migrate-use-computed-async.ts";
 import { migrateUseResourceTransform } from "./transforms/migrate-use-resource.ts";
@@ -60,12 +61,14 @@ export async function runV2Migration(rootDir: string): Promise<void> {
 
   // Step 2b: Behavioral AST transforms
   console.log("Step 2b: Applying behavioral transforms...");
+  const qwikCityProviderTransform = makeQwikCityProviderTransform(rootDir);
   for (const filePath of absolutePaths) {
     applyTransforms(filePath, [
       removeEagernessTransform,
       migrateQwikLabsTransform,
       migrateUseComputedAsyncTransform,
       migrateUseResourceTransform,
+      qwikCityProviderTransform,
     ]);
   }
 
