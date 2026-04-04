@@ -1,6 +1,13 @@
 import { join } from "node:path";
+import { applyTransforms } from "./apply-transforms.ts";
+import { fixJsxImportSource, fixModuleResolution, fixPackageType } from "./fix-config.ts";
 import { IMPORT_RENAME_ROUNDS, replaceImportInFiles } from "./rename-import.ts";
 import { runAllPackageReplacements } from "./replace-package.ts";
+import { makeQwikCityProviderTransform } from "./transforms/migrate-qwik-city-provider.ts";
+import { migrateQwikLabsTransform } from "./transforms/migrate-qwik-labs.ts";
+import { migrateUseComputedAsyncTransform } from "./transforms/migrate-use-computed-async.ts";
+import { migrateUseResourceTransform } from "./transforms/migrate-use-resource.ts";
+import { removeEagernessTransform } from "./transforms/remove-eagerness.ts";
 import {
   checkTsMorphPreExisting,
   removeTsMorphFromPackageJson,
@@ -15,7 +22,9 @@ import { visitNotIgnoredFiles } from "./visit-not-ignored.ts";
  * Steps:
  * 1. Check ts-morph pre-existence (idempotency guard)
  * 2. AST import rename via oxc-parser + magic-string
+ * 2b. Behavioral AST transforms (eagerness removal, etc.)
  * 3. Text-based package string replacement (substring-safe order)
+ * 3b. Config validation (jsxImportSource, moduleResolution, package type)
  * 4. Conditionally remove ts-morph (only if it was NOT pre-existing)
  * 5. Resolve v2 versions and update dependencies
  *
@@ -50,6 +59,19 @@ export async function runV2Migration(rootDir: string): Promise<void> {
     replaceImportInFiles(round.changes, round.library, absolutePaths);
   }
 
+  // Step 2b: Behavioral AST transforms
+  console.log("Step 2b: Applying behavioral transforms...");
+  const qwikCityProviderTransform = makeQwikCityProviderTransform(rootDir);
+  for (const filePath of absolutePaths) {
+    applyTransforms(filePath, [
+      removeEagernessTransform,
+      migrateQwikLabsTransform,
+      migrateUseComputedAsyncTransform,
+      migrateUseResourceTransform,
+      qwikCityProviderTransform,
+    ]);
+  }
+
   // Step 3: Text-based package replacement (substring-safe order)
   console.log("Step 3: Replacing package names...");
   process.chdir(rootDir);
@@ -58,6 +80,12 @@ export async function runV2Migration(rootDir: string): Promise<void> {
   } finally {
     process.chdir(origCwd);
   }
+
+  // Step 3b: Validate config files
+  console.log("Step 3b: Validating config files...");
+  fixJsxImportSource(rootDir);
+  fixModuleResolution(rootDir);
+  fixPackageType(rootDir);
 
   // Step 4: Conditionally remove ts-morph
   console.log("Step 4: Cleaning up ts-morph...");
