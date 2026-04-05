@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import yargs from "yargs";
 import { outro } from "../console.ts";
 import { installDeps } from "../integrations/update-app.ts";
-import { getPackageManagerName } from "../utils/package-manager.ts";
+import pm from "panam/pm";
 import { createApp } from "./create-app.ts";
 import { initGitRepo } from "./git-init.ts";
 import { loadAppStarters } from "../integrations/load-app-starters.ts";
@@ -71,7 +71,7 @@ export async function runCreateCli(args: string[]): Promise<void> {
   await createApp({
     appId: template,
     outDir: resolvedOutDir,
-    pkgManager: getPackageManagerName(),
+    pkgManager: pm.name,
   });
 
   // Initialize git repo with initial commit (CRQW-13)
@@ -82,9 +82,8 @@ export async function runCreateCli(args: string[]): Promise<void> {
     await installDeps(resolvedOutDir);
   }
 
-  const pm = getPackageManagerName();
   outro(
-    `Project created at ${resolvedOutDir}\n\nNext steps:\n  cd ${resolvedOutDir}\n  ${pm} install\n  ${pm} run dev`,
+    `Project created at ${resolvedOutDir}\n\nNext steps:\n  cd ${resolvedOutDir}\n  ${pm.name} install\n  ${pm.runCommand()} dev`,
   );
 
   process.exit(0);

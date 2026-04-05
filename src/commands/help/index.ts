@@ -1,5 +1,5 @@
 import { Program } from "../../core.ts";
-import { getPmRunCommand } from "../../utils/package-manager.ts";
+import pm from "panam/pm";
 
 type HelpArgs = { _: string[] };
 type HelpInput = Record<string, never>;
@@ -32,7 +32,7 @@ export class HelpProgram extends Program<HelpArgs, HelpInput> {
   }
 
   protected async execute(_input: HelpInput): Promise<number> {
-    const pmRun = getPmRunCommand();
+    const pmRun = pm.runCommand();
     console.log("Available commands:\n");
     for (const cmd of COMMAND_LIST) {
       console.log(`  ${cmd.name.padEnd(18)} ${cmd.description}`);

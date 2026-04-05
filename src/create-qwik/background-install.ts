@@ -1,7 +1,6 @@
 import { copyFileSync, mkdirSync, renameSync, rmSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { $ } from "panam/executor";
-import { getPackageManagerName } from "../utils/package-manager.ts";
+import pm from "panam/pm";
 
 /**
  * Result object for a background dependency install.
@@ -43,14 +42,12 @@ export function backgroundInstallDeps(baseAppDir: string, outDir: string): Backg
   mkdirSync(tmpInstallDir, { recursive: true });
   copyFileSync(join(baseAppDir, "package.json"), join(tmpInstallDir, "package.json"));
 
-  const pm = getPackageManagerName();
-
   // Start background install
-  const proc = $(pm, ["install"], { cwd: tmpInstallDir });
+  const proc = pm.install({ cwd: tmpInstallDir });
 
   // Track success state
   let success: boolean | undefined = undefined;
-  proc.result.then((r: { status: boolean }) => {
+  proc.then((r: { status: boolean }) => {
     success = r.status;
   });
 
@@ -60,14 +57,12 @@ export function backgroundInstallDeps(baseAppDir: string, outDir: string): Backg
     },
 
     async abort(): Promise<void> {
-      await proc.abort();
       rmSync(tmpInstallDir, { recursive: true, force: true });
     },
 
     async complete(destDir: string): Promise<boolean> {
-      const result = await proc.result;
-      if (!result.status) {
-        rmSync(tmpInstallDir, { recursive: true, force: true });
+      if (!this.success) {
+        this.abort();
         return false;
       }
 
