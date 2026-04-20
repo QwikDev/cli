@@ -1,0 +1,6 @@
+- Compare all of the existing CLI commands and run them vs. the existing CLI (for example the add command or the new component command). For now you can skip the upgrade command as it is not done yet.
+- The existing CLI command is `pnpm create qwik@beta` <--- creates a new Qwik v2 application with the currentCLI
+- Document all bugs or features that don't seem intended (potentially hallucinated or clear bugs)
+- Create a failing test that proves this fails. (by hand or by agent)
+- Implement the code to make it pass (by hand or by agent)
+- If all flows appear to be fixed and working, then we will reach out to Maieul Chevalier from the Qwik team to discuss how we need to improve our upgrade script further.
