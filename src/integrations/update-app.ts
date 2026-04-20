@@ -1,9 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { spawnSync } from "node:child_process";
-import { install } from "panam";
+import pm from "panam/pm";
 import type { IntegrationData } from "../types.ts";
-import { getPackageManagerName } from "../utils/package-manager.ts";
 
 /**
  * Merge scripts, dependencies, and devDependencies from an integration's
@@ -88,7 +86,7 @@ export function integrationHasDeps(integration: IntegrationData): boolean {
  * Install dependencies in the given working directory using panam.
  */
 export async function installDeps(cwd: string): Promise<void> {
-  await install({ cwd });
+  await pm.install({ cwd });
 }
 
 /**
@@ -96,15 +94,11 @@ export async function installDeps(cwd: string): Promise<void> {
  * Uses npx for npm, or the package manager name directly for pnpm/yarn/bun.
  */
 export async function runPostInstall(postInstallCmd: string, cwd: string): Promise<void> {
-  const parts = postInstallCmd.split(" ");
-  const [command, ...args] = parts;
+  const [command] = postInstallCmd.split(" ");
   if (!command) return;
 
-  const pm = getPackageManagerName();
-  const executor = pm === "npm" ? "npx" : pm;
-
-  const result = spawnSync(executor, [command, ...args], { cwd, stdio: "inherit" });
-  if (result.status !== 0) {
-    throw new Error(`Post-install command failed: ${postInstallCmd} (exit code ${result.status})`);
+  const result = await pm.x(postInstallCmd, { cwd });
+  if (!result.status) {
+    throw new Error(`Post-install command failed: ${postInstallCmd}`);
   }
 }

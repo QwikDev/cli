@@ -6,7 +6,7 @@ import { bye } from "../console.ts";
 import { getRandomJoke } from "../commands/joke/jokes.ts";
 import { installDeps } from "../integrations/update-app.ts";
 import { loadAppStarters } from "../integrations/load-app-starters.ts";
-import { getPackageManagerName } from "../utils/package-manager.ts";
+import { name as detectedPm } from "panam/pm";
 import { backgroundInstallDeps } from "./background-install.ts";
 import { createApp } from "./create-app.ts";
 import { initGitRepo } from "./git-init.ts";
@@ -100,7 +100,6 @@ export async function runCreateInteractiveCli(): Promise<void> {
     // -------------------------------------------------------------------------
     // Prompt 4: Package manager selection
     // -------------------------------------------------------------------------
-    const detectedPm = getPackageManagerName();
     const pmAnswer = await select({
       message: "Which package manager do you prefer?",
       options: (["npm", "pnpm", "yarn", "bun"] as const).map((pm) => {
